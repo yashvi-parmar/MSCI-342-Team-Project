@@ -139,7 +139,7 @@ class Home extends Component {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                Welcome back!
+                Bye!
               </React.Fragment>
             )}
           </Typography>
