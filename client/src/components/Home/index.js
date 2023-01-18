@@ -135,7 +135,7 @@ class Home extends Component {
           >
             {this.state.mode === 0 ? (
               <React.Fragment>
-                Welcome to MSci245!
+                Welcome!
               </React.Fragment>
             ) : (
               <React.Fragment>
@@ -147,7 +147,6 @@ class Home extends Component {
         </Grid>
       </Grid>
     )
-
 
     return (
       <MuiThemeProvider theme={theme}>
