@@ -1,11 +1,32 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
+import React, { Component, useEffect } from 'react';
+import {createTheme, ThemeProvider, styled} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import { Select } from '@material-ui/core';
+import { InputLabel } from '@material-ui/core';
+import { MenuItem } from '@material-ui/core';
+import { FormHelperText } from '@material-ui/core';
+import {makeStyles} from "@material-ui/core/styles";
+import { Box } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
+import Grid from "@material-ui/core/Grid";
+import Radio from '@material-ui/core/Radio';
+import { FormControl, FormLabel, RadioGroup, FormControlLabel } from '@material-ui/core';
+import { Button } from '@material-ui/core';
+import PropTypes from 'prop-types';
 import Paper from "@material-ui/core/Paper";
+import { withStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
+import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+//import ListItemButton from '@material-ui/core/ListItemButton';
+import history from '../Navigation/history';
+//import ListItemButton from '@mui/material/ListItemButton'
+import ListItemText from '@material-ui/core/ListItemText';
+import MenuIcon from "@material-ui/core/Menu";
+import Toolbar from '@material-ui/core/Toolbar';
 
 
 //Dev mode
@@ -24,18 +45,23 @@ const opacityValue = 0.9;
 
 const theme = createTheme({
   palette: {
-    type: 'dark',
+    type: 'light',
     background: {
-      default: "#000000"
+      default: "#ffffff"
     },
     primary: {
-      main: "#52f1ff",
+      main: '#ef9a9a',
+      light: '#94b395',
+      dark: '#2e5129',
+      background: '#e6ccb2'
     },
     secondary: {
-      main: "#b552f7",
+      main: "#b71c1c",
+      light: '#f05545',
+      dark: '#7f0000'
     },
   },
-});
+ });
 
 const styles = theme => ({
   root: {
@@ -126,6 +152,7 @@ class Home extends Component {
         style={{ minHeight: '100vh' }}
         className={classes.mainMessageContainer}
       >
+        <Navigation/>
         <Grid item>
 
           <Typography
@@ -139,7 +166,7 @@ class Home extends Component {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                Bye!
+                Bye!!!
               </React.Fragment>
             )}
           </Typography>
@@ -149,9 +176,8 @@ class Home extends Component {
     )
 
     return (
-      <MuiThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
         <div className={classes.root}>
-          <CssBaseline />
           <Paper
             className={classes.paper}
           >
@@ -159,9 +185,60 @@ class Home extends Component {
           </Paper>
 
         </div>
-      </MuiThemeProvider>
+      </ThemeProvider>
     );
   }
+}
+
+const Navigation =() =>{
+  
+  return(
+    <Box sx={{ display: 'flex' }}>
+    <AppBar component="nav">
+      <Toolbar>
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          edge="start"
+         // onClick={handleDrawerToggle}
+          sx={{ mr: 2, display: { sm: 'none' } }}
+        >
+          
+        </IconButton>
+        <Typography
+          variant="h6"
+          component="div"
+          sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+        >
+          
+        </Typography>
+        <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+          
+           <div>  
+            <Button 
+            sx={{ color: '#fff' }} 
+            onClick={() => history.push('/Dashboard')}
+            >
+              Dashboard
+            </Button>
+            <Button 
+            sx={{ color: '#fff' }}
+            onClick={() => history.push('/')}
+            >
+              Home
+            </Button>
+          </div> 
+      
+        </Box>
+      </Toolbar>
+    </AppBar>
+    <Box component="nav">
+      
+    </Box>
+    </Box>
+  )
+
+
 }
 
 Home.propTypes = {

@@ -36,7 +36,49 @@ app.post('/api/loadUserSettings', (req, res) => {
 	connection.end();
 });
 
+app.post('/api/getAlerts', (req,res) => {
 
+	let connection = mysql.createConnection(config);
+
+	let sql = 'SELECT * FROM Alerts'
+	console.log(sql);
+	let data = []
+
+	connection.query(sql, data, (error,data) => {
+		if (error) {
+			return res.json({ status : "ERROR", error});
+		}
+		let string = JSON.stringify(data);
+		let obj = JSON.parse(string);
+		res.send({ alertData: obj });
+	});
+	connection.end();
+});
+
+app.post('/api/addAlert', (req, res) => {
+
+	let connection = mysql.createConnection(config);
+
+	reviewTitle = req.body.reviewTitle,
+	reviewContent = req.body.reviewContent, 
+	reviewScore = req.body.reviewScore, 
+	movieID = req.body.movieID,
+	userID=req.body.userID
+	
+	  
+	let sql = "INSERT INTO `Alerts` (userID,movieID,reviewTitle,reviewContent,reviewScore) VALUES (?,?,?,?,?)";
+	let data=[userID,movieID,reviewTitle,reviewContent,reviewScore];
+	console.log(sql);
+	console.log(data);       
+ 
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+		res.send({message: "Message successfully added"});
+	 });
+	 connection.end();
+ });
 
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
 //app.listen(port, '129.97.25.211'); //for the deployed version, specify the IP address of the server
