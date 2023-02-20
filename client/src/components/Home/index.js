@@ -10,6 +10,9 @@ import {Avatar, TextField, Button, Link } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+
+import SignIn from '/Users/yashviparmar/Desktop/MGMT3A/MSCI-342/Project/node-react-app/client/src/components/SignIn';
+import CreateAccount from '/Users/yashviparmar/Desktop/MGMT3A/MSCI-342/Project/node-react-app/client/src/components/CreateAccount'
 import { BrowserRouter,Switch,Route} from 'react-router-dom';
 //Dev mode
 const serverURL = ""; //enable for dev mode
@@ -149,6 +152,16 @@ class Home extends Component {
               </React.Fragment>
             )}
           </Typography>
+
+        
+          <Link href="/SignIn" >
+                        Sign In 
+                </Link>
+<p></p>
+                <Link href="/CreateAccount" >
+                        Create an Account 
+                </Link>
+
 
        
         </Grid>

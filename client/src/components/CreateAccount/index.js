@@ -11,31 +11,32 @@ import {Avatar, TextField, Button, Link } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import CreateAccount from '../CreateAccount'
+import SignIn from '../SignIn'
 import { BrowserRouter,Switch,Route} from 'react-router-dom';
 const cardStyle={padding :30, height:'60vh',width:280, marginTop: "30px", margin:"20px auto"}
-
 const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
 const textStyle={marginBottom: '8px'}
 
-
-function SignIn() {
+function CreateAccount() {
   return (
-    <div className="SignIn">
-      <Grid>
+    <div className="CreateAccount">
+       <Grid>
             <Paper elevation={10} style={cardStyle}>
                 <Grid align='center'>
-                    <h2>Sign In</h2>
+                
+                    <h2>Create an Account</h2>
                 </Grid>
                 <TextField style={textStyle} label='Username' placeholder='Enter username' variant="outlined" fullWidth required/>
-  
-                <TextField style={textStyle} label='Password' placeholder='Enter password' type='password' variant="outlined" fullWidth required/>
+                <TextField style={textStyle} label='Email' placeholder='Enter email' variant="outlined" fullWidth required/>
                 
-                <Button type='submit' variant="contained" style={buttonStyle} fullWidth>Sign in</Button>
+                <TextField style={textStyle} label='Password' placeholder='Enter password' type='password' variant="outlined" fullWidth required/>
+                <TextField style={textStyle} label='Re-enter Password' placeholder='Re-enter password' type='password' variant="outlined" fullWidth required/>
+                
+                <Button type='submit' variant="contained" style={buttonStyle} fullWidth>Create an Account</Button>
              
                 
-                     <Link href="/CreateAccount" style={{color: 'black'}}>
-                        Create an Account 
+                     <Link href="/SignIn" style={{color: 'black'}}>
+                        Sign In 
                 </Link>
                
             </Paper>
@@ -44,4 +45,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default CreateAccount;
