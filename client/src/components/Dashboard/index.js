@@ -30,12 +30,11 @@ import Toolbar from '@material-ui/core/Toolbar';
 
 //Dev mode
 //const serverURL = "";
-const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046";
+const serverURL = "";
 //const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046";
  //enable for dev mode
  //enable for dev mode
 //Deployment mode instructions
-//const serverURL = "http://ov-research-4.uwaterloo.ca:PORT"; //enable for deployed mode; Change PORT to the port number given to you;
 //To find your port number:
 //ssh to ov-research-4.uwaterloo.ca and run the following command:
 //env | grep "PORT"
@@ -46,18 +45,18 @@ const lightTheme = createTheme({
  palette: {
    type: 'light',
    background: {
-     default: "#ffffff"
+     default: "#e6ccb2"
    },
    primary: {
-     main: '#ef9a9a',
+     main: '#2E5129',
      light: '#94b395',
-     dark: '#2e5129',
+     dark: '#94B395',
      background: '#e6ccb2'
    },
    secondary: {
-     main: "#b71c1c",
-     light: '#f05545',
-     dark: '#7f0000'
+     main: "#94B395",
+     light: '#94B395',
+     dark: '#94B395'
    },
  },
 });
@@ -158,8 +157,8 @@ return (
          justify="flex-start"
          alignItems="stretch"
        >
-         <Typography variant="h3" gutterBottom component="div">
-           Movie Review
+         <Typography variant="h3" gutterBottom component="div" color='primary' >
+           Submit Message
          </Typography>
  
          <FormControl>
@@ -194,7 +193,7 @@ return (
 const AlertLocation = (props) => {
  
  const handleInput = (event) => {
-   props.handlealertLocation(event.target.value);
+   props.handleAlertLocation(event.target.value);
  };
  
  return (
@@ -202,11 +201,10 @@ const AlertLocation = (props) => {
     <div>
       <TextField
         id="outlined-multiline-flexible"
-        label="AlertLocation"
+        label="Alert Location"
         multiline
         style={{ width: 600 }}
-        minRows={5}
-        defaultValue="Location"
+        minRows={2}
         variant="outlined"
         helperText="Enter Location of danger"
         value={props.alertMessage}
@@ -230,11 +228,10 @@ const AlertMessage = (props) => {
     <div>
     <TextField
         id="outlined-multiline-flexible"
-        label="AlertMessage"
+        label="Alert Message"
         multiline
         style={{ width: 600 }}
         minRows={5}
-        defaultValue="Description of danger"
         variant="outlined"
         helperText="Enter Description of danger"
         value={props.alertMessage}
@@ -242,7 +239,7 @@ const AlertMessage = (props) => {
       />
       {
         props.alertMessage == '' && props.submissionCheck == true ? (
-          <div><em style={{color:'red'}}>*Please enter a description. It is a mandatory field!</em></div>) : (<div></div>)
+          <div><em style={{color:'red'}}>*Please enter a description. It is a mandatory field.</em></div>) : (<div></div>)
        }
     </div>
   );
@@ -250,84 +247,11 @@ const AlertMessage = (props) => {
  
 
 const Home = () => {
- /**
-  constructor(props) {
-    super(props);
-    this.state = {
-      userID: 1,
-      mode: 0,
-   }
-  */ 
-
-  let [userId,setUserID] = React.useState(1);
-  let [mode,setMode]=React.useState(0);
-  let [alerts,setAlerts]=React.useState([]);
-  
-
-
-
-
-  React.useEffect(() => {
-    //loadUserSettings();
-    loadGetAlerts();
-   },[]);
-
-
-   const loadUserSettings =() => {
-    this.callApiLoadUserSettings()
-      .then(res => {
-        var parsed = JSON.parse(res.express);
-        console.log("loadUserSettings parsed: ", parsed[0].mode)
-        this.setState({ mode: parsed[0].mode });
-      });
-  }
-
-  const loadGetAlerts =() => {
-    callGetAlerts()
-      .then(res => {
-        setAlerts(res.alertData);
-      });
-  }
-  
-   const callApiLoadUserSettings = async () => {
-    const url = serverURL + "/api/loadUserSettings";
-
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        //authorization: `Bearer ${this.state.token}`
-      },
-      body: JSON.stringify({
-        userID: this.state.userID
-      })
-    });
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-    return body;
-  }
-  
-  const callGetAlerts = async() => {
-    
-    //console.log('t',url)
-    const url = serverURL + "/api/getAlerts";
-    console.log(url)
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        //authorization: `Bearer ${this.state.token}`
-      },
-    });
-    const body =await response.json();
-    if (response.status !== 200) throw Error(body.message);
-    return body;
-  }
-
+ 
 
     return (
       <div> 
-        <Dashboard alerts={alerts}/> 
+        <Dashboard /> 
       </div>     
     )
   };
