@@ -59,15 +59,13 @@ app.post('/api/addAlert', (req, res) => {
 
 	let connection = mysql.createConnection(config);
 
-	reviewTitle = req.body.reviewTitle,
-	reviewContent = req.body.reviewContent, 
-	reviewScore = req.body.reviewScore, 
-	movieID = req.body.movieID,
-	userID=req.body.userID
+	location = req.body.alertLocation,
+	alertMessage = req.body.alertMessage, 
+	user = req.body.userID
 	
 	  
-	let sql = "INSERT INTO `Alerts` (userID,movieID,reviewTitle,reviewContent,reviewScore) VALUES (?,?,?,?,?)";
-	let data=[userID,movieID,reviewTitle,reviewContent,reviewScore];
+	let sql = "INSERT INTO `Alerts` (location, alert, user) VALUES (?,?,?)";
+	let data=[location, alertMessage, user];
 	console.log(sql);
 	console.log(data);       
  

@@ -158,7 +158,6 @@ return (
          justify="flex-start"
          alignItems="stretch"
        >
-         <Navigation/>
          <Typography variant="h3" gutterBottom component="div">
            Movie Review
          </Typography>
@@ -189,56 +188,7 @@ return (
 
 }
 
-const Navigation =() =>{
-  
-    return(
-      <Box sx={{ display: 'flex' }}>
-      <AppBar component="nav">
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-           // onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            
-          </IconButton>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-          >
-            
-          </Typography>
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            
-             <div>  
-              <Button 
-              sx={{ color: '#fff' }} 
-              onClick={() => history.push('/Dashboard')}
-              >
-            Dashboard
-              </Button>
-              <Button 
-              sx={{ color: '#fff' }}
-              onClick={() => history.push('/')}
-              >
-                Home
-              </Button>
-            </div> 
-        
-          </Box>
-        </Toolbar>
-      </AppBar>
-      <Box component="nav">
-        
-      </Box>
-      </Box>
-    )
-  
-  
-  }
+
 
 
 const AlertLocation = (props) => {
@@ -251,13 +201,17 @@ const AlertLocation = (props) => {
 
     <div>
       <TextField
-        id="review-title" 
-         label="Review Title"
-         style={{ width: 300 }}
-         value={props.alertLocation}
-         onChange = {handleInput}
-         helperText="Enter Review Title"
-       />
+        id="outlined-multiline-flexible"
+        label="AlertLocation"
+        multiline
+        style={{ width: 600 }}
+        minRows={5}
+        defaultValue="Location"
+        variant="outlined"
+        helperText="Enter Location of danger"
+        value={props.alertMessage}
+        onChange = {handleInput}
+      />
        {
          props.alertLocation == '' && props.submissionCheck == true ? (
           <div><em style={{color:'red'}}>*Please enter the location. It is a mandatory field.</em></div>) : (<div></div>)
