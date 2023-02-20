@@ -14,7 +14,7 @@ import SignIn from '/Users/yashviparmar/Desktop/MGMT3A/MSCI-342/Project/node-rea
 import CreateAccount from '/Users/yashviparmar/Desktop/MGMT3A/MSCI-342/Project/node-react-app/client/src/components/CreateAccount'
 import { BrowserRouter,Switch,Route} from 'react-router-dom';
 //Dev mode
-const serverURL = ""; //enable for dev mode
+const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046"; //enable for dev mode
 
 //Deployment mode instructions
 //const serverURL = "http://ov-research-4.uwaterloo.ca:PORT"; //enable for deployed mode; Change PORT to the port number given to you;
