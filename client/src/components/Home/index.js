@@ -6,8 +6,13 @@ import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
-
-
+import {Avatar, TextField, Button, Link } from '@material-ui/core'
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import SignIn from '/Users/yashviparmar/Desktop/MGMT3A/MSCI-342/Project/node-react-app/client/src/components/SignIn';
+import CreateAccount from '/Users/yashviparmar/Desktop/MGMT3A/MSCI-342/Project/node-react-app/client/src/components/CreateAccount'
+import { BrowserRouter,Switch,Route} from 'react-router-dom';
 //Dev mode
 const serverURL = ""; //enable for dev mode
 
@@ -19,7 +24,9 @@ const serverURL = ""; //enable for dev mode
 //copy the number only and paste it in the serverURL in place of PORT, e.g.: const serverURL = "http://ov-research-4.uwaterloo.ca:3000";
 
 const fetch = require("node-fetch");
-
+const paperStyle={padding :20,height:'70vh',width:280, margin:"20px auto"}
+const avatarStyle={backgroundColor:'#1bbd7e'}
+const btnstyle={margin:'8px 0'}
 const opacityValue = 0.9;
 
 const theme = createTheme({
@@ -143,7 +150,16 @@ class Home extends Component {
               </React.Fragment>
             )}
           </Typography>
+        
+          <Link href="/SignIn" >
+                        Sign In 
+                </Link>
+<p></p>
+                <Link href="/CreateAccount" >
+                        Create an Account 
+                </Link>
 
+       
         </Grid>
       </Grid>
     )
@@ -159,7 +175,14 @@ class Home extends Component {
           </Paper>
 
         </div>
+
+    
+
       </MuiThemeProvider>
+
+      
+
+      
     );
   }
 }
