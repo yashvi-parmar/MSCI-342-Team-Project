@@ -154,9 +154,13 @@ class Home extends Component {
           <Link href="/SignIn" >
                         Sign In 
                 </Link>
-<p></p>
+                <p></p>
                 <Link href="/CreateAccount" >
                         Create an Account 
+                </Link>
+                <p></p>
+                <Link href="/Dashboard" >
+                        Dashboard
                 </Link>
 
 
