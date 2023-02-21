@@ -78,5 +78,28 @@ app.post('/api/addAlert', (req, res) => {
 	 connection.end();
  });
 
+ app.post('/api/addProfile', (req, res) => {
+
+	let connection = mysql.createConnection(config);
+
+	username = req.body.username,
+	email = req.body.email, 
+	password = req.body.password
+	
+	  
+	let sql = "INSERT INTO `Accounts` (username, email, password) VALUES (?,?,?)";
+	let data=[username, email, password];
+	console.log(sql);
+	console.log(data);       
+ 
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+		res.send({message: "Account successfully added"});
+	 });
+	 connection.end();
+ });
+
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
 //app.listen(port, '129.97.25.211'); //for the deployed version, specify the IP address of the server

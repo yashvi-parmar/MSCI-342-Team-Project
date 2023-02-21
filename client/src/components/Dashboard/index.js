@@ -157,6 +157,9 @@ return (
          justify="flex-start"
          alignItems="stretch"
        >
+         <Navigation/>
+         <br></br>
+         <br></br>
          <Typography variant="h3" gutterBottom component="div" color='primary' >
            Submit Message
          </Typography>
@@ -187,7 +190,56 @@ return (
 
 }
 
+const Navigation =() =>{
+  
+  return(
+    <Box sx={{ display: 'flex' }}>
+    <AppBar component="nav">
+      <Toolbar>
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          edge="start"
+         // onClick={handleDrawerToggle}
+          sx={{ mr: 2, display: { sm: 'none' } }}
+        >
+          
+        </IconButton>
+        <Typography
+          variant="h6"
+          component="div"
+          sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+        >
+          
+        </Typography>
+        <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+          
+           <div>  
+            <Button 
+            sx={{ color: '#ff' }} 
+            onClick={() => history.push('/Dashboard')}
+            >
+              Dashboard
+            </Button>
+            <Button 
+            sx={{ color: '#fff' }}
+            onClick={() => history.push('/')}
+            >
+              Home
+            </Button>
+          </div> 
+      
+        </Box>
+      </Toolbar>
+    </AppBar>
+    <Box component="nav">
+      
+    </Box>
+    </Box>
+  )
 
+
+}
 
 
 const AlertLocation = (props) => {
