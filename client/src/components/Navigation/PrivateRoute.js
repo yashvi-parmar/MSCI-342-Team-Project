@@ -4,6 +4,7 @@ import { Router, Switch, Route } from "react-router-dom";
 import Home from '../Home';
 import SignIn from '../SignIn';
 import CreateAccount from '../CreateAccount';
+import Map from '../Map';
 
 
 import history from './history';
@@ -21,7 +22,7 @@ export default function PrivateRoute({
       <Route path="/" exact component={Home} />
 
       <Route path="/Dashboard" exact component={Dashboard} />
-
+      <Route path="/Map" exact component={Map} />
       <Route path="/SignIn" exact component={SignIn} />
       <Route path="/CreateAccount" exact component={CreateAccount} />
 
