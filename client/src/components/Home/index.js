@@ -163,6 +163,11 @@ class Home extends Component {
                         Dashboard
                 </Link>
 
+                <p></p>
+                <Link href="/Emergency" >
+                        Emergency
+                </Link>
+
 
        
         </Grid>

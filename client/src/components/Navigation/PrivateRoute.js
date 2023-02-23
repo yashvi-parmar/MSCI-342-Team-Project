@@ -7,7 +7,8 @@ import CreateAccount from '../CreateAccount';
 
 
 import history from './history';
-import Dashboard from'../Dashboard'
+import Dashboard from '../Dashboard'
+import Emergency from '../Emergency'
 //import Home from '../Home';
 
 export default function PrivateRoute({
@@ -24,6 +25,7 @@ export default function PrivateRoute({
 
       <Route path="/SignIn" exact component={SignIn} />
       <Route path="/CreateAccount" exact component={CreateAccount} />
+      <Route path="/Emergency" exact component={Emergency} />
 
       </Switch>
     </Router>
