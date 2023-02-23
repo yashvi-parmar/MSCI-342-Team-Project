@@ -10,11 +10,10 @@ import {Avatar, TextField, Button, Link } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import SignIn from '/Users/yashviparmar/Desktop/MGMT3A/MSCI-342/Project/node-react-app/client/src/components/SignIn';
-import CreateAccount from '/Users/yashviparmar/Desktop/MGMT3A/MSCI-342/Project/node-react-app/client/src/components/CreateAccount'
 import { BrowserRouter,Switch,Route} from 'react-router-dom';
 //Dev mode
-const serverURL = ""; //enable for dev mode
+const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046"; //enable for dev mode
+
 
 //Deployment mode instructions
 //const serverURL = "http://ov-research-4.uwaterloo.ca:PORT"; //enable for deployed mode; Change PORT to the port number given to you;
@@ -150,14 +149,20 @@ class Home extends Component {
               </React.Fragment>
             )}
           </Typography>
+
         
           <Link href="/SignIn" >
                         Sign In 
                 </Link>
-<p></p>
+                <p></p>
                 <Link href="/CreateAccount" >
                         Create an Account 
                 </Link>
+                <p></p>
+                <Link href="/Dashboard" >
+                        Dashboard
+                </Link>
+
 
        
         </Grid>
