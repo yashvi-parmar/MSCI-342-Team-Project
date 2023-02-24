@@ -4,11 +4,11 @@ import { Router, Switch, Route } from "react-router-dom";
 import Home from '../Home';
 import SignIn from '../SignIn';
 import CreateAccount from '../CreateAccount';
-
-
 import history from './history';
 import Dashboard from'../Dashboard'
-//import Home from '../Home';
+import Share from "../Share";
+import PanicButton from "../PanicButton";
+
 
 export default function PrivateRoute({
   //authenticated,
@@ -24,6 +24,8 @@ export default function PrivateRoute({
 
       <Route path="/SignIn" exact component={SignIn} />
       <Route path="/CreateAccount" exact component={CreateAccount} />
+      <Route path="/Share" exact component={Share} />
+      <Route path="/PanicButton" exact component={PanicButton} />
 
       </Switch>
     </Router>
