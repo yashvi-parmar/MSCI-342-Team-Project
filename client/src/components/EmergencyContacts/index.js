@@ -16,21 +16,22 @@ const cardStyle={padding :30, height:'60vh',width:380, marginTop: "30px", margin
 const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
 const textStyle={marginBottom: '8px'}
 
-function Emergency() {
+function EmergencyContacts() {
   return (
-    <div className="Emergency">
+    <div className="EmergencyContacts">
        <Grid>
             <Paper elevation={10} style={cardStyle}>
                 <Grid align='center'>
                 
-                    <h2>Emergency Dashboard</h2>
-                <Link href="/EmergencyContacts">   
-                <Button type='submit' variant="contained" style={buttonStyle} fullWidth>Emergency Contacts</Button>
-                </Link>
-                <Button type='submit' variant="contained" style={buttonStyle} fullWidth>Fake Phone Call Generator</Button>
-                <Button type='submit' variant="contained" style={buttonStyle} fullWidth>Bark</Button>
-                <Button type='submit' variant="contained" style={buttonStyle} fullWidth>911</Button>
+                    <h2>Emergency Contacts</h2>
+                    <p>List Contacts</p>
+                    <p>Add New Contact</p>
+                    <TextField style={textStyle} label='Name' placeholder='Enter name' variant="outlined" fullWidth required/>
+                    <TextField style={textStyle} label='Phone Number' placeholder='Enter phone number' variant="outlined" fullWidth required/>
+                    
+                    <Button type='submit' variant="contained" style={buttonStyle} fullWidth>Submit</Button>
              
+                
                 
                 </Grid>
               
@@ -40,4 +41,4 @@ function Emergency() {
   );
 }
 
-export default Emergency;
+export default EmergencyContacts;
