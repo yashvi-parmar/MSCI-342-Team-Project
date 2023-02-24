@@ -54,6 +54,9 @@ function Navbar() {
             <Link to="/" className={classes.link}>
               Home
             </Link>
+            <Link to="/Map" className={classes.link}>
+              Map
+            </Link>
             <Link to="/Dashboard" className={classes.link}>
               Dashboard
             </Link>
