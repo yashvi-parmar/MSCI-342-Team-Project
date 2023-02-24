@@ -1,0 +1,84 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\15195\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js start
+
+PATH: 
+  C:\Users\15195\AppData\Local\Temp\yarn--1677173278580-0.6978311227605143;C:\Users\15195\Documents\node-react-app\node_modules\.bin;C:\Users\15195\AppData\Local\Yarn\Data\link\node_modules\.bin;C:\Program Files\libexec\lib\node_modules\npm\bin\node-gyp-bin;C:\Program Files\lib\node_modules\npm\bin\node-gyp-bin;C:\Program Files\nodejs\node_modules\npm\bin\node-gyp-bin;C:\Users\15195\AppData\Local\Temp\yarn--1677173277861-0.8883742392356109;C:\Users\15195\Documents\node-react-app\node_modules\.bin;C:\Users\15195\AppData\Local\Yarn\Data\link\node_modules\.bin;C:\Users\15195\AppData\Local\Yarn\bin;C:\Program Files\libexec\lib\node_modules\npm\bin\node-gyp-bin;C:\Program Files\lib\node_modules\npm\bin\node-gyp-bin;C:\Program Files\nodejs\node_modules\npm\bin\node-gyp-bin;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files\AdoptOpenJDK\jdk-11.0.9.101-hotspot\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Program Files\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\Common Files\Autodesk Shared\;C:\Program Files\nodejs\;C:\Program Files\MySQL\MySQL Shell 8.0\bin\;C:\Users\15195\AppData\Local\Microsoft\WindowsApps;C:\Users\15195\AppData\Local\GitHubDesktop\bin;C:\Users\15195\AppData\Roaming\TinyTeX\bin\win32;C:\Users\15195\AppData\Roaming\npm;C:\Users\15195\AppData\Local\Programs\Microsoft VS Code\bin;
+
+Yarn version: 
+  1.22.18
+
+Node version: 
+  16.15.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  SyntaxError: C:\Users\15195\Documents\node-react-app\client\package.json: Unexpected token < in JSON at position 313
+      at JSON.parse (<anonymous>)
+      at C:\Users\15195\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (C:\Users\15195\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:310:30)
+      at C:\Users\15195\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:321:13
+
+npm manifest: 
+  {
+    "proxy": "http://localhost:5000/",
+    "name": "node-react-app",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+      "@material-ui/core": "^4.0.0",
+      "@material-ui/icons": "^4.0.0",
+      "@material-ui/lab": "^4.0.0-alpha.13",
+      "@material-ui/styles": "^4.0.0",
+      "@material/ripple": "^4.0.0",
+  <<<<<<< HEAD
+      "firebase": "^6.1.1",
+  =======
+      "@mui/material": "^5.11.10",
+  >>>>>>> 0b4a30bca0d37b15edf661942d11c0e69c1ff2dc
+      "install": "^0.12.2",
+      "mathjs": "^5.10.3",
+      "node-fetch": "^2.6.1",
+      "prop-types": "^15.7.2",
+      "react": "^16.8.6",
+      "react-dom": "^16.8.6",
+      "react-gsap": "^1.2.0",
+      "react-hot-loader": "^4.12.19",
+      "react-redux": "^7.1.0",
+      "react-router-dom": "^5.0.1",
+      "react-scripts": "^3.4.0",
+      "react-with-firebase-auth": "^1.0.3",
+      "recompose": "^0.30.0",
+      "typeface-roboto": "^0.0.54",
+      "uuid": "^8.3.2"
+    },
+    "scripts": {
+      "start": "react-scripts start",
+      "build": "react-scripts build",
+      "test": "react-scripts test",
+      "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+      "extends": "react-app"
+    },
+    "browserslist": {
+      "production": [
+        ">0.2%",
+        "not dead",
+        "not op_mini all"
+      ],
+      "development": [
+        "last 1 chrome version",
+        "last 1 firefox version",
+        "last 1 safari version"
+      ]
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
