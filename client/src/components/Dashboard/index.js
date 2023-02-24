@@ -27,6 +27,7 @@ import history from '../Navigation/history';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuIcon from "@material-ui/core/Menu";
 import Toolbar from '@material-ui/core/Toolbar';
+import Navbar from '../NavBar';
 
 //Dev mode
 //const serverURL = "";
@@ -39,24 +40,24 @@ const serverURL = "";
 //ssh to ov-research-4.uwaterloo.ca and run the following command:
 //env | grep "PORT"
 //copy the number only and paste it in the serverURL in place of PORT, e.g.: const serverURL = "http://ov-research-4.uwaterloo.ca:3000";
-const opacityValue = 0.9;
+const opacityValue = 0.95;
  
 const lightTheme = createTheme({
  palette: {
    type: 'light',
    background: {
-     default: "#e6ccb2"
+     default: "#042913"
    },
    primary: {
-     main: '#2E5129',
-     light: '#94b395',
-     dark: '#94B395',
-     background: '#e6ccb2'
+     main: '#b08968',
+     light: '#6f4e37',
+     dark: '#b08968',
+     background: '#94b395'
    },
    secondary: {
-     main: "#94B395",
-     light: '#94B395',
-     dark: '#94B395'
+     main: "#94b395",
+     light: '#ffffff',
+     dark: '#ffffff'
    },
  },
 });
@@ -139,6 +140,8 @@ const loadApiAddAlert = () => {
 }
 
 return (
+  <grid>
+    <Navbar></Navbar>
    <ThemeProvider theme={lightTheme}>
      <Box
        sx={{
@@ -157,7 +160,7 @@ return (
          justify="flex-start"
          alignItems="stretch"
        >
-         <Navigation/>
+         {/* <Navigation/> */}
          <br></br>
          <br></br>
          <Typography variant="h3" gutterBottom component="div" color='primary' >
@@ -186,60 +189,61 @@ return (
        </MainGridContainer>
      </Box>
    </ThemeProvider>
+   </grid>
  );
 
 }
 
-const Navigation =() =>{
+// const Navigation =() =>{
   
-  return(
-    <Box sx={{ display: 'flex' }}>
-    <AppBar component="nav">
-      <Toolbar>
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          edge="start"
-         // onClick={handleDrawerToggle}
-          sx={{ mr: 2, display: { sm: 'none' } }}
-        >
+//   return(
+//     <Box sx={{ display: 'flex' }}>
+//     <AppBar component="nav">
+//       <Toolbar>
+//         <IconButton
+//           color="inherit"
+//           aria-label="open drawer"
+//           edge="start"
+//          // onClick={handleDrawerToggle}
+//           sx={{ mr: 2, display: { sm: 'none' } }}
+//         >
           
-        </IconButton>
-        <Typography
-          variant="h6"
-          component="div"
-          sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-        >
+//         </IconButton>
+//         <Typography
+//           variant="h6"
+//           component="div"
+//           sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+//         >
           
-        </Typography>
-        <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+//         </Typography>
+//         <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
           
-           <div>  
-            <Button 
-            sx={{ color: '#ff' }} 
-            onClick={() => history.push('/Dashboard')}
-            >
-              Dashboard
-            </Button>
-            <Button 
-            sx={{ color: '#fff' }}
-            onClick={() => history.push('/')}
-            >
-              Home
-            </Button>
-          </div> 
+//            <div>  
+//             <Button 
+//             sx={{ color: '#ff' }} 
+//             onClick={() => history.push('/Dashboard')}
+//             >
+//               Dashboard
+//             </Button>
+//             <Button 
+//             sx={{ color: '#fff' }}
+//             onClick={() => history.push('/')}
+//             >
+//               Home
+//             </Button>
+//           </div> 
       
-        </Box>
-      </Toolbar>
-    </AppBar>
-    <Box component="nav">
+//         </Box>
+//       </Toolbar>
+//     </AppBar>
+//     <Box component="nav">
       
-    </Box>
-    </Box>
-  )
+//     </Box>
+//     </Box>
+//   )
 
 
-}
+// }
 
 
 const AlertLocation = (props) => {

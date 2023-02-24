@@ -14,17 +14,8 @@ import { BrowserRouter,Switch,Route} from 'react-router-dom';
 import Navbar from '../NavBar';
 import { useTheme } from '@material-ui/styles';
 import { Box } from '@material-ui/core';
+import ReactDOM from "react-dom";
 
-//Dev mode
-const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046"; //enable for dev mode
-
-
-//Deployment mode instructions
-//const serverURL = "http://ov-research-4.uwaterloo.ca:PORT"; //enable for deployed mode; Change PORT to the port number given to you;
-//To find your port number: 
-//ssh to ov-research-4.uwaterloo.ca and run the following command: 
-//env | grep "PORT"
-//copy the number only and paste it in the serverURL in place of PORT, e.g.: const serverURL = "http://ov-research-4.uwaterloo.ca:3000";
 
 const fetch = require("node-fetch");
 const paperStyle={padding :20,height:'70vh',width:280, margin:"20px auto"}
@@ -60,8 +51,8 @@ const styles = theme => ({
   },
 
   mainMessageContainer: {
-    marginTop: "20vh",
-    marginLeft: theme.spacing(20),
+    marginTop: "5vh",
+    marginLeft: theme.spacing(5),
     [theme.breakpoints.down('xs')]: {
       marginLeft: theme.spacing(4),
     },
@@ -77,7 +68,29 @@ const styles = theme => ({
 
 });
 
+//--------------------------------------------
+const PanicButton = () => {
+    
+    const runButton = event => {
+        event.preventDefault();
+        
+    }
+return (
+    <Grid>
+        <h3>Panic Button</h3>
+        <Grid>
+            <div>
+              <Button variant="contained" color="secondary" onClick= {runButton}>
+                HELP!
+              </Button>
+            </div>
+          </Grid>
+    </Grid>
 
+)
+}
+
+//--------------------------------------------
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -87,44 +100,8 @@ class Home extends Component {
     }
   };
 
-  componentDidMount() {
-    //this.loadUserSettings();
-  }
-
-
-  loadUserSettings() {
-    this.callApiLoadUserSettings()
-      .then(res => {
-        //console.log("loadUserSettings returned: ", res)
-        var parsed = JSON.parse(res.express);
-        console.log("loadUserSettings parsed: ", parsed[0].mode)
-        this.setState({ mode: parsed[0].mode });
-      });
-  }
-
-  callApiLoadUserSettings = async () => {
-    const url = serverURL + "/api/loadUserSettings";
-
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        //authorization: `Bearer ${this.state.token}`
-      },
-      body: JSON.stringify({
-        userID: this.state.userID
-      })
-    });
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-    console.log("User settings: ", body);
-    return body;
-  }
-
   render() {
     const { classes } = this.props;
-
-
 
     const mainMessage = (
       <Grid>
@@ -147,7 +124,7 @@ class Home extends Component {
           >
             {this.state.mode === 0 ? (
               <React.Fragment>
-                Welcome!
+                
               </React.Fragment>
             ) : (
               <React.Fragment>
@@ -156,20 +133,8 @@ class Home extends Component {
             )}
           </Typography>
 
-        
-          <Link href="/SignIn" >
-                        Sign In 
-                </Link>
-                <p></p>
-                <Link href="/CreateAccount" >
-                        Create an Account 
-                </Link>
-                <p></p>
-                <Link href="/Dashboard" >
-                        Dashboard
-                </Link>
-
         </Grid>
+        <PanicButton/>
       </Grid>
       </Grid>
     )
