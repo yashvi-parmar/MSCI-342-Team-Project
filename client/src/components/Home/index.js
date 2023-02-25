@@ -162,6 +162,10 @@ class Home extends Component {
                 <Link href="/Dashboard" >
                         Dashboard
                 </Link>
+                <p></p>
+                <Link href="/Map" >
+                        Map
+                </Link>
 
 
        
