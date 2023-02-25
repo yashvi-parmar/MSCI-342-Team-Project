@@ -12,12 +12,17 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import SignIn from '../SignIn'
 import { BrowserRouter,Switch,Route} from 'react-router-dom';
+import Navbar from '../NavBar';
+
 const cardStyle={padding :30, height:'60vh',width:380, marginTop: "30px", margin:"20px auto"}
 const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
 const textStyle={marginBottom: '8px'}
 
+
 function Emergency() {
   return (
+    <grid>
+    <Navbar></Navbar>
     <div className="Emergency">
        <Grid>
             <Paper elevation={10} style={cardStyle}>
@@ -37,6 +42,7 @@ function Emergency() {
             </Paper>
         </Grid>
     </div>
+    </grid>
   );
 }
 

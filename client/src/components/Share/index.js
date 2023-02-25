@@ -74,8 +74,12 @@ const Share = () => {
     
     const runButton = event => {
         event.preventDefault();
-
+        var copyText = "this is the link";
+        navigator.clipboard.writeText(copyText).then(() => {
+        alert("Link copied to clipboard!");
+    });
     }
+
 return (
     <Grid>
         <h3>Share BARK with a friend</h3>

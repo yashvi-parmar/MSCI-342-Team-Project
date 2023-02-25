@@ -8,7 +8,22 @@ import {
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import IconButton from '@material-ui/core/IconButton';
+import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 
+const theme = createTheme({
+  palette: {
+    type: 'light',
+    background: {
+      default: "#042913"
+    },
+    primary: {
+      main: "#b08968",
+    },
+    secondary: {
+      main: "#94b395",
+    },
+  },
+});
 const useStyles = makeStyles((theme) => ({
   navlinks: {
     marginLeft: theme.spacing(10),
@@ -42,7 +57,6 @@ function Navbar() {
           color="inherit"
           aria-label="open drawer"
           edge="start"
-         // onClick={handleDrawerToggle}
           sx={{ mr: 2, display: { sm: 'none' } }}
         >
         </IconButton>
@@ -61,8 +75,8 @@ function Navbar() {
               Dashboard
             </Link>
 
-            <Link to="/PanicButton" className={classes.link}>
-              Panic Button
+            <Link to="/Emergency" className={classes.link}>
+              Emergency
             </Link>
             <Link to="/SignIn" className={classes.link}>
               Sign In
@@ -76,3 +90,4 @@ function Navbar() {
   );
 }
 export default Navbar;
+
