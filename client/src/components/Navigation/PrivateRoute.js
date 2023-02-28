@@ -11,8 +11,6 @@ import Dashboard from '../Dashboard'
 import Emergency from '../Emergency'
 import EmergencyContacts from '../EmergencyContacts'
 //import Home from '../Home';
-
-import Dashboard from'../Dashboard'
 import Share from "../Share";
 import PanicButton from "../PanicButton";
 

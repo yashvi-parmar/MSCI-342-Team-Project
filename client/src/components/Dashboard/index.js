@@ -42,26 +42,50 @@ const serverURL = "";
 //copy the number only and paste it in the serverURL in place of PORT, e.g.: const serverURL = "http://ov-research-4.uwaterloo.ca:3000";
 const opacityValue = 0.95;
  
-const lightTheme = createTheme({
+const theme = createTheme({
  palette: {
    type: 'light',
    background: {
      default: "#042913"
    },
    primary: {
-     main: '#b08968',
-     light: '#6f4e37',
-     dark: '#b08968',
-     background: '#94b395'
+     main: '#B08968',
    },
    secondary: {
-     main: "#94b395",
-     light: '#ffffff',
-     dark: '#ffffff'
+     main: "#94B395",
    },
  },
 });
- 
+
+const styles = theme => ({
+  root: {
+    body: {
+      backgroundColor: "#000000",
+      opacity: opacityValue,
+      overflow: "hidden",
+    },
+  },
+  mainMessage: {
+    opacity: opacityValue,
+  },
+
+  mainMessageContainer: {
+    marginTop: "5vh",
+    marginLeft: theme.spacing(5),
+    [theme.breakpoints.down('xs')]: {
+      marginLeft: theme.spacing(4),
+    },
+  },
+  paper: {
+    overflow: "hidden",
+  },
+  message: {
+    opacity: opacityValue,
+    maxWidth: 250,
+    paddingBottom: theme.spacing(2),
+  },
+
+});
 
 const MainGridContainer = styled(Grid)(({ theme }) => ({
  margin: theme.spacing(4),
@@ -142,14 +166,13 @@ const loadApiAddAlert = () => {
 return (
   <grid>
     <Navbar></Navbar>
-   <ThemeProvider theme={lightTheme}>
+   <ThemeProvider theme={theme}>
      <Box
        sx={{
          height: '100vh',
          opacity: opacityValue,
          overflow: "hidden",
-         backgroundColor: lightTheme.palette.background.default,
- 
+         backgroundColor: theme.palette.background.default,
        }}
      >
        <MainGridContainer
@@ -160,7 +183,7 @@ return (
          justify="flex-start"
          alignItems="stretch"
        >
-         {/* <Navigation/> */}
+
          <br></br>
          <br></br>
          <Typography variant="h3" gutterBottom component="div" color='primary' >
@@ -193,57 +216,6 @@ return (
  );
 
 }
-
-// const Navigation =() =>{
-  
-//   return(
-//     <Box sx={{ display: 'flex' }}>
-//     <AppBar component="nav">
-//       <Toolbar>
-//         <IconButton
-//           color="inherit"
-//           aria-label="open drawer"
-//           edge="start"
-//          // onClick={handleDrawerToggle}
-//           sx={{ mr: 2, display: { sm: 'none' } }}
-//         >
-          
-//         </IconButton>
-//         <Typography
-//           variant="h6"
-//           component="div"
-//           sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-//         >
-          
-//         </Typography>
-//         <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-          
-//            <div>  
-//             <Button 
-//             sx={{ color: '#ff' }} 
-//             onClick={() => history.push('/Dashboard')}
-//             >
-//               Dashboard
-//             </Button>
-//             <Button 
-//             sx={{ color: '#fff' }}
-//             onClick={() => history.push('/')}
-//             >
-//               Home
-//             </Button>
-//           </div> 
-      
-//         </Box>
-//       </Toolbar>
-//     </AppBar>
-//     <Box component="nav">
-      
-//     </Box>
-//     </Box>
-//   )
-
-
-// }
 
 
 const AlertLocation = (props) => {
