@@ -21,6 +21,7 @@ import { Autocomplete } from '@react-google-maps/api';
 const textStyle={marginBottom: '8px'}
 const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
 const cardStyle={padding :30, height:'60vh',width:280, marginTop: "30px", margin:"20px auto"}
+import Navbar from '../NavBar';
 const containerStyle = {
   width: '100%',
   height: '800px'
@@ -29,6 +30,7 @@ const containerStyle = {
 function Map() {
 
   return <MapFxn/>;
+
 }
 export default Map;
 
@@ -118,5 +120,15 @@ function MapFxn() {
       </GoogleMap>
     </LoadScript> 
     </Grid>
+    <grid>
+        <Navbar></Navbar>
+  <GoogleMap 
+    zoom={10} 
+    center={{lat: 44, lng: -80}} 
+    mapContainerClassName="map-container"
+  >
+    <Marker position={{lat: lat, lng: lng}}></Marker>
+  </GoogleMap>
+  </grid>
   );
 }
