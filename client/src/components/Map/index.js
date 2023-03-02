@@ -16,6 +16,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import { BrowserRouter,Switch,Route} from 'react-router-dom';
 import history from '../Navigation/history';
+
 import {GoogleMap, useLoadScript, LoadScript, Marker, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
 import { Autocomplete } from '@react-google-maps/api';
 const textStyle={marginBottom: '8px'}
@@ -29,6 +30,20 @@ const containerStyle = {
 function Map() {
 
   return <MapFxn/>;
+
+/* import {GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+import Navbar from '../NavBar';
+
+function Map() {
+
+  const { isLoaded } = useLoadScript({
+    id: 'google-map-script',
+    googleMapsApiKey: "",
+  });
+
+  if (!isLoaded) return <div>Loading...</div>;
+  return <MapFxn />; */
+
 }
 export default Map;
 
@@ -86,6 +101,7 @@ function MapFxn() {
   };
 
   return (
+
     <Grid>
       <Grid align='center'>
         <h2>Map</h2>
@@ -118,5 +134,18 @@ function MapFxn() {
       </GoogleMap>
     </LoadScript> 
     </Grid>
+
+/*
+    <grid>
+        <Navbar></Navbar>
+  <GoogleMap 
+    zoom={10} 
+    center={{lat: 44, lng: -80}} 
+    mapContainerClassName="map-container"
+  >
+    <Marker position={{lat: lat, lng: lng}}></Marker>
+  </GoogleMap>
+  </grid> */
+
   );
 }

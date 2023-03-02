@@ -14,19 +14,8 @@ import { BrowserRouter,Switch,Route} from 'react-router-dom';
 import Navbar from '../NavBar';
 import { useTheme } from '@material-ui/styles';
 import { Box } from '@material-ui/core';
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
+import ReactDOM from "react-dom";
 
-//Dev mode
-const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046"; //enable for dev mode
-
-
-//Deployment mode instructions
-//const serverURL = "http://ov-research-4.uwaterloo.ca:PORT"; //enable for deployed mode; Change PORT to the port number given to you;
-//To find your port number: 
-//ssh to ov-research-4.uwaterloo.ca and run the following command: 
-//env | grep "PORT"
-//copy the number only and paste it in the serverURL in place of PORT, e.g.: const serverURL = "http://ov-research-4.uwaterloo.ca:3000";
 
 const fetch = require("node-fetch");
 const paperStyle={padding :20,height:'70vh',width:280, margin:"20px auto"}
@@ -63,7 +52,7 @@ const styles = theme => ({
 
   mainMessageContainer: {
     marginTop: "5vh",
-    marginLeft: theme.spacing(20),
+    marginLeft: theme.spacing(5),
     [theme.breakpoints.down('xs')]: {
       marginLeft: theme.spacing(4),
     },
@@ -79,34 +68,28 @@ const styles = theme => ({
 
 });
 
-//------------------------------------------------------
+//--------------------------------------------
+const PanicButton = () => {
+    
+    const runButton = event => {
+        event.preventDefault();
+        
+    }
+return (
+    <Grid>
+        <h3>Panic Button</h3>
+        <Grid>
+            <div>
+              <Button variant="contained" color="secondary" onClick= {runButton}>
+                HELP!
+              </Button>
+            </div>
+          </Grid>
+    </Grid>
 
-//upload logo to home page
-function StandardImageList() {
-  return (
-    <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
-      {itemData.map((item) => (
-        <ImageListItem key={item.img}>
-          <img
-            src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-            srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-            alt={item.title}
-            loading="lazy"
-          />
-        </ImageListItem>
-      ))}
-    </ImageList>
-  );
+)
 }
-
-const itemData = [
-  {
-    img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e', //link to logo 
-    title: 'logo',
-  },
-];
-
-//------------------------------------------------------
+//--------------------------------------------
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -116,49 +99,12 @@ class Home extends Component {
     }
   };
 
-  componentDidMount() {
-    //this.loadUserSettings();
-  }
-
-
-  loadUserSettings() {
-    this.callApiLoadUserSettings()
-      .then(res => {
-        //console.log("loadUserSettings returned: ", res)
-        var parsed = JSON.parse(res.express);
-        console.log("loadUserSettings parsed: ", parsed[0].mode)
-        this.setState({ mode: parsed[0].mode });
-      });
-  }
-
-  callApiLoadUserSettings = async () => {
-    const url = serverURL + "/api/loadUserSettings";
-
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        //authorization: `Bearer ${this.state.token}`
-      },
-      body: JSON.stringify({
-        userID: this.state.userID
-      })
-    });
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-    console.log("User settings: ", body);
-    return body;
-  }
-
   render() {
     const { classes } = this.props;
-
-
 
     const mainMessage = (
       <Grid>
           <Navbar></Navbar>
-
       <Grid
         container
         spacing={0}
@@ -168,8 +114,6 @@ class Home extends Component {
         style={{ minHeight: '100vh' }}
         className={classes.mainMessageContainer}
       >
-        <StandardImageList></StandardImageList>
-
         <Grid item>
 
           <Typography
@@ -179,7 +123,7 @@ class Home extends Component {
           >
             {this.state.mode === 0 ? (
               <React.Fragment>
-                Welcome!
+                
               </React.Fragment>
             ) : (
               <React.Fragment>
@@ -187,32 +131,9 @@ class Home extends Component {
               </React.Fragment>
             )}
           </Typography>
-        
-          <Link href="/SignIn" >
-                        Sign In 
-                </Link>
-                <p></p>
-                <Link href="/CreateAccount" >
-                        Create an Account 
-                </Link>
-                <p></p>
-                <Link href="/Dashboard" >
-                        Dashboard
-                </Link>
-                <p></p>
-
-                <Link href="/Map" >
-                        Map
-                </Link>
-
-
-       
-
-                <Link href="/Emergency" >
-                        Emergency
-                </Link>
 
         </Grid>
+        <PanicButton/>
       </Grid>
       </Grid>
     )

@@ -36,6 +36,8 @@ app.post('/api/loadUserSettings', (req, res) => {
 	connection.end();
 });
 
+//---------------------------------------------------------
+
 app.post('/api/getAlerts', (req,res) => {
 
 	let connection = mysql.createConnection(config);
