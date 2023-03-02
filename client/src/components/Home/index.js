@@ -200,9 +200,18 @@ class Home extends Component {
                         Dashboard
                 </Link>
                 <p></p>
+
+                <Link href="/Map" >
+                        Map
+                </Link>
+
+
+       
+
                 <Link href="/Emergency" >
                         Emergency
                 </Link>
+
         </Grid>
       </Grid>
       </Grid>
