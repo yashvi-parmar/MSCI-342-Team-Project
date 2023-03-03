@@ -1,3 +1,12 @@
+
+const {defineConfig} = require('cypress');
+module.exports = defineConfig({
+  e2e: {
+    baseUrl: 'http://localhost:3000',
+  },
+});
+
+
 const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
@@ -7,3 +16,4 @@ module.exports = defineConfig({
     },
   },
 });
+

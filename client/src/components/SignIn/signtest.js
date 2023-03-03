@@ -21,35 +21,7 @@ const textStyle={marginBottom: '8px'}
 
 function SignIn() {
   return (
-    <grid>
-    <Navbar></Navbar>
-    <div className="SignIn">
-  
-      <Grid>
-            <Paper elevation={10} style={cardStyle}>
-                <Grid align='center'>
-                    <div data-testid="foo">Sign In</div>
-                </Grid>
-                <TextField 
-                style={textStyle} 
-                label='Username' 
-                placeholder='Enter username' 
-                variant="outlined"  />
-  
-                <TextField style={textStyle} label='Password' placeholder='Enter password' type='password' variant="outlined" fullWidth required/>
-                
-                <Button type='submit' variant="contained" style={buttonStyle} fullWidth required>Sign in</Button>
-             
-                
-                     <Link href="/CreateAccount" style={{color: 'black'}}>
-                        Create an Account 
-                </Link>
-               
-            </Paper>
-        </Grid>
-       
-    </div>
-    </grid>
+    <div>Sign In</div>
   );
 }
 
