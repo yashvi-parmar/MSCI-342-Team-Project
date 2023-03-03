@@ -16,6 +16,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import { BrowserRouter,Switch,Route} from 'react-router-dom';
 import history from '../Navigation/history';
+import Navbar from '../NavBar';
 
 import {GoogleMap, useLoadScript, LoadScript, Marker, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
 import { Autocomplete } from '@react-google-maps/api';
@@ -102,12 +103,14 @@ function MapFxn() {
 
   return (
 
+    <grid>
+      <Navbar></Navbar>
     <Grid>
       <Grid align='center'>
         <h2>Map</h2>
       </Grid>      
     <LoadScript
-      googleMapsApiKey=""
+      googleMapsApiKey="AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI"
       onLoad={handleLoad}
     >
       <FormControl onSubmit={handleSubmit}>
@@ -134,6 +137,7 @@ function MapFxn() {
       </GoogleMap>
     </LoadScript> 
     </Grid>
+    </grid>
 
 /*
     <grid>
