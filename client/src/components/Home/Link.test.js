@@ -21,4 +21,10 @@ tree.props.onMouseLeave();
 // re-rendering
 tree = component.toJSON();
 expect(tree).toMatchSnapshot();
+
 });
+
+});
+
+  
+
