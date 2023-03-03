@@ -2,7 +2,7 @@ import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 
-import Navbar from "./navbartest.js";
+import Navbar from "./navtest.js";
 
 let container = null;
 beforeEach(() => {

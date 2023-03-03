@@ -24,7 +24,7 @@ expect(tree).toMatchSnapshot();
 
 });
 
-});
+
 
   
 
