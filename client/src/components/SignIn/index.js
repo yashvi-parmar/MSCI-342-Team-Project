@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -25,16 +24,21 @@ function SignIn() {
     <grid>
     <Navbar></Navbar>
     <div className="SignIn">
+  
       <Grid>
             <Paper elevation={10} style={cardStyle}>
                 <Grid align='center'>
-                    <h2>Sign In</h2>
+                    <div data-testid="foo">Sign In</div>
                 </Grid>
-                <TextField style={textStyle} label='Username' placeholder='Enter username' variant="outlined" fullWidth required/>
+                <TextField 
+                style={textStyle} 
+                label='Username' 
+                placeholder='Enter username' 
+                variant="outlined"  />
   
                 <TextField style={textStyle} label='Password' placeholder='Enter password' type='password' variant="outlined" fullWidth required/>
                 
-                <Button type='submit' variant="contained" style={buttonStyle} fullWidth>Sign in</Button>
+                <Button type='submit' variant="contained" style={buttonStyle} fullWidth required>Sign in</Button>
              
                 
                      <Link href="/CreateAccount" style={{color: 'black'}}>
@@ -43,6 +47,7 @@ function SignIn() {
                
             </Paper>
         </Grid>
+       
     </div>
     </grid>
   );
