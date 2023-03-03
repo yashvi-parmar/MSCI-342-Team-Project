@@ -79,7 +79,7 @@ const styles = theme => ({
 
 });
 
-//------------------------------------------------------
+
 
 //upload logo to home page
 function StandardImageList() {
@@ -106,7 +106,7 @@ const itemData = [
   },
 ];
 
-//------------------------------------------------------
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -205,6 +205,13 @@ class Home extends Component {
                         Map
                 </Link>
                 <p></p>
+                <Link href="/Emergency" >
+                        Emergency
+                </Link>
+
+
+       
+
                 <Link href="/Emergency" >
                         Emergency
                 </Link>
