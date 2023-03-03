@@ -23,6 +23,10 @@ it("renders with map as a header", () => {
     render(<Map />, container);
   });
   expect(container.textContent).toBe("Map");;
+<<<<<<< HEAD
 });
 
   
+=======
+});
+>>>>>>> 039a5e0 (adding two jest tests)
