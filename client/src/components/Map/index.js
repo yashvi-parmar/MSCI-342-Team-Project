@@ -26,7 +26,7 @@ const containerStyle = {
   height: '800px'
 };
 
-const apiKey = "";
+const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 
 function Map() {
 
@@ -108,11 +108,7 @@ function MapFxn() {
         <h2>Map</h2>
       </Grid>      
     <LoadScript
-<<<<<<< Updated upstream
-      googleMapsApiKey=""
-=======
       googleMapsApiKey = {apiKey}
->>>>>>> Stashed changes
       onLoad={handleLoad}
     >
       <FormControl onSubmit={handleSubmit}>

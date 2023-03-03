@@ -27,6 +27,7 @@ import history from '../Navigation/history';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuIcon from "@material-ui/core/Menu";
 import Toolbar from '@material-ui/core/Toolbar';
+import Navbar from '../NavBar';
 
 //Dev mode
 //const serverURL = "";
@@ -39,28 +40,52 @@ const serverURL = "";
 //ssh to ov-research-4.uwaterloo.ca and run the following command:
 //env | grep "PORT"
 //copy the number only and paste it in the serverURL in place of PORT, e.g.: const serverURL = "http://ov-research-4.uwaterloo.ca:3000";
-const opacityValue = 0.9;
+const opacityValue = 0.95;
  
-const lightTheme = createTheme({
+const theme = createTheme({
  palette: {
    type: 'light',
    background: {
-     default: "#e6ccb2"
+     default: "#042913"
    },
    primary: {
-     main: '#2E5129',
-     light: '#94b395',
-     dark: '#94B395',
-     background: '#e6ccb2'
+     main: '#B08968',
    },
    secondary: {
      main: "#94B395",
-     light: '#94B395',
-     dark: '#94B395'
    },
  },
 });
- 
+
+const styles = theme => ({
+  root: {
+    body: {
+      backgroundColor: "#000000",
+      opacity: opacityValue,
+      overflow: "hidden",
+    },
+  },
+  mainMessage: {
+    opacity: opacityValue,
+  },
+
+  mainMessageContainer: {
+    marginTop: "5vh",
+    marginLeft: theme.spacing(5),
+    [theme.breakpoints.down('xs')]: {
+      marginLeft: theme.spacing(4),
+    },
+  },
+  paper: {
+    overflow: "hidden",
+  },
+  message: {
+    opacity: opacityValue,
+    maxWidth: 250,
+    paddingBottom: theme.spacing(2),
+  },
+
+});
 
 const MainGridContainer = styled(Grid)(({ theme }) => ({
  margin: theme.spacing(4),
@@ -139,14 +164,15 @@ const loadApiAddAlert = () => {
 }
 
 return (
-   <ThemeProvider theme={lightTheme}>
+  <grid>
+    <Navbar></Navbar>
+   <ThemeProvider theme={theme}>
      <Box
        sx={{
          height: '100vh',
          opacity: opacityValue,
          overflow: "hidden",
-         backgroundColor: lightTheme.palette.background.default,
- 
+         backgroundColor: theme.palette.background.default,
        }}
      >
        <MainGridContainer
@@ -157,7 +183,7 @@ return (
          justify="flex-start"
          alignItems="stretch"
        >
-         <Navigation/>
+
          <br></br>
          <br></br>
          <Typography variant="h3" gutterBottom component="div" color='primary' >
@@ -179,65 +205,15 @@ return (
           submissionValidation == true &&
           <div>
             <br></br>
-            <Typography variant="h5">Your message has been received and other users will be alerted!</Typography>
+            <Typography id='submit' variant="h5">Your message has been received and other users will be alerted!</Typography>
           </div>
 
         }        
        </MainGridContainer>
      </Box>
    </ThemeProvider>
+   </grid>
  );
-
-}
-
-const Navigation =() =>{
-  
-  return(
-    <Box sx={{ display: 'flex' }}>
-    <AppBar component="nav">
-      <Toolbar>
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          edge="start"
-         // onClick={handleDrawerToggle}
-          sx={{ mr: 2, display: { sm: 'none' } }}
-        >
-          
-        </IconButton>
-        <Typography
-          variant="h6"
-          component="div"
-          sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-        >
-          
-        </Typography>
-        <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-          
-           <div>  
-            <Button 
-            sx={{ color: '#ff' }} 
-            onClick={() => history.push('/Dashboard')}
-            >
-              Dashboard
-            </Button>
-            <Button 
-            sx={{ color: '#fff' }}
-            onClick={() => history.push('/')}
-            >
-              Home
-            </Button>
-          </div> 
-      
-        </Box>
-      </Toolbar>
-    </AppBar>
-    <Box component="nav">
-      
-    </Box>
-    </Box>
-  )
-
 
 }
 
@@ -252,7 +228,7 @@ const AlertLocation = (props) => {
 
     <div>
       <TextField
-        id="outlined-multiline-flexible"
+        id="alert-location"
         label="Alert Location"
         multiline
         style={{ width: 600 }}
@@ -279,7 +255,7 @@ const AlertMessage = (props) => {
   return (
     <div>
     <TextField
-        id="outlined-multiline-flexible"
+        id="alert-message"
         label="Alert Message"
         multiline
         style={{ width: 600 }}
