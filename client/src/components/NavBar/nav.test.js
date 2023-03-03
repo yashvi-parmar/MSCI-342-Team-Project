@@ -2,27 +2,23 @@ import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 
-import Map from "./mapjest.js";
+import Navbar from "./navbartest.js";
 
 let container = null;
 beforeEach(() => {
-  // setup a DOM element as a render target
-  container = document.createElement("h2");
+  container = document.createElement("div");
   document.body.appendChild(container);
 });
 
 afterEach(() => {
-  // cleanup on exiting
   unmountComponentAtNode(container);
   container.remove();
   container = null;
 });
 
-it("renders with map as a header", () => {
+it("renders", () => {
   act(() => {
-    render(<Map />, container);
+    render(<Navbar />, container);
   });
-  expect(container.textContent).toBe("Map");;
+  expect(container.textContent).toBe("Home");;
 });
-
-  
