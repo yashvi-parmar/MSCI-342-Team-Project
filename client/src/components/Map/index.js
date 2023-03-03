@@ -26,7 +26,7 @@ const containerStyle = {
   height: '800px'
 };
 
-const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
+const apiKey = "";
 
 function Map() {
 
