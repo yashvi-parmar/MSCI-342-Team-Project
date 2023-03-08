@@ -142,7 +142,7 @@ const loadApiAddAlert = () => {
 
 
  const callApiAddAlert= async () => {
-  const url = serverURL + "/api/addReview";
+  const url = serverURL + "/api/addAlert";
 
   let AlertInfo = {
     "alertLocation": alertLocation,
