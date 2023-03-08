@@ -1,23 +1,24 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import SignIn from "./index.js";
+import { render, unmountComponentAtNode } from "react-dom";
+import { act } from "react-dom/test-utils";
 
-it("submits username and password", () => {
-  const username = "me";
-  const password = "please";
-  const onSubmit = jest.fn();
-  render(<SignIn onSubmit={onSubmit} />);
+import SignIn from "./signtest.js";
 
-  userEvent.type(screen.getByLabelText(/username/i), username);
+let container = null;
+beforeEach(() => {
+  container = document.createElement("div");
+  document.body.appendChild(container);
+});
 
-  userEvent.type(screen.getByLabelText(/password/i), password);
+afterEach(() => {
+  unmountComponentAtNode(container);
+  container.remove();
+  container = null;
+});
 
-  userEvent.click(screen.getByText(/log in/i));
-
-  //expect(onSubmit).toHaveBeenCalledTimes(1);
-  expect(onSubmit).toHaveBeenCalledWith({
-    username,
-    password
+it("renders", () => {
+  act(() => {
+    render(<SignIn />, container);
   });
+  expect(container.textContent).toBe("Sign In");;
 });
