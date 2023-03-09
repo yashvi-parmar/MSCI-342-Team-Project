@@ -202,7 +202,7 @@ return (
           submissionValidation == true &&
           <div>
             <br></br>
-            <Typography variant="h5">Your message has been received and other users will be alerted!</Typography>
+            <Typography id='submit' variant="h5">Your message has been received and other users will be alerted!</Typography>
           </div>
 
         }        
@@ -225,7 +225,7 @@ const AlertLocation = (props) => {
 
     <div>
       <TextField
-        id="outlined-multiline-flexible"
+        id="alert-location"
         label="Alert Location"
         multiline
         style={{ width: 600 }}
@@ -252,7 +252,7 @@ const AlertMessage = (props) => {
   return (
     <div>
     <TextField
-        id="outlined-multiline-flexible"
+        id="alert-message"
         label="Alert Message"
         multiline
         style={{ width: 600 }}

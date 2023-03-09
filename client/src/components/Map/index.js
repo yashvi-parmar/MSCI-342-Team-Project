@@ -1,4 +1,3 @@
-
 import React, { Component, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -27,6 +26,8 @@ const containerStyle = {
   width: '100%',
   height: '800px'
 };
+
+const apiKey = "";
 
 function Map() {
 
@@ -102,6 +103,7 @@ function MapFxn() {
   };
 
   return (
+    
 
     <grid>
       <Navbar></Navbar>
@@ -110,7 +112,11 @@ function MapFxn() {
         <h2>Map</h2>
       </Grid>      
     <LoadScript
+<<<<<<< HEAD
       googleMapsApiKey="AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI"
+=======
+      googleMapsApiKey = {apiKey}
+>>>>>>> 4e3bb1a432a42209c50881791fcf5d83555804cd
       onLoad={handleLoad}
     >
       <FormControl onSubmit={handleSubmit}>
