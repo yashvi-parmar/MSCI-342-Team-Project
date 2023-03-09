@@ -112,11 +112,7 @@ function MapFxn() {
         <h2>Map</h2>
       </Grid>      
     <LoadScript
-<<<<<<< HEAD
-      googleMapsApiKey="AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI"
-=======
       googleMapsApiKey = {apiKey}
->>>>>>> 4e3bb1a432a42209c50881791fcf5d83555804cd
       onLoad={handleLoad}
     >
       <FormControl onSubmit={handleSubmit}>
