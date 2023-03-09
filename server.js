@@ -87,11 +87,14 @@ app.post('/api/addAlert', (req, res) => {
 
 	username = req.body.username,
 	email = req.body.email, 
-	password = req.body.password
+	password = req.body.password,
+	firstName = req.body.firstName,
+	lastName = req.body.lastName,
+	phoneNumber = req.body.phoneNumber
 	
 	  
-	let sql = "INSERT INTO `Accounts` (username, email, password) VALUES (?,?,?)";
-	let data=[username, email, password];
+	let sql = "INSERT INTO `Profiles` (firstName,lastName,phoneNumber, userName, email, password) VALUES (?,?,?,?,?,?)";
+	let data=[firstName,lastName,phoneNumber,username, email, password];
 	console.log(sql);
 	console.log(data);       
  
@@ -104,5 +107,34 @@ app.post('/api/addAlert', (req, res) => {
 	 connection.end();
  });
 
-app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
-//app.listen(port, '129.97.25.211'); //for the deployed version, specify the IP address of the server
+ app.post('/api/checkAccount', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+
+	username = req.body.username,
+	email = req.body.email, 
+	phoneNumber = req.body.phoneNumber
+
+	let sql = 'SELECT * FROM Alerts WHERE userName =? OR email=? OR phoneNumber=?' 
+	let data = [username,email,phoneNumber]
+	console.log(sql);
+	console.log(data);
+
+	connection.query(sql, data, (error,data) => {
+		if (error) {
+			return res.json({ status : "ERROR", error});
+		}
+		let string = JSON.stringify(data);
+		if(string==""){
+			return res.send(false)
+		}else {
+			return res.send(true)
+		}
+		//let obj = JSON.parse(string);
+		//res.send({ alertData: obj });
+	});
+	connection.end();
+});
+
+//app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
+app.listen(port, '129.97.25.211'); //for the deployed version, specify the IP address of the server
