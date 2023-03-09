@@ -14,7 +14,6 @@ import Checkbox from '@material-ui/core/Checkbox';
 import SignIn from '../SignIn'
 import { BrowserRouter,Switch,Route} from 'react-router-dom';
 import Navbar from '../NavBar';
-import { user } from '../../../../config';
 const cardStyle={padding :30, height:'60vh',width:280, marginTop: "30px", margin:"20px auto"}
 const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
 const textStyle={marginBottom: '8px'}
