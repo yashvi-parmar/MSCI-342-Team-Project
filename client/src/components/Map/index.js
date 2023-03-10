@@ -15,41 +15,142 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import { BrowserRouter,Switch,Route} from 'react-router-dom';
 import history from '../Navigation/history';
-
+import Navbar from '../NavBar';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import {GoogleMap, useLoadScript, LoadScript, Marker, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
 import { Autocomplete } from '@react-google-maps/api';
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import MenuItem from '@mui/material/MenuItem';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 const textStyle={marginBottom: '8px'}
 const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
 const cardStyle={padding :30, height:'60vh',width:280, marginTop: "30px", margin:"20px auto"}
 const containerStyle = {
   width: '100%',
-  height: '800px'
+  height: '200px'
 };
 
 const apiKey = "";
 
 function Map() {
 
-  return <MapFxn/>;
-
-/* import {GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
-import Navbar from '../NavBar';
-
-function Map() {
-
-  const { isLoaded } = useLoadScript({
-    id: 'google-map-script',
-    googleMapsApiKey: "",
-  });
-
-  if (!isLoaded) return <div>Loading...</div>;
-  return <MapFxn />; */
+  return (
+    <grid>
+    <Navbar></Navbar>
+    <div className="Map">
+      <Grid>
+            <Paper elevation={10} style={cardStyle}>
+                <Grid align='center'>
+                </Grid>
+                     <MapFxn/> 
+                     <p></p>  
+                     <SaveDestination/> 
+                     <p></p>  
+                     <UseSavedDestination/>
+            </Paper>
+        </Grid>
+    </div>
+    </grid>
+    
+  ) 
 
 }
 export default Map;
 
+function UseSavedDestination() {
+
+  const [open, setOpen] = useState(false);
+  const [destination, setDestination] = useState('');
+
+  const handleChange = () => {
+    setDestination(10);
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
 
+  return (
+    <div>
+      <Button variant="outlined" onClick={handleClickOpen}>Use Saved Destination</Button>
+      <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
+        <DialogTitle>Select a Saved Destination</DialogTitle>
+        <DialogContent>
+          <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }}>
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <InputLabel htmlFor="demo-dialog-native">Destination</InputLabel>
+              <Select
+                native
+                value={destination}
+                onChange={handleChange}
+                fullWidth
+                input={<OutlinedInput label="Destination" id="demo-dialog-native" />}
+              >
+                <option aria-label="None" value="" />
+                <option value={10}>Ten</option>
+                <option value={20}>Twenty</option>
+                <option value={30}>Thirty</option>
+              </Select>
+            </FormControl>
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleClose}>Go!</Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+}
+
+function SaveDestination() {
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <div>
+    <Button variant="outlined" onClick={handleClickOpen}>
+      Save a Destination
+    </Button>
+    <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Set a Destination</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="ending address"
+            fullWidth
+            variant="standard"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleClose}>Save</Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+}
 
 function MapFxn() {
   const [directions, setDirections] = useState(null);
@@ -102,11 +203,9 @@ function MapFxn() {
   };
 
   return (
-    
 
     <Grid>
       <Grid align='center'>
-        <h2>Map</h2>
       </Grid>      
     <LoadScript
       googleMapsApiKey = {apiKey}
@@ -136,18 +235,6 @@ function MapFxn() {
       </GoogleMap>
     </LoadScript> 
     </Grid>
-
-/*
-    <grid>
-        <Navbar></Navbar>
-  <GoogleMap 
-    zoom={10} 
-    center={{lat: 44, lng: -80}} 
-    mapContainerClassName="map-container"
-  >
-    <Marker position={{lat: lat, lng: lng}}></Marker>
-  </GoogleMap>
-  </grid> */
 
   );
 }
