@@ -34,6 +34,7 @@ import { StreetViewPanorama } from '@react-google-maps/api';
 import { TransitLayer } from '@react-google-maps/api';
 import { HeatmapLayer } from '@react-google-maps/api';
 import { Circle } from '@react-google-maps/api';
+import { InfoBox } from '@react-google-maps/api';
 import { InfoWindow } from '@react-google-maps/api';
 const textStyle={marginBottom: '8px'}
 const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
@@ -223,12 +224,15 @@ function MapFxn() {
   const divStyle = {
     background: `white`,
     border: `1px solid #ccc`,
-    padding: 15
+    padding: 7
   }
   
-  const onLoadInfo = infoWindow => {
-    console.log('infoWindow: ', infoWindow)
-  }
+  const onLoadInfo = infoBox => {
+    console.log('infoBox: ', infoBox)
+  };
+
+   
+  const options3 = { closeBoxURL: '', enableEventPropagation: true };
 
   const options = {
     strokeColor: '#FF0000',
@@ -254,7 +258,7 @@ function MapFxn() {
     draggable: false,
     editable: false,
     visible: true,
-    radius: 5,
+    radius: 15,
     zIndex: 1
   }
   
@@ -275,13 +279,18 @@ function MapFxn() {
   
 const unsafelocations = [
       {id: 1, lat: 43.472120, lng:-80.543550},
-      {id: 2, lat: 43.472118, lng:-80.533546}
+      {id: 2, lat: 43.472118, lng:-80.563546}
     ];
 
 const safelocations = [
-      {id: 1, lat: 43.472130, lng:-80.543550},
-      {id: 2, lat: 43.482112, lng:-80.533546}
+      {id: 1, lat: 43.473130, lng:-80.543550},
+      {id: 2, lat: 43.483112, lng:-80.533546}
     ];
+
+const unsafetext = [
+  {id: 1, lat: 43.472120, lng:-80.543550, text: "Avoid due to a broken streetlight"}, 
+  {id: 2, lat: 43.472118, lng:-80.563546, text: "Avoid due flooding"}, 
+]
   
   
 
@@ -319,8 +328,21 @@ const safelocations = [
         zoom={16}
         
       >
-       
 
+{unsafetext.map(item => (
+      <InfoBox
+      onLoad={onLoadInfo}
+      options={options3}
+      position={{lat: item.lat, lng: item.lng}}
+    >
+      <div style={{ backgroundColor: 'yellow', opacity: 0.75, padding: 2 }}>
+        <div style={{ fontSize: 10, fontColor: `#08233B` }}>
+         {item.text}
+        </div>
+      </div>
+    </InfoBox>
+    ))}
+      
 
         <TrafficLayer
       onLoad={onLoad}
@@ -331,8 +353,8 @@ const safelocations = [
       <Circle options={options} center={{lat: item.lat, lng: item.lng}}></Circle>
     ))}
 
-  {safelocations.map(item => (
-      <Circle options={options2} center={{lat: item.lat, lng: item.lng}}></Circle>
+  {safelocations.map(item2 => (
+      <Circle options={options2} center={{lat: item2.lat, lng: item2.lng}}></Circle>
     ))}
         <Marker  position={{lat: lat, lng: lng}}></Marker>
         {directions !== null && <DirectionsRenderer directions={directions} provideRouteAlternatives ={true} />}
