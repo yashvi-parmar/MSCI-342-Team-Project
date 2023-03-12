@@ -87,11 +87,14 @@ app.post('/api/addAlert', (req, res) => {
 
 	username = req.body.username,
 	email = req.body.email, 
-	password = req.body.password
+	password = req.body.password,
+	firstName = req.body.firstName,
+	lastName = req.body.lastName,
+	phoneNumber = req.body.phoneNumber
 	
 	  
-	let sql = "INSERT INTO `Accounts` (username, email, password) VALUES (?,?,?)";
-	let data=[username, email, password];
+	let sql = "INSERT INTO `Profiles` (firstName,lastName,phoneNumber, userName, email, password) VALUES (?,?,?,?,?,?)";
+	let data=[firstName,lastName,phoneNumber,username, email, password];
 	console.log(sql);
 	console.log(data);       
  
