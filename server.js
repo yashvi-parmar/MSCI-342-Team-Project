@@ -104,5 +104,26 @@ app.post('/api/addAlert', (req, res) => {
 	 connection.end();
  });
 
+ app.post('/api/UpdateLastSeenLocated', (req, res) => {
+
+	let connection = mysql.createConnection(config);
+
+	user1D = req.body.userID,
+	location = req.body.location
+	  
+	let sql = "UPDATE `Profile` SET lastSeen = '?' WHERE userID = '?' VALUES (?,?)";
+	let data=[location,userID];
+	console.log(sql);
+	console.log(data);       
+ 
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+		res.send({message: "Location Successfully Updated"});
+	 });
+	 connection.end();
+ });
+
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
 //app.listen(port, '129.97.25.211'); //for the deployed version, specify the IP address of the server
