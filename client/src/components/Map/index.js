@@ -321,7 +321,6 @@ const unsafetext = [
         <Button type='submit' variant="contained" style={buttonStyle} fullWidth>Go!</Button>
       </form>
       </FormControl>
-     
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={{lat: lat, lng: lng}}

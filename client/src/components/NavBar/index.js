@@ -81,6 +81,9 @@ function Navbar() {
             <Link to="/SignIn" className={classes.link}>
               Sign In
             </Link>
+            <Link to="/CreateAccount" className={classes.link}>
+              CreateAccount
+            </Link>
             <Link to="/Share" className={classes.link}>
               Share
             </Link>
