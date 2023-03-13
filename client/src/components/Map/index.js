@@ -88,7 +88,6 @@ function UseSavedDestination() {
     setOpen(false);
   };
 
-
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>Use Saved Destination</Button>
@@ -126,6 +125,8 @@ function UseSavedDestination() {
 function SaveDestination() {
 
   const [open, setOpen] = useState(false);
+  const [user,setUser]=React.useState(1);
+  let [AddressData,setAddressData] = React.useState({});
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -134,6 +135,27 @@ function SaveDestination() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const callApiaddSavedDestination= async () => {
+    const url = serverURL + "/api/addSavedDestination";
+  
+    let AddressInfo = {
+      "address": alertLocation,
+      "user": user
+    };
+  
+    console.log(AddressInfo);
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(AddressInfo)
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
 
   return (
     <div>
@@ -213,7 +235,6 @@ function MapFxn() {
       
     }
    
-
   };
 
  
@@ -289,14 +310,8 @@ const safelocations = [
 
 const unsafetext = [
   {id: 1, lat: 43.472120, lng:-80.543550, text: "Avoid due to a broken streetlight"}, 
-  {id: 2, lat: 43.472118, lng:-80.563546, text: "Avoid due flooding"}, 
+  {id: 2, lat: 43.472118, lng:-80.563546, text: "Avoid due to flooding"}, 
 ]
-  
-  
-
-
-
-  
 
   return (
 
