@@ -28,15 +28,23 @@ import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { TrafficLayer } from '@react-google-maps/api';
+import { StreetViewService } from '@react-google-maps/api';
+import { StreetViewPanorama } from '@react-google-maps/api';
+import { TransitLayer } from '@react-google-maps/api';
+import { HeatmapLayer } from '@react-google-maps/api';
+import { Circle } from '@react-google-maps/api';
+import { InfoBox } from '@react-google-maps/api';
+import { InfoWindow } from '@react-google-maps/api';
 const textStyle={marginBottom: '8px'}
 const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
-const cardStyle={padding :30, height:'60vh',width:280, marginTop: "30px", margin:"20px auto"}
+const cardStyle={padding :30, height:'260vh',width:580, marginTop: "30px", margin:"20px auto"}
 const containerStyle = {
   width: '100%',
   height: '200px'
 };
 
-const apiKey = "";
+const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 
 function Map() {
 
@@ -114,6 +122,7 @@ function UseSavedDestination() {
   );
 }
 
+
 function SaveDestination() {
 
   const [open, setOpen] = useState(false);
@@ -187,6 +196,8 @@ function MapFxn() {
     directionsService.route(directionsServiceOptions, directionsCallback);
   };
 
+  
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -199,8 +210,93 @@ function MapFxn() {
 
       const directionsService = new window.google.maps.DirectionsService();
       directionsService.route(directionsServiceOptions, directionsCallback);
+      
     }
+   
+
   };
+
+ 
+  const onLoad = trafficLayer => {
+    console.log('trafficLayer: ', trafficLayer)
+  }
+
+  const divStyle = {
+    background: `white`,
+    border: `1px solid #ccc`,
+    padding: 7
+  }
+  
+  const onLoadInfo = infoBox => {
+    console.log('infoBox: ', infoBox)
+  };
+
+   
+  const options3 = { closeBoxURL: '', enableEventPropagation: true };
+
+  const options = {
+    strokeColor: '#FF0000',
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillColor: '#FF0000',
+    fillOpacity: 0.35,
+    clickable: false,
+    draggable: false,
+    editable: false,
+    visible: true,
+    radius: 10,
+    zIndex: 1
+  }
+
+  const options2 = {
+    strokeColor: '#00ff44',
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillColor: '#00ff44',
+    fillOpacity: 0.35,
+    clickable: false,
+    draggable: false,
+    editable: false,
+    visible: true,
+    radius: 15,
+    zIndex: 1
+  }
+  
+  const onLoadCircle = circle => {
+    console.log('Circle onLoad circle: ', circle)
+  }
+  
+  const onUnmount = circle => {
+    console.log('Circle onUnmount circle: ', circle)
+  }
+  
+
+  const center = {
+    lat:  lat,
+    lng: lng
+  };
+
+  
+const unsafelocations = [
+      {id: 1, lat: 43.472120, lng:-80.543550},
+      {id: 2, lat: 43.472118, lng:-80.563546}
+    ];
+
+const safelocations = [
+      {id: 1, lat: 43.473130, lng:-80.543550},
+      {id: 2, lat: 43.483112, lng:-80.533546}
+    ];
+
+const unsafetext = [
+  {id: 1, lat: 43.472120, lng:-80.543550, text: "Avoid due to a broken streetlight"}, 
+  {id: 2, lat: 43.472118, lng:-80.563546, text: "Avoid due flooding"}, 
+]
+  
+  
+
+
+
+  
 
   return (
 
@@ -227,17 +323,53 @@ function MapFxn() {
         <Button type='submit' variant="contained" style={buttonStyle} fullWidth>Go!</Button>
       </form>
       </FormControl>
+     
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={{lat: lat, lng: lng}}
         zoom={16}
+        
       >
-        <Marker position={{lat: lat, lng: lng}}></Marker>
-        {directions !== null && <DirectionsRenderer directions={directions} />}
+
+{unsafetext.map(item => (
+      <InfoBox
+      onLoad={onLoadInfo}
+      options={options3}
+      position={{lat: item.lat, lng: item.lng}}
+    >
+      <div style={{ backgroundColor: 'yellow', opacity: 0.75, padding: 2 }}>
+        <div style={{ fontSize: 10, fontColor: `#08233B` }}>
+         {item.text}
+        </div>
+      </div>
+    </InfoBox>
+    ))}
+      
+
+        <TrafficLayer
+      onLoad={onLoad}
+    />
+   
+
+   {unsafelocations.map(item => (
+      <Circle options={options} center={{lat: item.lat, lng: item.lng}}></Circle>
+    ))}
+
+  {safelocations.map(item2 => (
+      <Circle options={options2} center={{lat: item2.lat, lng: item2.lng}}></Circle>
+    ))}
+        <Marker  position={{lat: lat, lng: lng}}></Marker>
+        {directions !== null && <DirectionsRenderer directions={directions} provideRouteAlternatives ={true} />}
       </GoogleMap>
+      
+                
+            
+      
+   
     </LoadScript> 
     </Grid>
     </grid>
 
   );
 }
+

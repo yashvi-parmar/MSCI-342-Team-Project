@@ -87,11 +87,14 @@ app.post('/api/addAlert', (req, res) => {
 
 	username = req.body.username,
 	email = req.body.email, 
-	password = req.body.password
+	password = req.body.password,
+	firstName = req.body.firstName,
+	lastName = req.body.lastName,
+	phoneNumber = req.body.phoneNumber
 	
 	  
-	let sql = "INSERT INTO `Accounts` (username, email, password) VALUES (?,?,?)";
-	let data=[username, email, password];
+	let sql = "INSERT INTO `Profiles` (firstName,lastName,phoneNumber, userName, email, password) VALUES (?,?,?,?,?,?)";
+	let data=[firstName,lastName,phoneNumber,username, email, password];
 	console.log(sql);
 	console.log(data);       
  
@@ -100,6 +103,27 @@ app.post('/api/addAlert', (req, res) => {
 			return console.error(error.message);
 		}
 		res.send({message: "Account successfully added"});
+	 });
+	 connection.end();
+ });
+
+ app.post('/api/UpdateLastSeenLocated', (req, res) => {
+
+	let connection = mysql.createConnection(config);
+
+	user1D = req.body.userID,
+	location = req.body.location
+	  
+	let sql = "UPDATE `Profile` SET lastSeen = '?' WHERE userID = '?' VALUES (?,?)";
+	let data=[location,userID];
+	console.log(sql);
+	console.log(data);       
+ 
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+		res.send({message: "Location Successfully Updated"});
 	 });
 	 connection.end();
  });
