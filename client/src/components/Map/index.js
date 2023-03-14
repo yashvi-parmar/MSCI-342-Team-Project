@@ -36,6 +36,7 @@ import { HeatmapLayer } from '@react-google-maps/api';
 import { Circle } from '@react-google-maps/api';
 import { InfoBox } from '@react-google-maps/api';
 import { InfoWindow } from '@react-google-maps/api';
+import useMediaQuery from '@mui/material/useMediaQuery';
 const textStyle={marginBottom: '8px'}
 const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
 const cardStyle={padding :30, height:'260vh',width:580, marginTop: "30px", margin:"20px auto"}
@@ -50,6 +51,7 @@ function Map() {
 
   return (
     <grid>
+      
     <Navbar></Navbar>
     <div className="Map">
       <Grid>
@@ -88,6 +90,11 @@ function UseSavedDestination() {
     setOpen(false);
   };
 
+  const handleUnsafe = () => {
+    setOpen(true);
+  };
+
+
 
   return (
     <div>
@@ -118,6 +125,9 @@ function UseSavedDestination() {
           <Button onClick={handleClose}>Go!</Button>
         </DialogActions>
       </Dialog>
+
+      <div></div>
+
     </div>
   );
 }
@@ -137,6 +147,7 @@ function SaveDestination() {
 
   return (
     <div>
+      <h2>Time of Day</h2>
     <Button variant="outlined" onClick={handleClickOpen}>
       Save a Destination
     </Button>
@@ -287,16 +298,23 @@ const safelocations = [
       {id: 2, lat: 43.483112, lng:-80.533546}
     ];
 
+const safetext = [
+    {id: 1, lat: 43.473130, lng:-80.543550, text: "Center for help"},
+    {id: 2, lat: 43.483112, lng:-80.533546, text: "Center for help"}
+];
+
 const unsafetext = [
   {id: 1, lat: 43.472120, lng:-80.543550, text: "Avoid due to a broken streetlight"}, 
   {id: 2, lat: 43.472118, lng:-80.563546, text: "Avoid due flooding"}, 
+
 ]
-  
-  
 
+const friends = [
+  {id: 1, lat: 43.472120, lng: -80.543550, friendName: "Friend 1"}
+]
+const [showed, setShowed] = useState(false);
+const [showedF, setShowedF] = useState(false);
 
-
-  
 
   return (
 
@@ -328,6 +346,7 @@ const unsafetext = [
         zoom={16}
         
       >
+       \
 
 {unsafetext.map(item => (
       <InfoBox
@@ -335,9 +354,38 @@ const unsafetext = [
       options={options3}
       position={{lat: item.lat, lng: item.lng}}
     >
-      <div style={{ backgroundColor: 'yellow', opacity: 0.75, padding: 2 }}>
+      <div style={{ display: showed ? "none": "", backgroundColor: 'yellow', opacity: 0.75, padding: 2 }}>
         <div style={{ fontSize: 10, fontColor: `#08233B` }}>
          {item.text}
+        </div>
+      </div>
+    </InfoBox>
+    ))}
+
+{safetext.map(item => (
+      <InfoBox
+      onLoad={onLoadInfo}
+      options={options3}
+      position={{lat: item.lat, lng: item.lng}}
+    >
+      <div style={{ display: showed ? "none": "", backgroundColor: 'white', opacity: 0.75, padding: 2 }}>
+        <div style={{ fontSize: 10, fontColor: `#08233B` }}>
+         {item.text}
+        </div>
+      </div>
+    </InfoBox>
+    ))}
+
+
+{friends.map(item => (
+      <InfoBox
+      onLoad={onLoadInfo}
+      options={options3}
+      position={{lat: item.lat, lng: item.lng}}
+    >
+      <div style={{ display: showedF ? "none": "", backgroundColor: 'blue', opacity: 0.75, padding: 2 }}>
+        <div style={{ fontSize: 10, fontColor: 'black' }}>
+         {item.friendName}
         </div>
       </div>
     </InfoBox>
@@ -365,8 +413,18 @@ const unsafetext = [
       
    
     </LoadScript> 
+
+       <Button style ={{marginTop: '10px' }} variant="outlined" onClick={()=> setShowed(!showed)}>{showed ? 'Show' : 'Hide' } Marked Locations</Button>
+       <div></div>
+       <Button style ={{marginTop: '10px' }} variant="outlined" onClick={()=> setShowedF(!showedF)}>{showedF ? 'Show' : 'Hide' } Friends</Button>
+
+      
     </Grid>
 
   );
+}
+function useIsMobile() {
+  const isMobile = useMediaQuery({ query: '(max-width: 1000px)' });
+  return isMobile
 }
 
