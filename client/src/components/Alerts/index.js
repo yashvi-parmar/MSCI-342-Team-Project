@@ -91,7 +91,7 @@ const MainGridContainer = styled(Grid)(({ theme }) => ({
  margin: theme.spacing(4),
 }))
 
-const Dashboard = (props) => {
+const Alerts = (props) => {
  
 
  const [alertLocation, setAlertLocation] = React.useState('');
@@ -165,14 +165,14 @@ const loadApiAddAlert = () => {
 
 return (
   <grid>
-    <Navbar></Navbar>
+    
    <ThemeProvider theme={theme}>
      <Box
        sx={{
          height: '100vh',
          opacity: opacityValue,
          overflow: "hidden",
-         backgroundColor: theme.palette.background.default,
+         //backgroundColor: theme.palette.background.default,
        }}
      >
        <MainGridContainer
@@ -186,9 +186,6 @@ return (
 
          <br></br>
          <br></br>
-         <Typography variant="h3" gutterBottom component="div" color='primary' >
-           Submit Message
-         </Typography>
  
          <FormControl>
            <form autoComplete='off' onSubmit={handleSubmissionValidation}>
@@ -279,7 +276,10 @@ const Home = () => {
 
     return (
       <div> 
-        <Dashboard /> 
+        <Navbar></Navbar>
+        <br></br>
+        <h1>Submit a Warning</h1>
+        <Alerts /> 
       </div>     
     )
   };
