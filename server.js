@@ -87,14 +87,11 @@ app.post('/api/addAlert', (req, res) => {
 
 	username = req.body.username,
 	email = req.body.email, 
-	password = req.body.password,
-	firstName = req.body.firstName,
-	lastName = req.body.lastName,
-	phoneNumber = req.body.phoneNumber
+	password = req.body.password
 	
 	  
-	let sql = "INSERT INTO `Profiles` (firstName,lastName,phoneNumber, userName, email, password) VALUES (?,?,?,?,?,?)";
-	let data=[firstName,lastName,phoneNumber,username, email, password];
+	let sql = "INSERT INTO `Accounts` (username, email, password) VALUES (?,?,?)";
+	let data=[username, email, password];
 	console.log(sql);
 	console.log(data);       
  
@@ -107,15 +104,15 @@ app.post('/api/addAlert', (req, res) => {
 	 connection.end();
  });
 
- app.post('/api/UpdateLastSeenLocated', (req, res) => {
+ app.post('/api/addSavedDestination', (req, res) => {
 
 	let connection = mysql.createConnection(config);
 
-	user1D = req.body.userID,
-	location = req.body.location
+	address = req.body.address
+	user = req.body.user
 	  
-	let sql = "UPDATE `Profile` SET lastSeen = '?' WHERE userID = '?' VALUES (?,?)";
-	let data=[location,userID];
+	let sql = "INSERT INTO 'savedDestinations' (address, user)"
+	let data=[address, user];
 	console.log(sql);
 	console.log(data);       
  
@@ -123,10 +120,29 @@ app.post('/api/addAlert', (req, res) => {
 		if (error) {
 			return console.error(error.message);
 		}
-		res.send({message: "Location Successfully Updated"});
+		res.send({message: "Destination successfully added"});
 	 });
 	 connection.end();
  });
+
+ app.post('/api/getSavedDestination', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+
+	let sql = 'SELECT * FROM savedDestinations WHERE user = 1'
+	console.log(sql);
+	let data = []
+
+	connection.query(sql, data, (error,data) => {
+		if (error) {
+			return res.json({ status : "ERROR", error});
+		}
+		let string = JSON.stringify(data);
+		let obj = JSON.parse(string);
+		res.send({ alertData: obj });
+	});
+	connection.end();
+});
 
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
 //app.listen(port, '129.97.25.211'); //for the deployed version, specify the IP address of the server

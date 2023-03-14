@@ -36,6 +36,7 @@ import { HeatmapLayer } from '@react-google-maps/api';
 import { Circle } from '@react-google-maps/api';
 import { InfoBox } from '@react-google-maps/api';
 import { InfoWindow } from '@react-google-maps/api';
+import { RemoveShoppingCartRounded } from '@mui/icons-material';
 const textStyle={marginBottom: '8px'}
 const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
 const cardStyle={padding :30, height:'260vh',width:580, marginTop: "30px", margin:"20px auto"}
@@ -43,6 +44,7 @@ const containerStyle = {
   width: '100%',
   height: '200px'
 };
+const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
 
 const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 
@@ -88,7 +90,6 @@ function UseSavedDestination() {
     setOpen(false);
   };
 
-
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>Use Saved Destination</Button>
@@ -126,6 +127,7 @@ function UseSavedDestination() {
 function SaveDestination() {
 
   const [open, setOpen] = useState(false);
+  const [address, setAddress] = useState('');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -135,6 +137,39 @@ function SaveDestination() {
     setOpen(false);
   };
 
+  const handleAddress = (body) => {
+    setAddress(body);
+  }
+
+  const loadApiAddSavedDestination = () => {
+    callApiAddSavedDestination()
+      .then((res) => {
+        console.log(res.message);
+      })
+  };
+
+  const callApiAddSavedDestination = async () => {
+    const url = serverURL + "/api/addSavedDestination";
+    
+    let AddressInfo = {
+      "address": address,
+      "user": 1,
+    };
+
+    console.log(AddressInfo);
+    const response = await fetch(url, {
+      method: "POST", 
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(AddressInfo)
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
+
+
   return (
     <div>
     <Button variant="outlined" onClick={handleClickOpen}>
@@ -143,23 +178,41 @@ function SaveDestination() {
     <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Set a Destination</DialogTitle>
         <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="ending address"
-            fullWidth
-            variant="standard"
-          />
+          <FormControl>
+          <form autoComplete='off'>
+             <AddressinForm handleAddress={handleAddress} address={address}/>
+             <br></br>
+             <br></br>
+             <Button onClick={handleClose} variant="contained" color="primary">Cancel</Button>
+             <Button onClick={handleClose} variant="contained" color="primary" type ='submit'>Save</Button>
+           </form>
+          </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Save</Button>
         </DialogActions>
       </Dialog>
     </div>
   );
 }
+
+const AddressinForm = (props) => {
+
+  const handleInput = (event) => {
+    props.handleAddress(event.target.value);
+  };
+  return (
+    <div>
+      <TextField
+        id="address"
+        label="Address"
+        variant="outlined"
+        helperText="Enter Address"
+        value={props.address}
+        onChange = {handleInput}
+      /></div>
+  );
+}
+
 
 function MapFxn() {
   const [directions, setDirections] = useState(null);
@@ -213,7 +266,6 @@ function MapFxn() {
       
     }
    
-
   };
 
  
@@ -289,14 +341,8 @@ const safelocations = [
 
 const unsafetext = [
   {id: 1, lat: 43.472120, lng:-80.543550, text: "Avoid due to a broken streetlight"}, 
-  {id: 2, lat: 43.472118, lng:-80.563546, text: "Avoid due flooding"}, 
+  {id: 2, lat: 43.472118, lng:-80.563546, text: "Avoid due to flooding"}, 
 ]
-  
-  
-
-
-
-  
 
   return (
 
