@@ -91,7 +91,7 @@ const MainGridContainer = styled(Grid)(({ theme }) => ({
  margin: theme.spacing(4),
 }))
 
-const Dashboard = (props) => {
+const Alerts = (props) => {
  
 
  const [alertLocation, setAlertLocation] = React.useState('');
