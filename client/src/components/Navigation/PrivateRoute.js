@@ -2,17 +2,15 @@ import React from "react";
 import { Router, Switch, Route } from "react-router-dom";
 
 import Home from '../Home';
-import SignIn from '../SignIn';
-import CreateAccount from '../CreateAccount';
 import Map from '../Map';
 import history from './history';
 
-import Dashboard from '../Dashboard'
+import Alerts from '../Alerts'
 import Emergency from '../Emergency'
-import EmergencyContacts from '../EmergencyContacts'
-//import Home from '../Home';
-import Share from "../Share";
-import PanicButton from "../PanicButton";
+import Profile from "../Profile";
+import Friends from "../Friends";
+import EmergencyServices from "../EmergencyServices";
+import TermsAndConditions from "../TermsAndConditions";
 
 
 
@@ -24,19 +22,15 @@ export default function PrivateRoute({
 
     <Router history={history}>
       <Switch>
+
       <Route path="/" exact component={Home} />
-
-      <Route path="/Dashboard" exact component={Dashboard} />
       <Route path="/Map" exact component={Map} />
-      <Route path="/SignIn" exact component={SignIn} />
-      <Route path="/CreateAccount" exact component={CreateAccount} />
-
+      <Route path="/Alerts" exact component={Alerts} />
       <Route path="/Emergency" exact component={Emergency} />
-      <Route path="/EmergencyContacts" exact component={EmergencyContacts} />
-
-      <Route path="/Share" exact component={Share} />
-      <Route path="/PanicButton" exact component={PanicButton} />
-
+      <Route path="/Profile" exact component={Profile} />
+      <Route path="/Friends" exact component={Friends} />
+      <Route path="/EmergencyServices" exact component={EmergencyServices} />
+      <Route path="/TermsAndConditions" exact component={TermsAndConditions} />
 
       </Switch>
     </Router>
