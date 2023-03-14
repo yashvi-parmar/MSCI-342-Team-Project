@@ -279,7 +279,7 @@ const Home = () => {
         <Navbar></Navbar>
         <br></br>
         <h1>Submit a Warning</h1>
-        <Dashboard /> 
+        <Alerts /> 
       </div>     
     )
   };

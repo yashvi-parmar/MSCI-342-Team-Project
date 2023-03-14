@@ -301,7 +301,6 @@ const unsafetext = [
   return (
 
     <grid>
-      <Navbar></Navbar>
     <Grid>
       <Grid align='center'>
       </Grid>      
