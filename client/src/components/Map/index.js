@@ -39,9 +39,9 @@ import { HeatmapLayer } from '@react-google-maps/api';
 import { Circle } from '@react-google-maps/api';
 import { InfoBox } from '@react-google-maps/api';
 import { InfoWindow } from '@react-google-maps/api';
-
+import dogBark from "./assets/dogBark.wav"
 const textStyle={marginBottom: '8px'}
-const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
+const buttonStyle={margin:'8px 0', borderColor: 'black', color: 'black'}
 const cardStyle={padding :30, height:'160vh',width:580, marginTop: "30px", margin:"20px auto"}
 const containerStyle = {
   width: '100%',
@@ -103,7 +103,7 @@ function UseSavedDestination() {
 
   return (
     <div >
-      <Button variant="outlined" onClick={handleClickOpen}>Use Saved Destination</Button>
+      <Button onClick={handleClickOpen}>Use Saved Destination</Button>
       <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
         <DialogTitle>Select a Saved Destination</DialogTitle>
         <DialogContent>
@@ -153,7 +153,7 @@ function SaveDestination() {
   return (
     <div>
       
-    <Button variant="outlined" onClick={handleClickOpen}>
+    <Button onClick={handleClickOpen}>
       Save a Destination
     </Button>
     <Dialog open={open} onClose={handleClose}>
@@ -320,7 +320,9 @@ const friends = [
 const [showed, setShowed] = useState(false);
 const [showedF, setShowedF] = useState(false);
 const label = { inputProps: { 'aria-label': 'Switch' } };
-
+const playSound =() => {
+  new Audio(dogBark).play();
+}
   return (
 
     <grid>
@@ -345,8 +347,16 @@ const label = { inputProps: { 'aria-label': 'Switch' } };
           onChange={(e) => setDestination(e.target.value)}
         />
         <Button type='submit' variant="contained" style={buttonStyle} fullWidth>Go!</Button>
+      
+      
       </form>
       </FormControl>
+      <Grid container={2}> 
+      <SaveDestination/> 
+  
+      <UseSavedDestination/>
+      
+      </Grid>
 
       
       
@@ -432,11 +442,16 @@ const label = { inputProps: { 'aria-label': 'Switch' } };
         <Switch {...label} style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowedF(!showedF)}>{showedF ? 'Show' : 'Hide' } Friends</Switch>
         
       </Grid>
-      <Grid> 
-      <SaveDestination/> 
+     
       <p></p>
-      <UseSavedDestination/>
-      </Grid>
+      <Button type='submit' style={buttonStyle} variant="contained">Emergency Contacts</Button>
+      <p></p>
+      <Button type='submit' variant="contained" style={buttonStyle} >Fake Phone Call Generator</Button>
+      <p></p>
+      <Button type='submit' variant="contained" style={buttonStyle} onClick={playSound}>Bark</Button>
+      <p></p>
+      <Button type='submit' variant="contained" style={buttonStyle}>911</Button>
+             
     </Grid>
     </grid>
 
