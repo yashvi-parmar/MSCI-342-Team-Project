@@ -39,11 +39,8 @@ import { HeatmapLayer } from '@react-google-maps/api';
 import { Circle } from '@react-google-maps/api';
 import { InfoBox } from '@react-google-maps/api';
 import { InfoWindow } from '@react-google-maps/api';
-<<<<<<< HEAD
 import { RemoveShoppingCartRounded } from '@mui/icons-material';
-=======
 
->>>>>>> c4f7657c7a78e9c81dc67658d7aa184f7b785f5d
 const textStyle={marginBottom: '8px'}
 const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
 const cardStyle={padding :30, height:'160vh',width:580, marginTop: "30px", margin:"20px auto"}
@@ -100,15 +97,12 @@ function UseSavedDestination() {
     setOpen(false);
   };
 
-<<<<<<< HEAD
-=======
   const handleUnsafe = () => {
     setOpen(true);
   };
 
 
 
->>>>>>> c4f7657c7a78e9c81dc67658d7aa184f7b785f5d
   return (
     <div >
       <Button variant="outlined" onClick={handleClickOpen}>Use Saved Destination</Button>
@@ -369,12 +363,7 @@ const safetext = [
 
 const unsafetext = [
   {id: 1, lat: 43.472120, lng:-80.543550, text: "Avoid due to a broken streetlight"}, 
-<<<<<<< HEAD
   {id: 2, lat: 43.472118, lng:-80.563546, text: "Avoid due to flooding"}, 
-]
-=======
-  {id: 2, lat: 43.472118, lng:-80.563546, text: "Avoid due flooding"}, 
-
 ]
 
 const friends = [
@@ -383,7 +372,6 @@ const friends = [
 const [showed, setShowed] = useState(false);
 const [showedF, setShowedF] = useState(false);
 const label = { inputProps: { 'aria-label': 'Switch' } };
->>>>>>> c4f7657c7a78e9c81dc67658d7aa184f7b785f5d
 
   return (
 
@@ -500,10 +488,18 @@ const label = { inputProps: { 'aria-label': 'Switch' } };
       <SaveDestination/> 
       <p></p>
       <UseSavedDestination/>
+      <p></p>
+      <SendFriendsLocation/>
       </Grid>
     </Grid>
     </grid>
 
+  );
+}
+
+const SendFriendsLocation = () => {
+  return (
+    <Button variant="contained" color="primary" type ='submit'>Send Friends Location</Button>
   );
 }
 
