@@ -13,9 +13,12 @@ import Checkbox from '@material-ui/core/Checkbox';
 import CreateAccount from '../CreateAccount'
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
-import { BrowserRouter,Switch,Route} from 'react-router-dom';
+import { BrowserRouter,Route} from 'react-router-dom';
 import history from '../Navigation/history';
 import Navbar from '../NavBar';
+import Switch from '@mui/material/Switch';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -36,13 +39,14 @@ import { HeatmapLayer } from '@react-google-maps/api';
 import { Circle } from '@react-google-maps/api';
 import { InfoBox } from '@react-google-maps/api';
 import { InfoWindow } from '@react-google-maps/api';
-import useMediaQuery from '@mui/material/useMediaQuery';
+
 const textStyle={marginBottom: '8px'}
 const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
-const cardStyle={padding :30, height:'260vh',width:580, marginTop: "30px", margin:"20px auto"}
+const cardStyle={padding :30, height:'160vh',width:580, marginTop: "30px", margin:"20px auto"}
 const containerStyle = {
   width: '100%',
-  height: '200px'
+  height: '500px',
+  display: 'flex'
 };
 
 const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
@@ -55,14 +59,15 @@ function Map() {
     <Navbar></Navbar>
     <div className="Map">
       <Grid>
-            <Paper elevation={10} style={cardStyle}>
+            <Paper style={{padding: '4vh'}}>
                 <Grid align='center'>
                 </Grid>
+                   
+                
                      <MapFxn/> 
+                    
                      <p></p>  
-                     <SaveDestination/> 
-                     <p></p>  
-                     <UseSavedDestination/>
+                    
             </Paper>
         </Grid>
     </div>
@@ -97,7 +102,7 @@ function UseSavedDestination() {
 
 
   return (
-    <div>
+    <div >
       <Button variant="outlined" onClick={handleClickOpen}>Use Saved Destination</Button>
       <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
         <DialogTitle>Select a Saved Destination</DialogTitle>
@@ -147,7 +152,7 @@ function SaveDestination() {
 
   return (
     <div>
-      <h2>Time of Day</h2>
+      
     <Button variant="outlined" onClick={handleClickOpen}>
       Save a Destination
     </Button>
@@ -310,11 +315,11 @@ const unsafetext = [
 ]
 
 const friends = [
-  {id: 1, lat: 43.472120, lng: -80.543550, friendName: "Friend 1"}
+  {id: 1, lat: 43.472120, lng: -80.553550, friendName: "Friend 1"}
 ]
 const [showed, setShowed] = useState(false);
 const [showedF, setShowedF] = useState(false);
-
+const label = { inputProps: { 'aria-label': 'Switch' } };
 
   return (
 
@@ -325,6 +330,8 @@ const [showedF, setShowedF] = useState(false);
       googleMapsApiKey = {apiKey}
       onLoad={handleLoad}
     >
+  
+    
       <FormControl onSubmit={handleSubmit}>
       <form>
         <FormLabel htmlFor="destination"></FormLabel>
@@ -339,7 +346,9 @@ const [showedF, setShowedF] = useState(false);
         <Button type='submit' variant="contained" style={buttonStyle} fullWidth>Go!</Button>
       </form>
       </FormControl>
-     
+
+      
+      
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={{lat: lat, lng: lng}}
@@ -383,8 +392,8 @@ const [showedF, setShowedF] = useState(false);
       options={options3}
       position={{lat: item.lat, lng: item.lng}}
     >
-      <div style={{ display: showedF ? "none": "", backgroundColor: 'blue', opacity: 0.75, padding: 2 }}>
-        <div style={{ fontSize: 10, fontColor: 'black' }}>
+      <div style={{ display: showedF ? "none": "", fontColor: '#FFFFFF', backgroundColor: 'lightblue', opacity: 0.9, padding: 2 }}>
+        <div style={{ fontSize: 10, fontColor: '#FFFFFF' }}>
          {item.friendName}
         </div>
       </div>
@@ -413,18 +422,23 @@ const [showedF, setShowedF] = useState(false);
       
    
     </LoadScript> 
-
-       <Button style ={{marginTop: '10px' }} variant="outlined" onClick={()=> setShowed(!showed)}>{showed ? 'Show' : 'Hide' } Marked Locations</Button>
-       <div></div>
-       <Button style ={{marginTop: '10px' }} variant="outlined" onClick={()=> setShowedF(!showedF)}>{showedF ? 'Show' : 'Hide' } Friends</Button>
-
-      
+    <Grid style={{paddingTop: '1vh', display: 'flex'}}> 
+    
+        <h5 style={{marginLeft: '0px', marginTop: '10px'}} onClick={()=> setShowed(!showed)}>{showed ? 'Show' : 'Hide' } Marked Locations</h5> 
+        <Switch {...label} style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowed(!showed)}>{showed ? 'Show' : 'Hide' }</Switch>
+        <p></p>
+        <h5 style={{marginLeft: '0px', marginTop: '10px'}} onClick={()=> setShowedF(!showedF)}>{showedF ? 'Show' : 'Hide' } Friends</h5>
+        <Switch {...label} style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowedF(!showedF)}>{showedF ? 'Show' : 'Hide' } Friends</Switch>
+        
+      </Grid>
+      <Grid> 
+      <SaveDestination/> 
+      <p></p>
+      <UseSavedDestination/>
+      </Grid>
     </Grid>
 
   );
 }
-function useIsMobile() {
-  const isMobile = useMediaQuery({ query: '(max-width: 1000px)' });
-  return isMobile
-}
+
 
