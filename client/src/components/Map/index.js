@@ -40,8 +40,8 @@ import { Circle } from '@react-google-maps/api';
 import { InfoBox } from '@react-google-maps/api';
 import { InfoWindow } from '@react-google-maps/api';
 import dogBark from "./assets/dogBark.wav"
-const textStyle={marginBottom: '8px'}
-const buttonStyle={margin:'8px 0', borderColor: 'black', color: 'black'}
+const textStyle={marginBottom: '8px', color: 'white'}
+const buttonStyle={margin:'8px 0', backgroundColor: '#2E5129', fontColor: 'white'}
 const cardStyle={padding :30, height:'160vh',width:580, marginTop: "30px", margin:"20px auto"}
 const containerStyle = {
   width: '100%',
@@ -54,12 +54,12 @@ const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 function Map() {
 
   return (
-    <grid>
+    <grid style={{backgroundColor: '#E6CCB2'}}>
       
     <Navbar></Navbar>
     <div className="Map">
       <Grid>
-            <Paper style={{padding: '4vh'}}>
+            <Paper style={{backgroundColor: '#6F4E37',padding: '4vh'}}>
                 <Grid align='center'>
                 </Grid>
                    
@@ -102,12 +102,12 @@ function UseSavedDestination() {
 
 
   return (
-    <div >
-      <Button onClick={handleClickOpen}>Use Saved Destination</Button>
+    <div style={{fontColor: '#E6CCB2'}} >
+      <Button onClick={handleClickOpen}><p style={{color: 'white'}} >Use Saved Destination</p></Button>
       <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
         <DialogTitle>Select a Saved Destination</DialogTitle>
         <DialogContent>
-          <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }}>
+          <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }} style={{color: '#E6CCB2'}} >
             <FormControl sx={{ m: 1, minWidth: 120 }}>
               <InputLabel htmlFor="demo-dialog-native">Destination</InputLabel>
               <Select
@@ -127,7 +127,7 @@ function UseSavedDestination() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Go!</Button>
+          <Button onClick={handleClose}> Go!</Button>
         </DialogActions>
       </Dialog>
 
@@ -154,7 +154,7 @@ function SaveDestination() {
     <div>
       
     <Button onClick={handleClickOpen}>
-      Save a Destination
+    <p style={{color: 'white'}} >Save a Destination</p>
     </Button>
     <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Set a Destination</DialogTitle>
@@ -326,7 +326,7 @@ const playSound =() => {
   return (
 
     <grid>
-    <Grid>
+    <Grid >
       <Grid align='center'>
       </Grid>      
     <LoadScript
@@ -346,7 +346,7 @@ const playSound =() => {
           value={destination}
           onChange={(e) => setDestination(e.target.value)}
         />
-        <Button type='submit' variant="contained" style={buttonStyle} fullWidth>Go!</Button>
+        <Button type='submit' variant="contained" style={{color: 'white', backgroundColor: '#2E5129'}} fullWidth>Go</Button>
       
       
       </form>
@@ -374,7 +374,7 @@ const playSound =() => {
       options={options3}
       position={{lat: item.lat, lng: item.lng}}
     >
-      <div style={{ display: showed ? "none": "", backgroundColor: 'yellow', opacity: 0.75, padding: 2 }}>
+      <div style={{ display: showed ? "none": "", backgroundColor: '#E6CCB2', opacity: 1, padding: 2 }}>
         <div style={{ fontSize: 10, fontColor: `#08233B` }}>
          {item.text}
         </div>
@@ -388,10 +388,10 @@ const playSound =() => {
       options={options3}
       position={{lat: item.lat, lng: item.lng}}
     >
-      <div style={{ display: showed ? "none": "", backgroundColor: 'white', opacity: 0.75, padding: 2 }}>
-        <div style={{ fontSize: 10, fontColor: `#08233B` }}>
+      <div style={{ display: showed ? "none": "", backgroundColor: '#2E5129', opacity: 1}}>
+        <p style={{ fontSize: 10, color: 'white', padding: 2  }}>
          {item.text}
-        </div>
+        </p>
       </div>
     </InfoBox>
     ))}
@@ -403,10 +403,10 @@ const playSound =() => {
       options={options3}
       position={{lat: item.lat, lng: item.lng}}
     >
-      <div style={{ display: showedF ? "none": "", fontColor: '#FFFFFF', backgroundColor: 'lightblue', opacity: 0.9, padding: 2 }}>
-        <div style={{ fontSize: 10, fontColor: '#FFFFFF' }}>
+      <div style={{ display: showedF ? "none": "", fontColor: '#FFFFFF', backgroundColor: '#6F4E37', opacity: 1 }}>
+        <p style={{ fontSize: 10, color: '#FFFFFF', padding: 2 }}>
          {item.friendName}
-        </div>
+        </p>
       </div>
     </InfoBox>
     ))}
@@ -435,23 +435,25 @@ const playSound =() => {
     </LoadScript> 
     <Grid style={{paddingTop: '1vh', display: 'flex'}}> 
     
-        <h5 style={{marginLeft: '0px', marginTop: '10px'}} onClick={()=> setShowed(!showed)}>{showed ? 'Show' : 'Hide' } Marked Locations</h5> 
-        <Switch {...label} style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowed(!showed)}>{showed ? 'Show' : 'Hide' }</Switch>
+        <h5 style={{marginLeft: '0px', marginTop: '10px', color: 'white'}} onClick={()=> setShowed(!showed)}>{showed ? 'Show' : 'Hide' } Marked Locations</h5> 
+        <Switch {...label} color="warning" style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowed(!showed)}>{showed ? 'Show' : 'Hide' }</Switch>
         <p></p>
-        <h5 style={{marginLeft: '0px', marginTop: '10px'}} onClick={()=> setShowedF(!showedF)}>{showedF ? 'Show' : 'Hide' } Friends</h5>
-        <Switch {...label} style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowedF(!showedF)}>{showedF ? 'Show' : 'Hide' } Friends</Switch>
+        <h5 style={{marginLeft: '0px', marginTop: '10px', color: 'white'}} onClick={()=> setShowedF(!showedF)}>{showedF ? 'Show' : 'Hide' } Friends</h5>
+        <Switch {...label} color="warning" style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowedF(!showedF)}>{showedF ? 'Show' : 'Hide' } Friends</Switch>
         
       </Grid>
      
       <p></p>
-      <Button type='submit' style={buttonStyle} variant="contained">Emergency Contacts</Button>
+      <Grid container={2} display='flex'> 
+      <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained">Emergency Contacts</Button>
       <p></p>
-      <Button type='submit' variant="contained" style={buttonStyle} >Fake Phone Call Generator</Button>
+      <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px',  marginBottom: '15px'}} variant="contained" >Fake Phone Call</Button>
+      </Grid> 
+      <Grid container={2} display='flex'> 
+      <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained"  onClick={playSound}>Play Bark</Button>
       <p></p>
-      <Button type='submit' variant="contained" style={buttonStyle} onClick={playSound}>Bark</Button>
-      <p></p>
-      <Button type='submit' variant="contained" style={buttonStyle}>911</Button>
-             
+      <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px',  marginBottom: '15px'}} variant="contained" >Dial 911</Button>
+       </Grid>
     </Grid>
     </grid>
 
