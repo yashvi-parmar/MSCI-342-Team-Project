@@ -16,6 +16,10 @@ import { useTheme } from '@material-ui/styles';
 import { Box } from '@material-ui/core';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
+import BarkLogo from './BarkLogo.jpg';
+
+
+
 
 //Dev mode
 //const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046"; //enable for dev mode
@@ -79,34 +83,6 @@ const styles = theme => ({
 
 });
 
-
-
-//upload logo to home page
-function StandardImageList() {
-  return (
-    <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
-      {itemData.map((item) => (
-        <ImageListItem key={item.img}>
-          <img
-            src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-            srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-            alt={item.title}
-            loading="lazy"
-          />
-        </ImageListItem>
-      ))}
-    </ImageList>
-  );
-}
-
-const itemData = [
-  {
-    img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e', //link to logo 
-    title: 'logo',
-  },
-];
-
-
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -168,7 +144,10 @@ class Home extends Component {
         style={{ minHeight: '100vh' }}
         className={classes.mainMessageContainer}
       >
-        <StandardImageList></StandardImageList>
+
+        <div style={{ margin: '100px' }}>
+          <img src={BarkLogo} alt="Bark Logo" style={{ width: '400px', }}/>
+        </div>
 
         <Grid item>
 
@@ -187,35 +166,6 @@ class Home extends Component {
               </React.Fragment>
             )}
           </Typography>
-        
-          <Link href="/SignIn" >
-                        Sign In 
-                </Link>
-                <p></p>
-                <Link href="/CreateAccount" >
-                        Create an Account 
-                </Link>
-                <p></p>
-                <Link href="/Dashboard" >
-                        Dashboard
-                </Link>
-                <p></p>
-
-                <Link href="/Map" >
-                        Map
-                </Link>
-                <p></p>
-                <Link href="/Emergency" >
-                        Emergency
-                </Link>
-
-
-       
-
-                <Link href="/Emergency" >
-                        Emergency
-                </Link>
-
         </Grid>
       </Grid>
       </Grid>
