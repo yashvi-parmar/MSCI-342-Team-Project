@@ -196,7 +196,7 @@ function SaveDestination() {
         <DialogTitle>Set a Destination</DialogTitle>
         <DialogContent>
           <FormControl>
-          <form autoComplete='off'>
+          <form>
              <AddressinForm handleAddress={handleAddress} address={address}/>
              <br></br>
              <br></br>
@@ -406,6 +406,17 @@ const label = { inputProps: { 'aria-label': 'Switch' } };
 const playSound =() => {
   new Audio(dogBark).play();
 }
+
+const [autocomplete, setAutocomplete] = useState(null);
+
+const handlePlaceSelect = (place) => {
+      setDestination(place.formatted_address);
+};
+
+const handleAutocompleteLoad = (autocomplete) => {
+  setAutocomplete(autocomplete);
+};
+
   return (
     <grid>
     <Grid >
@@ -527,7 +538,9 @@ const playSound =() => {
     </grid>
 
   );
+
 }
 
+}
 
 
