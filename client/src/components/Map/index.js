@@ -18,7 +18,7 @@ import history from '../Navigation/history';
 import Navbar from '../NavBar';
 import Switch from '@mui/material/Switch';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import {Input} from '@material-ui/core';
+
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -39,7 +39,7 @@ import { HeatmapLayer } from '@react-google-maps/api';
 import { Circle } from '@react-google-maps/api';
 import { InfoBox } from '@react-google-maps/api';
 import { InfoWindow } from '@react-google-maps/api';
-import { RemoveShoppingCartRounded, WindowSharp } from '@mui/icons-material';
+import { RemoveShoppingCartRounded } from '@mui/icons-material';
 import dogBark from "./assets/dogBark.wav"
 const textStyle={marginBottom: '8px', color: 'white'}
 const buttonStyle={margin:'8px 0', backgroundColor: '#2E5129', fontColor: 'white'}
@@ -264,7 +264,6 @@ function MapFxn() {
 
     const directionsService = new window.google.maps.DirectionsService();
     directionsService.route(directionsServiceOptions, directionsCallback);
-
   };
 
   
@@ -390,44 +389,37 @@ const handleAutocompleteLoad = (autocomplete) => {
 
   return (
     <grid>
-<Grid >
-  <Grid align='center'>
-  </Grid>      
-<LoadScript
-  googleMapsApiKey = {apiKey}
-  onLoad={handleLoad}
-  libraries={['places']}
->   
-  <FormControl onSubmit={handleSubmit}>
-  <form>
-    <FormLabel htmlFor="destination"></FormLabel>
-    <Autocomplete 
-      onLoad={handleAutocompleteLoad} 
-      onPlaceChanged={() => handlePlaceSelect(autocomplete.getPlace())}
-      options={{ componentRestrictions: { country: "ca" } }}
-    >
-    <TextField
-      id="destination"
-      type="text"
-      placeholder="Destination"
-      style={{ width: '400px' }}
-      value={destination}
-      onChange={(e) => setDestination(e.target.value)}
-    />
-    </Autocomplete>
-    <p></p>
-    <Button type='submit' variant="contained" style={{color: 'white', backgroundColor: '#2E5129'}} fullWidth>Go</Button>
-  </form>
-  </FormControl>
-  <Grid container={2}> 
-    <SaveDestination/>  
-    <UseSavedDestination/>     
-  </Grid>
-  <GoogleMap
-    mapContainerStyle={containerStyle}
-    center={{lat: lat, lng: lng}}
-    zoom={16}
-  >
+    <Grid >
+      <Grid align='center'>
+      </Grid>      
+    <LoadScript
+      googleMapsApiKey = {apiKey}
+      onLoad={handleLoad}
+    >   
+      <FormControl onSubmit={handleSubmit}>
+      <form>
+        <FormLabel htmlFor="destination"></FormLabel>
+        <TextField
+          id="destination"
+          type="text"
+          placeholder="Destination"
+          style={textStyle}
+          value={destination}
+          onChange={(e) => setDestination(e.target.value)}
+        />
+        <Button type='submit' variant="contained" style={{color: 'white', backgroundColor: '#2E5129'}} fullWidth>Go</Button>
+      </form>
+      </FormControl>
+      <Grid container={2}> 
+        <SaveDestination/>  
+        <UseSavedDestination/>     
+      </Grid>
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        center={{lat: lat, lng: lng}}
+        zoom={16}
+      >
+       \
 
 {unsafetext.map(item => (
       <InfoBox
@@ -516,4 +508,9 @@ const handleAutocompleteLoad = (autocomplete) => {
     </grid>
 
   );
+
 }
+
+}
+
+
