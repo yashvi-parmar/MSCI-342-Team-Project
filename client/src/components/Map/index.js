@@ -196,7 +196,7 @@ function SaveDestination() {
         <DialogTitle>Set a Destination</DialogTitle>
         <DialogContent>
           <FormControl>
-          <form autoComplete='off'>
+          <form>
              <AddressinForm handleAddress={handleAddress} address={address}/>
              <br></br>
              <br></br>
@@ -377,9 +377,6 @@ const label = { inputProps: { 'aria-label': 'Switch' } };
 const playSound =() => {
   new Audio(dogBark).play();
 }
-/*const handlePlaceSelect = (place) => {
-  setDestination(place.formatted_address);
-};*/
 
 const [autocomplete, setAutocomplete] = useState(null);
 
@@ -520,37 +517,3 @@ const handleAutocompleteLoad = (autocomplete) => {
 
   );
 }
-
-
-
-/*<grid>
-<Grid >
-  <Grid align='center'>
-  </Grid>      
-<LoadScript
-  googleMapsApiKey = {apiKey}
-  onLoad={handleLoad}
->   
-  <FormControl onSubmit={handleSubmit}>
-  <form>
-    <FormLabel htmlFor="destination"></FormLabel>
-    <TextField
-      id="destination"
-      type="text"
-      placeholder="Destination"
-      style={textStyle}
-      value={destination}
-      onChange={(e) => setDestination(e.target.value)}
-    />
-    <Button type='submit' variant="contained" style={{color: 'white', backgroundColor: '#2E5129'}} fullWidth>Go</Button>
-  </form>
-  </FormControl>
-  <Grid container={2}> 
-    <SaveDestination/>  
-    <UseSavedDestination/>     
-  </Grid>
-  <GoogleMap
-    mapContainerStyle={containerStyle}
-    center={{lat: lat, lng: lng}}
-    zoom={16}
-  >*/
