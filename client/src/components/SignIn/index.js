@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+/*import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -17,12 +17,13 @@ const cardStyle={padding :30, height:'60vh',width:280, marginTop: "30px", margin
 
 const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
 const textStyle={marginBottom: '8px'}
-const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
+const serverURL = ""
+//"http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
 
 function SignIn() {
   return (
     <grid>
-    <Navbar></Navbar>
+    
     <div className="SignIn">
   
       <Grid>
@@ -54,3 +55,9 @@ function SignIn() {
 }
 
 export default SignIn;
+*/
+
+
+
+
+

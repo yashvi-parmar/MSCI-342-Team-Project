@@ -20,33 +20,39 @@ const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
 const textStyle={marginBottom: '8px'}
 const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
 
-function Emergency() {
+function SignIn2() {
 
 
   return (
     <grid>
     <Navbar></Navbar>
     <div className="Emergency">
-       <Grid>
+    <Grid>
             <Paper elevation={10} style={cardStyle}>
                 <Grid align='center'>
+                    <div data-testid="foo">Sign In</div>
+                </Grid>
+                <TextField 
+                style={textStyle} 
+                label='Username' 
+                placeholder='Enter username' 
+                variant="outlined"  />
+  
+                <TextField style={textStyle} label='Password' placeholder='Enter password' type='password' variant="outlined" fullWidth required/>
                 
-                    <h2>Emergency Dashboard</h2>
-                <Link href="/EmergencyContacts">   
-                <Button type='submit' variant="contained" style={buttonStyle} fullWidth>Emergency Contacts</Button>
-                </Link>
-                <Button type='submit' variant="contained" style={buttonStyle} fullWidth>Fake Phone Call Generator</Button>
-                
-                <Button type='submit' variant="contained" style={buttonStyle} fullWidth>911</Button>
+                <Button type='submit' variant="contained" style={buttonStyle} fullWidth required>Sign in</Button>
              
                 
-                </Grid>
-              
+                     <Link href="/CreateAccount" style={{color: 'black'}}>
+                        Create an Account 
+                </Link>
+               
             </Paper>
         </Grid>
+       
     </div>
     </grid>
   );
 }
 
-export default Emergency;
+export default SignIn2;

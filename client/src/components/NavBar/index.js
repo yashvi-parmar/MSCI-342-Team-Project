@@ -242,6 +242,13 @@ export default function PersistentDrawerLeft() {
           <ListItem button component={Link} to="/Friends" onClick={handleDrawerClose}>
             <ListItemText primary="Friends" />
           </ListItem>
+          <ListItem button component={Link} to="/" onClick={handleDrawerClose}>
+            <ListItemText primary="Friends" />
+          </ListItem>
+
+          <ListItem button component={Link} to="/SignIn" onClick={handleDrawerClose}>
+            <ListItemText primary="SignIn" />
+          </ListItem>
 
           <Divider/>
           
