@@ -9,7 +9,7 @@ import {
 import { Link } from "react-router-dom";
 import IconButton from '@material-ui/core/IconButton';
 import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
-
+const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
 const theme = createTheme({
   palette: {
     type: 'light',

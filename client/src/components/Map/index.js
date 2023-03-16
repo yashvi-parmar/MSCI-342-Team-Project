@@ -13,9 +13,12 @@ import Checkbox from '@material-ui/core/Checkbox';
 import CreateAccount from '../CreateAccount'
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
-import { BrowserRouter,Switch,Route} from 'react-router-dom';
+import { BrowserRouter,Route} from 'react-router-dom';
 import history from '../Navigation/history';
 import Navbar from '../NavBar';
+import Switch from '@mui/material/Switch';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -36,31 +39,37 @@ import { HeatmapLayer } from '@react-google-maps/api';
 import { Circle } from '@react-google-maps/api';
 import { InfoBox } from '@react-google-maps/api';
 import { InfoWindow } from '@react-google-maps/api';
-const textStyle={marginBottom: '8px'}
-const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
-const cardStyle={padding :30, height:'260vh',width:580, marginTop: "30px", margin:"20px auto"}
+import { RemoveShoppingCartRounded } from '@mui/icons-material';
+import dogBark from "./assets/dogBark.wav"
+const textStyle={marginBottom: '8px', color: 'white'}
+const buttonStyle={margin:'8px 0', backgroundColor: '#2E5129', fontColor: 'white'}
+const cardStyle={padding :30, height:'160vh',width:580, marginTop: "30px", margin:"20px auto"}
 const containerStyle = {
   width: '100%',
-  height: '200px'
+  height: '500px',
+  display: 'flex'
 };
+const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
 
 const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 
 function Map() {
 
   return (
-    <grid>
+    <grid style={{backgroundColor: '#E6CCB2'}}>
+      
     <Navbar></Navbar>
     <div className="Map">
       <Grid>
-            <Paper elevation={10} style={cardStyle}>
+            <Paper style={{backgroundColor: '#6F4E37',padding: '4vh'}}>
                 <Grid align='center'>
                 </Grid>
+                   
+                
                      <MapFxn/> 
+                    
                      <p></p>  
-                     <SaveDestination/> 
-                     <p></p>  
-                     <UseSavedDestination/>
+                    
             </Paper>
         </Grid>
     </div>
@@ -88,14 +97,19 @@ function UseSavedDestination() {
     setOpen(false);
   };
 
+  const handleUnsafe = () => {
+    setOpen(true);
+  };
+
+
 
   return (
-    <div>
-      <Button variant="outlined" onClick={handleClickOpen}>Use Saved Destination</Button>
+    <div style={{fontColor: '#E6CCB2'}} >
+      <Button onClick={handleClickOpen}><p style={{color: 'white'}} >Use Saved Destination</p></Button>
       <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
         <DialogTitle>Select a Saved Destination</DialogTitle>
         <DialogContent>
-          <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }}>
+          <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }} style={{color: '#E6CCB2'}} >
             <FormControl sx={{ m: 1, minWidth: 120 }}>
               <InputLabel htmlFor="demo-dialog-native">Destination</InputLabel>
               <Select
@@ -115,9 +129,12 @@ function UseSavedDestination() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Go!</Button>
+          <Button onClick={handleClose}> Go!</Button>
         </DialogActions>
       </Dialog>
+
+      <div></div>
+
     </div>
   );
 }
@@ -126,6 +143,7 @@ function UseSavedDestination() {
 function SaveDestination() {
 
   const [open, setOpen] = useState(false);
+  const [address, setAddress] = useState('');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -135,31 +153,83 @@ function SaveDestination() {
     setOpen(false);
   };
 
+  const handleAddress = (body) => {
+    setAddress(body);
+  }
+
+  const loadApiAddSavedDestination = () => {
+    callApiAddSavedDestination()
+      .then((res) => {
+        console.log(res.message);
+      })
+  };
+
+  const callApiAddSavedDestination = async () => {
+    const url = serverURL + "/api/addSavedDestination";
+    
+    let AddressInfo = {
+      "address": address,
+      "user": 1,
+    };
+
+    console.log(AddressInfo);
+    const response = await fetch(url, {
+      method: "POST", 
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(AddressInfo)
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
+
+
   return (
     <div>
-    <Button variant="outlined" onClick={handleClickOpen}>
-      Save a Destination
+      
+    <Button onClick={handleClickOpen}>
+    <p style={{color: 'white'}} >Save a Destination</p>
     </Button>
     <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Set a Destination</DialogTitle>
         <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="ending address"
-            fullWidth
-            variant="standard"
-          />
+          <FormControl>
+          <form autoComplete='off'>
+             <AddressinForm handleAddress={handleAddress} address={address}/>
+             <br></br>
+             <br></br>
+             <Button onClick={handleClose} variant="contained" color="primary">Cancel</Button>
+             <Button onClick={handleClose} variant="contained" color="primary" type ='submit'>Save</Button>
+           </form>
+          </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Save</Button>
         </DialogActions>
       </Dialog>
     </div>
   );
 }
+
+const AddressinForm = (props) => {
+
+  const handleInput = (event) => {
+    props.handleAddress(event.target.value);
+  };
+  return (
+    <div>
+      <TextField
+        id="address"
+        label="Address"
+        variant="outlined"
+        helperText="Enter Address"
+        value={props.address}
+        onChange = {handleInput}
+      /></div>
+  );
+}
+
 
 function MapFxn() {
   const [directions, setDirections] = useState(null);
@@ -213,7 +283,6 @@ function MapFxn() {
       
     }
    
-
   };
 
  
@@ -287,27 +356,35 @@ const safelocations = [
       {id: 2, lat: 43.483112, lng:-80.533546}
     ];
 
+const safetext = [
+    {id: 1, lat: 43.473130, lng:-80.543550, text: "Center for help"},
+    {id: 2, lat: 43.483112, lng:-80.533546, text: "Center for help"}
+];
+
 const unsafetext = [
   {id: 1, lat: 43.472120, lng:-80.543550, text: "Avoid due to a broken streetlight"}, 
-  {id: 2, lat: 43.472118, lng:-80.563546, text: "Avoid due flooding"}, 
+  {id: 2, lat: 43.472118, lng:-80.563546, text: "Avoid due to flooding"}, 
 ]
-  
-  
 
-
-
-  
-
+const friends = [
+  {id: 1, lat: 43.472120, lng: -80.553550, friendName: "Friend 1"}
+]
+const [showed, setShowed] = useState(false);
+const [showedF, setShowedF] = useState(false);
+const [showedT, setShowedT] = useState(false);
+const label = { inputProps: { 'aria-label': 'Switch' } };
+const playSound =() => {
+  new Audio(dogBark).play();
+}
   return (
-
     <grid>
-    <Grid>
+    <Grid >
       <Grid align='center'>
       </Grid>      
     <LoadScript
       googleMapsApiKey = {apiKey}
       onLoad={handleLoad}
-    >
+    >   
       <FormControl onSubmit={handleSubmit}>
       <form>
         <FormLabel htmlFor="destination"></FormLabel>
@@ -319,16 +396,19 @@ const unsafetext = [
           value={destination}
           onChange={(e) => setDestination(e.target.value)}
         />
-        <Button type='submit' variant="contained" style={buttonStyle} fullWidth>Go!</Button>
+        <Button type='submit' variant="contained" style={{color: 'white', backgroundColor: '#2E5129'}} fullWidth>Go</Button>
       </form>
       </FormControl>
-     
+      <Grid container={2}> 
+        <SaveDestination/>  
+        <UseSavedDestination/>     
+      </Grid>
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={{lat: lat, lng: lng}}
         zoom={16}
-        
       >
+       \
 
 {unsafetext.map(item => (
       <InfoBox
@@ -336,20 +416,44 @@ const unsafetext = [
       options={options3}
       position={{lat: item.lat, lng: item.lng}}
     >
-      <div style={{ backgroundColor: 'yellow', opacity: 0.75, padding: 2 }}>
+      <div style={{ display: showed ? "none": "", backgroundColor: '#E6CCB2', opacity: 1, padding: 2 }}>
         <div style={{ fontSize: 10, fontColor: `#08233B` }}>
          {item.text}
         </div>
       </div>
     </InfoBox>
     ))}
-      
 
-        <TrafficLayer
-      onLoad={onLoad}
-    />
-   
+{safetext.map(item => (
+      <InfoBox
+      onLoad={onLoadInfo}
+      options={options3}
+      position={{lat: item.lat, lng: item.lng}}
+    >
+      <div style={{ display: showed ? "none": "", backgroundColor: '#2E5129', opacity: 1}}>
+        <p style={{ fontSize: 10, color: 'white', padding: 2  }}>
+         {item.text}
+        </p>
+      </div>
+    </InfoBox>
+    ))}
 
+
+{friends.map(item => (
+      <InfoBox
+      onLoad={onLoadInfo}
+      options={options3}
+      position={{lat: item.lat, lng: item.lng}}
+    >
+      <div style={{ display: showedF ? "none": "", fontColor: '#FFFFFF', backgroundColor: '#6F4E37', opacity: 1 }}>
+        <p style={{ fontSize: 10, color: '#FFFFFF', padding: 2 }}>
+         {item.friendName}
+        </p>
+      </div>
+    </InfoBox>
+    ))}
+        {showedT ? <TrafficLayer onLoad={onLoad} /> : null}
+    
    {unsafelocations.map(item => (
       <Circle options={options} center={{lat: item.lat, lng: item.lng}}></Circle>
     ))}
@@ -361,14 +465,39 @@ const unsafetext = [
         {directions !== null && <DirectionsRenderer directions={directions} provideRouteAlternatives ={true} />}
       </GoogleMap>
       
-                
-            
-      
    
     </LoadScript> 
+    <Grid style={{paddingTop: '1vh', display: 'flex'}}> 
+    
+        <h5 style={{marginLeft: '0px', marginTop: '10px', color: 'white'}} onClick={()=> setShowed(!showed)}>{showed ? 'Show' : 'Hide' } Marked Locations</h5> 
+        <Switch {...label} color="warning" style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowed(!showed)}>{showed ? 'Show' : 'Hide' }</Switch>
+        <p></p>
+        <h5 style={{marginLeft: '0px', marginTop: '10px', color: 'white'}} onClick={()=> setShowedF(!showedF)}>{showedF ? 'Show' : 'Hide' } Friends</h5>
+        <Switch {...label} color="warning" style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowedF(!showedF)}>{showedF ? 'Show' : 'Hide' } Friends</Switch>
+        <p></p>
+        <h5 style={{marginLeft: '0px', marginTop: '10px', color: 'white'}} onClick={()=> setShowedT(!showedT)}>{showedT ? 'Show' : 'Hide' } Traffic</h5>
+        <Switch {...label} color="warning" style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowedT(!showedT)}>{showedT ? 'Show' : 'Hide' } Traffic</Switch>
+      </Grid>
+      <p></p>
+      <Grid container={2} display='flex'> 
+      <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained">Emergency Contacts</Button>
+      <p></p>
+      <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px',  marginBottom: '15px'}} variant="contained" >Fake Phone Call</Button>
+      </Grid> 
+      <Grid container={2} display='flex'> 
+      <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained"  onClick={playSound}>Play Bark</Button>
+      <p></p>
+      <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px',  marginBottom: '15px'}} variant="contained" >Dial 911</Button>
+      <p></p>
+      <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px',  marginBottom: '15px'}} variant="contained" >Send Friends My Location</Button>
+      <p></p>
+      <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px',  marginBottom: '15px'}} variant="contained" >Notify Friends of Arrival</Button>
+       </Grid>
     </Grid>
     </grid>
 
   );
 }
+
+
 
