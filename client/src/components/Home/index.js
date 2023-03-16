@@ -97,19 +97,19 @@ const Home = () => {
         direction="column"
         justify="flex-start"
         alignItems="flex-start"
-        style={{minHeight: '100%' , backgroundColor: '#EBD6C1'}}
+        style={{minHeight: '100%' , backgroundColor: '#6F4E37'}}
       >
         <div style={{marginLeft: '35%', marginTop: '5%'}}>
-          <img src={BarkLogo} alt="Bark Logo" style={{ width: '60%', }}/>
+          <img src={BarkLogo} alt="Bark Logo" style={{ width: '40%', }}/>
         </div>
 
         <div style={{marginLeft:'45%'}}>
           <br></br>
-          <h1>Welcome!</h1>
+          <h1 style={{color: 'white'}}>Welcome!</h1>
         </div>
 
         <div style={{marginLeft:'20%', marginRight:'20%'}}>
-          <h2>For many, walking home after nightfall can be a scary experience. Bark is an app created to be a system to help users safer and more protected when walking home alone at night. We aim to empower people to navigate the city of Waterloo with confidence by knowing that the routes they are taking to get to their destination are the safest ones available. Our system will be geared towards communities and peoples that may feel unsafe walking alone.</h2>
+          <h2 style={{color: 'white'}}>For many, walking home after nightfall can be a scary experience. Bark is an app created to be a system to help users safer and more protected when walking home alone at night. We aim to empower people to navigate the city of Waterloo with confidence by knowing that the routes they are taking to get to their destination are the safest ones available. Our system will be geared towards communities and peoples that may feel unsafe walking alone.</h2>
           <br></br>
         </div>
 
