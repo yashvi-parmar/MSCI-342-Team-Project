@@ -49,7 +49,7 @@ const containerStyle = {
   height: '500px',
   display: 'flex'
 };
-const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
+const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046";
 
 const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 
@@ -255,6 +255,36 @@ function MapFxn() {
     );
   }, []);
 
+  let [alerts,setAlerts]=React.useState([]);
+
+  useEffect(() => {
+    loadApiGetAlerts();
+  }, []);
+
+  const loadApiGetAlerts =() => {
+    callGetAlerts()
+      .then(res => {
+        setAlerts(res.alertData);
+      });
+  }
+
+  const callGetAlerts = async() => {
+    
+    //console.log('t',url)
+    const url = serverURL + "/api/getAlerts";
+    console.log(url)
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+    });
+    const body =await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
+
   const handleLoad = (map) => {
     const directionsServiceOptions = {
       origin: origin,
@@ -362,7 +392,7 @@ const safetext = [
 ];
 
 const unsafetext = [
-  {id: 1, lat: 43.472120, lng:-80.543550, text: "Avoid due to a broken streetlight"}, 
+  {id: 1, lat: 43.472120, lng0:-80.54355, text: "Avoid due to a broken streetlight"}, 
   {id: 2, lat: 43.472118, lng:-80.563546, text: "Avoid due to flooding"}, 
 ]
 
@@ -458,7 +488,7 @@ const handleAutocompleteLoad = (autocomplete) => {
         zoom={16}
       >
 
-{unsafetext.map(item => (
+{alerts.map(item => (
       <InfoBox
       onLoad={onLoadInfo}
       options={options3}
@@ -548,6 +578,6 @@ const handleAutocompleteLoad = (autocomplete) => {
 
 }
 
-}
+
 
 
