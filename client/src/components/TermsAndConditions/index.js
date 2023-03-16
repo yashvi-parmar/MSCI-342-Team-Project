@@ -34,12 +34,12 @@ const theme = createTheme({
     root: {
       body: {
         backgroundColor: "#000000",
-        opacity: opacityValue,
+        opacity: 0.75,
         overflow: "hidden",
       },
     },
     mainMessage: {
-      opacity: opacityValue,
+      opacity: 0.75,
     },
   
     mainMessageContainer: {
@@ -53,7 +53,7 @@ const theme = createTheme({
       overflow: "hidden",
     },
     message: {
-      opacity: opacityValue,
+      opacity: 0.75,
       maxWidth: 250,
       paddingBottom: theme.spacing(2),
     },
