@@ -104,8 +104,10 @@ function UseSavedDestination() {
 
 
   return (
+    
     <div style={{fontColor: '#E6CCB2'}} >
-      <Button onClick={handleClickOpen}><p style={{color: 'white'}} >Use Saved Destination</p></Button>
+    <p></p>
+    <Button onClick={handleClickOpen} type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained">Use Saved Destination</Button>
       <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
         <DialogTitle>Select a Saved Destination</DialogTitle>
         <DialogContent>
@@ -188,10 +190,8 @@ function SaveDestination() {
 
   return (
     <div>
-      
-    <Button onClick={handleClickOpen}>
-    <p style={{color: 'white'}} >Save a Destination</p>
-    </Button>
+    <p></p>
+    <Button onClick={handleClickOpen} type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained">Save a Destination</Button>
     <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Set a Destination</DialogTitle>
         <DialogContent>
@@ -389,6 +389,44 @@ const handleAutocompleteLoad = (autocomplete) => {
 
   return (
     <grid>
+<Grid >
+  <Grid align='center'>
+  </Grid>      
+<LoadScript
+  googleMapsApiKey = {apiKey}
+  onLoad={handleLoad}
+  libraries={['places']}
+>   
+  <FormControl onSubmit={handleSubmit}>
+  <form>
+    <FormLabel htmlFor="destination"></FormLabel>
+    <Autocomplete 
+      onLoad={handleAutocompleteLoad} 
+      onPlaceChanged={() => handlePlaceSelect(autocomplete.getPlace())}
+      options={{ componentRestrictions: { country: "ca" } }}
+    >
+    <TextField
+      id="destination"
+      type="text"
+      placeholder="Destination"
+      style={{ width: '400px', backgroundColor: 'white'}}
+      value={destination}
+      onChange={(e) => setDestination(e.target.value)}
+    />
+    </Autocomplete>
+    <p></p>
+    <Button type='submit' variant="contained" style={{color: 'white', backgroundColor: '#2E5129'}} fullWidth>Go</Button>
+  </form>
+  </FormControl>
+  <Grid container={2}> 
+    <SaveDestination/>  
+    <UseSavedDestination/>     
+  </Grid>
+  <GoogleMap
+    mapContainerStyle={containerStyle}
+    center={{lat: lat, lng: lng}}
+    zoom={16}
+  >
     <Grid >
       <Grid align='center'>
       </Grid>      
@@ -419,7 +457,6 @@ const handleAutocompleteLoad = (autocomplete) => {
         center={{lat: lat, lng: lng}}
         zoom={16}
       >
-       \
 
 {unsafetext.map(item => (
       <InfoBox
@@ -463,7 +500,7 @@ const handleAutocompleteLoad = (autocomplete) => {
       </div>
     </InfoBox>
     ))}
-        {showedT ? <TrafficLayer onLoad={onLoad} /> : null}
+        {!showedT ? <TrafficLayer onLoad={onLoad} /> : null}
     
    {unsafelocations.map(item => (
       <Circle options={options} center={{lat: item.lat, lng: item.lng}}></Circle>
@@ -481,13 +518,13 @@ const handleAutocompleteLoad = (autocomplete) => {
     <Grid style={{paddingTop: '1vh', display: 'flex'}}> 
     
         <h5 style={{marginLeft: '0px', marginTop: '10px', color: 'white'}} onClick={()=> setShowed(!showed)}>{showed ? 'Show' : 'Hide' } Marked Locations</h5> 
-        <Switch {...label} color="warning" style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowed(!showed)}>{showed ? 'Show' : 'Hide' }</Switch>
+        <Switch {...label} color="success" style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowed(!showed)}>{showed ? 'Show' : 'Hide' }</Switch>
         <p></p>
         <h5 style={{marginLeft: '0px', marginTop: '10px', color: 'white'}} onClick={()=> setShowedF(!showedF)}>{showedF ? 'Show' : 'Hide' } Friends</h5>
-        <Switch {...label} color="warning" style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowedF(!showedF)}>{showedF ? 'Show' : 'Hide' } Friends</Switch>
+        <Switch {...label} color="success" style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowedF(!showedF)}>{showedF ? 'Show' : 'Hide' } Friends</Switch>
         <p></p>
         <h5 style={{marginLeft: '0px', marginTop: '10px', color: 'white'}} onClick={()=> setShowedT(!showedT)}>{showedT ? 'Show' : 'Hide' } Traffic</h5>
-        <Switch {...label} color="warning" style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowedT(!showedT)}>{showedT ? 'Show' : 'Hide' } Traffic</Switch>
+        <Switch {...label} color="success" style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowedT(!showedT)}>{showedT ? 'Show' : 'Hide' } Traffic</Switch>
       </Grid>
       <p></p>
       <Grid container={2} display='flex'> 
