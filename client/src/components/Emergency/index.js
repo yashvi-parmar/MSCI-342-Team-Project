@@ -18,7 +18,7 @@ import Navbar from '../NavBar';
 const cardStyle={padding :30, height:'60vh',width:380, marginTop: "30px", margin:"20px auto"}
 const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
 const textStyle={marginBottom: '8px'}
-
+const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
 
 function Emergency() {
 

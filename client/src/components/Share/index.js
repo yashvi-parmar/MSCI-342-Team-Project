@@ -16,7 +16,7 @@ import { useTheme } from '@material-ui/styles';
 import { Box } from '@material-ui/core';
 import ReactDOM from "react-dom";
 import App from "./App";
-
+const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
 
 const fetch = require("node-fetch");
 const paperStyle={padding :20,height:'70vh',width:280, margin:"20px auto"}
