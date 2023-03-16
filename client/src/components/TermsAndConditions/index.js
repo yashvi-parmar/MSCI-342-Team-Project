@@ -14,6 +14,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import SignIn from '../SignIn'
 import { BrowserRouter,Switch,Route} from 'react-router-dom';
 import Navbar from '../NavBar';
+const opacityValue = 10;
 
 const theme = createTheme({
     palette: {
