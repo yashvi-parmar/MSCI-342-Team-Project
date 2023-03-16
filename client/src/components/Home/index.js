@@ -159,6 +159,9 @@ class Home extends Component {
             {this.state.mode === 0 ? (
               <React.Fragment>
                 Welcome!
+                <Link href="/CreateAccount" style={{color: 'black'}}>
+                        Create an Account 
+                </Link>
               </React.Fragment>
             ) : (
               <React.Fragment>
@@ -189,6 +192,9 @@ class Home extends Component {
             className={classes.paper}
           >
             {mainMessage}
+            <Link href="/CreateAccount" style={{color: 'black'}}>
+                        Create an Account 
+                </Link>
           </Paper>
 
         </div>
