@@ -66,8 +66,8 @@ const styles = theme => ({
   },
 
   mainMessageContainer: {
-    marginTop: "10vh",
-    marginLeft: theme.spacing(10),
+    marginTop: "5vh",
+    marginLeft: theme.spacing(20),
     [theme.breakpoints.down('xs')]: {
       marginLeft: theme.spacing(4),
     },
@@ -83,13 +83,57 @@ const styles = theme => ({
 
 });
 
+class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userID: 1,
+      mode: 0
+    }
+  };
 
-const Home = () => {
- 
+  componentDidMount() {
+    //this.loadUserSettings();
+  }
 
-  return (
-    <div> 
-      <Navbar></Navbar>
+
+  loadUserSettings() {
+    this.callApiLoadUserSettings()
+      .then(res => {
+        //console.log("loadUserSettings returned: ", res)
+        var parsed = JSON.parse(res.express);
+        console.log("loadUserSettings parsed: ", parsed[0].mode)
+        this.setState({ mode: parsed[0].mode });
+      });
+  }
+
+  callApiLoadUserSettings = async () => {
+    const url = serverURL + "/api/loadUserSettings";
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+      body: JSON.stringify({
+        userID: this.state.userID
+      })
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    console.log("User settings: ", body);
+    return body;
+  }
+
+  render() {
+    const { classes } = this.props;
+
+
+
+    const mainMessage = (
+      <Grid>
+          <Navbar></Navbar>
 
       <Grid
         container
@@ -97,30 +141,66 @@ const Home = () => {
         direction="column"
         justify="flex-start"
         alignItems="flex-start"
-        style={{minHeight: '100%' , backgroundColor: '#6F4E37'}}
+        style={{ minHeight: '100vh' }}
+        className={classes.mainMessageContainer}
       >
-        <div style={{marginLeft: '35%', marginTop: '5%'}}>
-          <img src={BarkLogo} alt="Bark Logo" style={{ width: '40%', }}/>
+
+        <div style={{ margin: '100px' }}>
+          <img src={BarkLogo} alt="Bark Logo" style={{ width: '400px', }}/>
         </div>
 
-        <div style={{marginLeft:'45%'}}>
-          <br></br>
-          <h1 style={{color: 'white'}}>Welcome!</h1>
-        </div>
+        <Grid item>
 
-        <div style={{marginLeft:'20%', marginRight:'20%'}}>
-          <h2 style={{color: 'white'}}>For many, walking home after nightfall can be a scary experience. Bark is an app created to be a system to help users safer and more protected when walking home alone at night. We aim to empower people to navigate the city of Waterloo with confidence by knowing that the routes they are taking to get to their destination are the safest ones available. Our system will be geared towards communities and peoples that may feel unsafe walking alone.</h2>
-          <br></br>
-        </div>
-
+          <Typography
+            variant={"h3"}
+            className={classes.mainMessage}
+            align="flex-start"
+          >
+            {this.state.mode === 0 ? (
+              <React.Fragment>
+                Welcome!
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                Bye!
+              </React.Fragment>
+            )}
+          </Typography>
+        </Grid>
       </Grid>
-        
-    </div>     
-  )
-};
+      </Grid>
+    )
+
+    return (
+     
+      <MuiThemeProvider theme={theme}>
+        <Box
+       sx={{
+         height: '100vh',
+         opacity: opacityValue,
+         overflow: "hidden",
+         backgroundColor: theme.palette.background.default,
+ 
+       }}
+     >
+        <div className={classes.root}>
+          <CssBaseline />
+          <Paper
+            className={classes.paper}
+          >
+            {mainMessage}
+          </Paper>
+
+        </div>
+        </Box>
+      </MuiThemeProvider>
+      
+    );
+  }
+}
 
 Home.propTypes = {
-classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired
 };
 
-export default Home;
+export default withStyles(styles)(Home);
