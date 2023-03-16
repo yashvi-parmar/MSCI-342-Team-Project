@@ -541,6 +541,6 @@ const handleAutocompleteLoad = (autocomplete) => {
 
 }
 
-}
+
 
 
