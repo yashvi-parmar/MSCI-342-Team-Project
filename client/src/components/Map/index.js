@@ -18,7 +18,6 @@ import history from '../Navigation/history';
 import Navbar from '../NavBar';
 import Switch from '@mui/material/Switch';
 import useMediaQuery from '@mui/material/useMediaQuery';
-
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -417,6 +416,31 @@ const handleAutocompleteLoad = (autocomplete) => {
   setAutocomplete(autocomplete);
 };
 
+  const [open, setOpen] = React.useState(false);
+  const [emergencyContactsOption,setEmergencyContactsOption]=React.useState("");
+  const [showTextField, setShowTextField] = useState(false);
+  const [showEmergencyContact,setShowEmergencyContact]= useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleChange = (event) => {
+    setEmergencyContactsOption(event.target.value);
+    setShowTextField(event.target.value === "Add emergency contacts");
+    setShowEmergencyContact(event.target.value === "View emergency contacts");
+  };
+
+  const emergencyContacts = [
+    {name: "Joanna Hayburt", phoneNumber: "647-724-3423"}, 
+    {name: "Pam Albert", phoneNumber: "647-711-3111"}, 
+  ]
+
+
   return (
     <grid>
     <Grid >
@@ -521,8 +545,46 @@ const handleAutocompleteLoad = (autocomplete) => {
       </Grid>
       <p></p>
       <Grid container={2} display='flex'> 
-      <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained">Emergency Contacts</Button>
+      <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained" onClick = {handleClickOpen}>Emergency Contacts</Button>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Emergency Contacts</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            What would you like to do?
+          </DialogContentText>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={emergencyContactsOption}
+            label="Emergency Contact"
+            autoWidth
+            onChange={handleChange}
+          >
+            <MenuItem value={"View emergency contacts"}> View emergency contacts </MenuItem>
+            <br></br>
+            <MenuItem value={"Add emergency contacts"}> Add emergency contacts </MenuItem>
+          </Select>
+          {showTextField && (
+            <AddEmergencyContactForm/>
+          )}
+          {showEmergencyContact && 
+            emergencyContacts.map(data => {
+              return (
+                <div key={data.id}>
+                  <li>Name: {data.name}</li>
+                  <li>Phone Number: {data.phoneNumber}</li>
+                  <br />
+                </div>
+              );
+            })
+          }
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+        </DialogActions>
+      </Dialog>
       <p></p>
+
       <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px',  marginBottom: '15px'}} variant="contained" >Fake Phone Call</Button>
       </Grid> 
       <Grid container={2} display='flex'> 
@@ -540,6 +602,69 @@ const handleAutocompleteLoad = (autocomplete) => {
   );
 
 }
+
+const AddEmergencyContactForm = () => {
+  const [name, setName] = React.useState('');
+  const [phoneNumber, setPhoneNumber] = React.useState('');
+  const [submissionCheck, setSubmissionCheck]=React.useState(false)
+  const [submissionValidation,setSubmissionValidation] = React.useState(false);
+
+  const handlePhoneNumber = (phoneNumber) => {
+    setPhoneNumber(phoneNumber);
+  };
+
+  const handlePhoneNumberInput = (event) => {
+    handlePhoneNumber(event.target.value)
+ }
+ 
+  const handleName = (name) => {
+   setName(name);
+ };
+
+ const handleNameInput = (event) => {
+    handleName(event.target.value)
+ }
+  
+  
+  
+ const handleSubmissionCheck = (event) =>{
+    setSubmissionCheck(true);
+  }
+  const handleSubmissionValidation = (event) => {
+    event.preventDefault();
+    if(phoneNumber !== '' && name !==''){
+      setName('');
+      setPhoneNumber('');
+      setSubmissionValidation(true);
+      setSubmissionCheck(false);
+    }
+  };
+
+
+  return (
+      <Grid>
+                <FormControl>
+           <form autoComplete='off' onSubmit={handleSubmissionValidation}>
+              <br></br>
+                <TextField style={textStyle} label='Name' placeholder='Enter name' variant="outlined" value={name} onChange = {handleNameInput} />
+                  {
+                    name === '' && submissionCheck ===true ? (
+                    <div><em style={{color:'red'}}>*Please enter your emergency contact's name!</em></div>) : (<div></div>)
+                  }
+  
+                <TextField style={textStyle} label='Phonenumber' placeholder='Enter phone number' variant="outlined" value = {phoneNumber} onChange={handlePhoneNumberInput} fullWidth />
+                {
+                    phoneNumber === '' && submissionCheck ===true ? (
+                    <div><em style={{color:'red'}}>*Please enter your emergency contact's phone number!</em></div>) : (<div></div>)
+                  }
+                
+                <Button type='submit' variant="contained" style={buttonStyle} fullWidth  onClick={handleSubmissionCheck} >ADD EMERGENCY CONTACT</Button>
+                </form>
+             </FormControl> 
+        </Grid>
+  );
+}
+
 
 
 
