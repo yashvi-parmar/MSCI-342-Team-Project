@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-/*import React, { Component } from 'react';
-=======
 import React, { Component, useState } from 'react';
->>>>>>> 06e136691673c2d9162c0c084444aa58cbeaf8fd
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -21,12 +17,7 @@ const cardStyle={padding :30, height:'60vh',width:280, marginTop: "30px", margin
 
 const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
 const textStyle={marginBottom: '8px'}
-<<<<<<< HEAD
-const serverURL = ""
-//"http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
-=======
 const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046";
->>>>>>> 06e136691673c2d9162c0c084444aa58cbeaf8fd
 
 function SignIn() {
 
@@ -109,7 +100,7 @@ function SignIn() {
 }
 
 export default SignIn;
-*/
+
 
 
 
