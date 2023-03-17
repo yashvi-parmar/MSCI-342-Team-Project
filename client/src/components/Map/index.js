@@ -485,7 +485,7 @@ const handleAutocompleteLoad = (autocomplete) => {
     mapContainerStyle={containerStyle}
     center={{lat: lat, lng: lng}}
     zoom={16}
-  >
+  />
     <Grid >
       <Grid align='center'>
       </Grid>      
@@ -507,6 +507,9 @@ const handleAutocompleteLoad = (autocomplete) => {
         <Button type='submit' variant="contained" style={{color: 'white', backgroundColor: '#2E5129'}} fullWidth>Go</Button>
       </form>
       </FormControl>
+      </LoadScript>
+      </Grid>
+      
       <Grid container={2}> 
         <SaveDestination/>  
         <UseSavedDestination/>     
@@ -573,7 +576,7 @@ const handleAutocompleteLoad = (autocomplete) => {
       </GoogleMap>
       
    
-    </LoadScript> 
+  
     <Grid style={{paddingTop: '1vh', display: 'flex'}}> 
     
         <h5 style={{marginLeft: '0px', marginTop: '10px', color: 'white'}} onClick={()=> setShowed(!showed)}>{showed ? 'Show' : 'Hide' } Marked Locations</h5> 
