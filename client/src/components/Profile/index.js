@@ -15,7 +15,12 @@ import SignIn from '../SignIn'
 import { BrowserRouter,Switch,Route} from 'react-router-dom';
 import Navbar from '../NavBar';
 
+import BarkButton from '../BarkButton';
+
+
+
 const opacityValue = 10;
+
 const cardStyle={padding :30, height:'60vh',width:380, marginTop: "30px", margin:"20px auto"}
 const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
 const textStyle={marginBottom: '8px'}
@@ -66,10 +71,19 @@ const theme = createTheme({
   
   });
 
+function LetterAvatars() {
+    return (
+      <div>
+        <Avatar style={{backgroundColor: '#EBD6C1', color: '#B08968', width: '35vh', height: '35vh', fontSize: '20vh'}}>VP</Avatar>
+      </div>
+    );
+  }
+
 function Profile() {
     return (
         <div> 
           <Navbar></Navbar>
+          <BarkButton></BarkButton>
 
           <Grid
             container
@@ -79,8 +93,9 @@ function Profile() {
             alignItems="flex-start"
             style={{backgroundColor: '#6F4E37', padding: '4vh'}}
           >
-            <h3>Your profile</h3>
+            <h3 style={{color:'white'}}>Your profile</h3>
 
+            <LetterAvatars/>
 
           </Grid>
         </div>     

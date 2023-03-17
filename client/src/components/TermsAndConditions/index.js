@@ -1,20 +1,12 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import CssBaseline from "@material-ui/core/CssBaseline";
 import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import Box from '@material-ui/core/Box';
-import {Avatar, TextField, Button, Link } from '@material-ui/core'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import SignIn from '../SignIn'
-import { BrowserRouter,Switch,Route} from 'react-router-dom';
 import Navbar from '../NavBar';
+
+import BarkButton from '../BarkButton';
+
 const opacityValue = 10;
+
 
 const theme = createTheme({
     palette: {
@@ -61,10 +53,11 @@ const theme = createTheme({
   
   });
 
-function Profile() {
+function TermsAndConditions() {
     return (
         <div> 
           <Navbar></Navbar>
+          <BarkButton></BarkButton>
 
           <Grid
             container
@@ -102,4 +95,4 @@ function Profile() {
       )
 }
 
-export default Profile;
+export default TermsAndConditions;

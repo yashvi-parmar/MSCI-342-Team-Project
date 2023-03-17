@@ -18,7 +18,6 @@ import history from '../Navigation/history';
 import Navbar from '../NavBar';
 import Switch from '@mui/material/Switch';
 import useMediaQuery from '@mui/material/useMediaQuery';
-
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -49,7 +48,7 @@ const containerStyle = {
   height: '500px',
   display: 'flex'
 };
-const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
+const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046";
 
 const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 
@@ -104,8 +103,10 @@ function UseSavedDestination() {
 
 
   return (
+    
     <div style={{fontColor: '#E6CCB2'}} >
-      <Button onClick={handleClickOpen}><p style={{color: 'white'}} >Use Saved Destination</p></Button>
+    <p></p>
+    <Button onClick={handleClickOpen} type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained">Use Saved Destination</Button>
       <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
         <DialogTitle>Select a Saved Destination</DialogTitle>
         <DialogContent>
@@ -188,10 +189,8 @@ function SaveDestination() {
 
   return (
     <div>
-      
-    <Button onClick={handleClickOpen}>
-    <p style={{color: 'white'}} >Save a Destination</p>
-    </Button>
+    <p></p>
+    <Button onClick={handleClickOpen} type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained">Save a Destination</Button>
     <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Set a Destination</DialogTitle>
         <DialogContent>
@@ -254,6 +253,36 @@ function MapFxn() {
       },
     );
   }, []);
+
+  let [alerts,setAlerts]=React.useState([]);
+
+  useEffect(() => {
+    loadApiGetAlerts();
+  }, []);
+
+  const loadApiGetAlerts =() => {
+    callGetAlerts()
+      .then(res => {
+        setAlerts(res.alertData);
+      });
+  }
+
+  const callGetAlerts = async() => {
+    
+    //console.log('t',url)
+    const url = serverURL + "/api/getAlerts";
+    console.log(url)
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+    });
+    const body =await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
 
   const handleLoad = (map) => {
     const directionsServiceOptions = {
@@ -362,7 +391,7 @@ const safetext = [
 ];
 
 const unsafetext = [
-  {id: 1, lat: 43.472120, lng:-80.543550, text: "Avoid due to a broken streetlight"}, 
+  {id: 1, lat: 43.472120, lng0:-80.54355, text: "Avoid due to a broken streetlight"}, 
   {id: 2, lat: 43.472118, lng:-80.563546, text: "Avoid due to flooding"}, 
 ]
 
@@ -387,8 +416,76 @@ const handleAutocompleteLoad = (autocomplete) => {
   setAutocomplete(autocomplete);
 };
 
+  const [open, setOpen] = React.useState(false);
+  const [emergencyContactsOption,setEmergencyContactsOption]=React.useState("");
+  const [showTextField, setShowTextField] = useState(false);
+  const [showEmergencyContact,setShowEmergencyContact]= useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleChange = (event) => {
+    setEmergencyContactsOption(event.target.value);
+    setShowTextField(event.target.value === "Add emergency contacts");
+    setShowEmergencyContact(event.target.value === "View emergency contacts");
+  };
+
+  const emergencyContacts = [
+    {name: "Joanna Hayburt", phoneNumber: "647-724-3423"}, 
+    {name: "Pam Albert", phoneNumber: "647-711-3111"}, 
+  ]
+
+
   return (
-    <grid>
+    
+<Grid >
+  <Grid align='center'>
+  </Grid>      
+<LoadScript
+  googleMapsApiKey = {apiKey}
+  onLoad={handleLoad}
+  libraries={['places']}
+>   
+  <FormControl onSubmit={handleSubmit}>
+  <form>
+    <FormLabel htmlFor="destination"></FormLabel>
+    <Autocomplete 
+      onLoad={handleAutocompleteLoad} 
+      onPlaceChanged={() => handlePlaceSelect(autocomplete.getPlace())}
+      options={{ componentRestrictions: { country: "ca" } }}
+    >
+    <TextField
+      id="destination"
+      type="text"
+      placeholder="Destination"
+      style={{ width: '400px', backgroundColor: 'white'}}
+      value={destination}
+      onChange={(e) => setDestination(e.target.value)}
+    />
+    </Autocomplete>
+    <p></p>
+    <Button type='submit' variant="contained" style={{color: 'white', backgroundColor: '#2E5129'}} fullWidth>Go</Button>
+  </form>
+  </FormControl>
+  </LoadScript>
+  <Grid container={2}> 
+    <SaveDestination/>  
+    <UseSavedDestination/>     
+  </Grid>
+
+
+
+
+  <GoogleMap
+    mapContainerStyle={containerStyle}
+    center={{lat: lat, lng: lng}}
+    zoom={16}
+  >
     <Grid >
       <Grid align='center'>
       </Grid>      
@@ -419,9 +516,8 @@ const handleAutocompleteLoad = (autocomplete) => {
         center={{lat: lat, lng: lng}}
         zoom={16}
       >
-       \
 
-{unsafetext.map(item => (
+{alerts.map(item => (
       <InfoBox
       onLoad={onLoadInfo}
       options={options3}
@@ -463,7 +559,7 @@ const handleAutocompleteLoad = (autocomplete) => {
       </div>
     </InfoBox>
     ))}
-        {showedT ? <TrafficLayer onLoad={onLoad} /> : null}
+        {!showedT ? <TrafficLayer onLoad={onLoad} /> : null}
     
    {unsafelocations.map(item => (
       <Circle options={options} center={{lat: item.lat, lng: item.lng}}></Circle>
@@ -481,18 +577,56 @@ const handleAutocompleteLoad = (autocomplete) => {
     <Grid style={{paddingTop: '1vh', display: 'flex'}}> 
     
         <h5 style={{marginLeft: '0px', marginTop: '10px', color: 'white'}} onClick={()=> setShowed(!showed)}>{showed ? 'Show' : 'Hide' } Marked Locations</h5> 
-        <Switch {...label} color="warning" style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowed(!showed)}>{showed ? 'Show' : 'Hide' }</Switch>
+        <Switch {...label} color="success" style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowed(!showed)}>{showed ? 'Show' : 'Hide' }</Switch>
         <p></p>
         <h5 style={{marginLeft: '0px', marginTop: '10px', color: 'white'}} onClick={()=> setShowedF(!showedF)}>{showedF ? 'Show' : 'Hide' } Friends</h5>
-        <Switch {...label} color="warning" style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowedF(!showedF)}>{showedF ? 'Show' : 'Hide' } Friends</Switch>
+        <Switch {...label} color="success" style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowedF(!showedF)}>{showedF ? 'Show' : 'Hide' } Friends</Switch>
         <p></p>
         <h5 style={{marginLeft: '0px', marginTop: '10px', color: 'white'}} onClick={()=> setShowedT(!showedT)}>{showedT ? 'Show' : 'Hide' } Traffic</h5>
-        <Switch {...label} color="warning" style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowedT(!showedT)}>{showedT ? 'Show' : 'Hide' } Traffic</Switch>
+        <Switch {...label} color="success" style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowedT(!showedT)}>{showedT ? 'Show' : 'Hide' } Traffic</Switch>
       </Grid>
       <p></p>
       <Grid container={2} display='flex'> 
-      <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained">Emergency Contacts</Button>
+      <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained" onClick = {handleClickOpen}>Emergency Contacts</Button>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Emergency Contacts</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            What would you like to do?
+          </DialogContentText>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={emergencyContactsOption}
+            label="Emergency Contact"
+            autoWidth
+            onChange={handleChange}
+          >
+            <MenuItem value={"View emergency contacts"}> View emergency contacts </MenuItem>
+            <br></br>
+            <MenuItem value={"Add emergency contacts"}> Add emergency contacts </MenuItem>
+          </Select>
+          {showTextField && (
+            <AddEmergencyContactForm/>
+          )}
+          {showEmergencyContact && 
+            emergencyContacts.map(data => {
+              return (
+                <div key={data.id}>
+                  <li>Name: {data.name}</li>
+                  <li>Phone Number: {data.phoneNumber}</li>
+                  <br />
+                </div>
+              );
+            })
+          }
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+        </DialogActions>
+      </Dialog>
       <p></p>
+
       <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px',  marginBottom: '15px'}} variant="contained" >Fake Phone Call</Button>
       </Grid> 
       <Grid container={2} display='flex'> 
@@ -505,12 +639,70 @@ const handleAutocompleteLoad = (autocomplete) => {
       <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px',  marginBottom: '15px'}} variant="contained" >Notify Friends of Arrival</Button>
        </Grid>
     </Grid>
-    </grid>
+   
 
   );
 
 }
 
+const AddEmergencyContactForm = () => {
+  const [name, setName] = React.useState('');
+  const [phoneNumber, setPhoneNumber] = React.useState('');
+  const [submissionCheck, setSubmissionCheck]=React.useState(false)
+  const [submissionValidation,setSubmissionValidation] = React.useState(false);
+
+  const handlePhoneNumber = (phoneNumber) => {
+    setPhoneNumber(phoneNumber);
+  };
+
+  const handlePhoneNumberInput = (event) => {
+    handlePhoneNumber(event.target.value)
+ }
+ 
+  const handleName = (name) => {
+   setName(name);
+ };
+
+ const handleNameInput = (event) => {
+    handleName(event.target.value)
+ }
+  
+  
+  
+ const handleSubmissionCheck = (event) =>{
+    setSubmissionCheck(true);
+  }
+  const handleSubmissionValidation = (event) => {
+    event.preventDefault();
+    if(phoneNumber !== '' && name !==''){
+      setName('');
+      setPhoneNumber('');
+      setSubmissionValidation(true);
+      setSubmissionCheck(false);
+    }
+  };
 
 
-
+  return (
+      <Grid>
+                <FormControl>
+           <form autoComplete='off' onSubmit={handleSubmissionValidation}>
+              <br></br>
+                <TextField style={textStyle} label='Name' placeholder='Enter name' variant="outlined" value={name} onChange = {handleNameInput} />
+                  {
+                    name === '' && submissionCheck ===true ? (
+                    <div><em style={{color:'red'}}>*Please enter your emergency contact's name!</em></div>) : (<div></div>)
+                  }
+  
+                <TextField style={textStyle} label='Phonenumber' placeholder='Enter phone number' variant="outlined" value = {phoneNumber} onChange={handlePhoneNumberInput} fullWidth />
+                {
+                    phoneNumber === '' && submissionCheck ===true ? (
+                    <div><em style={{color:'red'}}>*Please enter your emergency contact's phone number!</em></div>) : (<div></div>)
+                  }
+                
+                <Button type='submit' variant="contained" style={buttonStyle} fullWidth  onClick={handleSubmissionCheck} >ADD EMERGENCY CONTACT</Button>
+                </form>
+             </FormControl> 
+        </Grid>
+  );
+}

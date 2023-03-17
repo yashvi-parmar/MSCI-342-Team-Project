@@ -97,6 +97,7 @@ export default function PersistentDrawerLeft() {
           <Typography variant="h6" noWrap component="div" color='white'>
             Bark
           </Typography>
+          
         </Toolbar>
       </AppBar>
       <Drawer

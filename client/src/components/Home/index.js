@@ -17,6 +17,9 @@ import { Box } from '@material-ui/core';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import BarkLogo from './BarkLogo.jpg';
+import BarkButton from '../BarkButton';
+
+
 
 
 
@@ -83,14 +86,11 @@ const styles = theme => ({
 
 });
 
-
 const Home = () => {
- 
-
   return (
     <div> 
       <Navbar></Navbar>
-
+      <BarkButton></BarkButton>
       <Grid
         container
         spacing={0}
@@ -109,9 +109,11 @@ const Home = () => {
         </div>
 
         <div style={{marginLeft:'20%', marginRight:'20%'}}>
-          <h2 style={{color: 'white'}}>For many, walking home after nightfall can be a scary experience. Bark is an app created to be a system to help users safer and more protected when walking home alone at night. We aim to empower people to navigate the city of Waterloo with confidence by knowing that the routes they are taking to get to their destination are the safest ones available. Our system will be geared towards communities and peoples that may feel unsafe walking alone.</h2>
+          <h2 align='justify' style={{color: 'white'}}>For many, walking home after nightfall can be a scary experience. Bark is an app created to be a system to help users safer and more protected when walking home alone at night. We aim to empower people to navigate the city of Waterloo with confidence by knowing that the routes they are taking to get to their destination are the safest ones available. Our system will be geared towards communities and peoples that may feel unsafe walking alone.</h2>
           <br></br>
         </div>
+
+        <BarkButton/>
 
       </Grid>
         
