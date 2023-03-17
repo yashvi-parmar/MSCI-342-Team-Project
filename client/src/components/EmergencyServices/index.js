@@ -1,4 +1,3 @@
-\
 import React, { Component } from 'react';
 import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
