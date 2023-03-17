@@ -1,33 +1,16 @@
 import React, { Component, useEffect } from 'react';
 import {createTheme, ThemeProvider, styled} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import { Select } from '@material-ui/core';
-import { InputLabel } from '@material-ui/core';
-import { MenuItem } from '@material-ui/core';
-import { FormHelperText } from '@material-ui/core';
-import {makeStyles} from "@material-ui/core/styles";
 import { Box } from '@material-ui/core';
 import { TextField } from '@material-ui/core';
 import Grid from "@material-ui/core/Grid";
-import Radio from '@material-ui/core/Radio';
 import { FormControl, FormLabel, RadioGroup, FormControlLabel } from '@material-ui/core';
 import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import Paper from "@material-ui/core/Paper";
-import { withStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
-import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-//import ListItemButton from '@material-ui/core/ListItemButton';
-import history from '../Navigation/history';
-//import ListItemButton from '@mui/material/ListItemButton'
-import ListItemText from '@material-ui/core/ListItemText';
-import MenuIcon from "@material-ui/core/Menu";
-import Toolbar from '@material-ui/core/Toolbar';
 import Navbar from '../NavBar';
+import BarkButton from '../BarkButton';
+
+
 const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
 //Dev mode
 //const serverURL = "";
@@ -277,6 +260,8 @@ const Home = () => {
     return (
       <div> 
         <Navbar></Navbar>
+        <BarkButton></BarkButton>
+        
         <br></br>
         <h1>Submit a Warning</h1>
         <Alerts /> 

@@ -27,3 +27,9 @@ min-height: 30vh;
 padding: 50px;
 }
 
+.sticky-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px;
+}

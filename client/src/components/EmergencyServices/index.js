@@ -1,102 +1,83 @@
-import React, { Component, useState } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import CssBaseline from "@material-ui/core/CssBaseline";
+\
+import React, { Component } from 'react';
 import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import {Avatar, TextField, Button, Link } from '@material-ui/core'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import { FormControl, FormLabel, RadioGroup, FormControlLabel } from '@material-ui/core';
-import Checkbox from '@material-ui/core/Checkbox';
-import CreateAccount from '../CreateAccount'
-import { BrowserRouter,Switch,Route} from 'react-router-dom';
 import Navbar from '../NavBar';
-const cardStyle={padding :30, height:'60vh',width:280, marginTop: "30px", margin:"20px auto"}
+import BarkButton from '../BarkButton';
 
-const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
-const textStyle={marginBottom: '8px'}
-const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046";
-
-function SignIn() {
-
-  const [username, setUsername] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [submissionCheck, setSubmissionCheck]=React.useState(false)
-  const [submissionValidation,setSubmissionValidation] = React.useState(false);
-
-  const handlePassword = (password) => {
-    setPassword(password);
-  };
-
-  const handlePasswordInput = (event) => {
-    handlePassword(event.target.value)
- }
- 
-  const handleUsername = (username) => {
-   setUsername(username);
- };
-
- const handleUsernameInput = (event) => {
-    handleUsername(event.target.value)
- }
+const theme = createTheme({
+    palette: {
+      type: 'light',
+      background: {
+        default: "#042913"
+      },
+      primary: {
+        main: "#b08968",
+      },
+      secondary: {
+        main: "#94b395",
+      },
+    },
+  });
   
+  const styles = theme => ({
+    root: {
+      body: {
+        backgroundColor: "#000000",
+        opacity: opacityValue,
+        overflow: "hidden",
+      },
+    },
+    mainMessage: {
+      opacity: opacityValue,
+    },
   
+    mainMessageContainer: {
+      marginTop: "10vh",
+      marginLeft: theme.spacing(10),
+      [theme.breakpoints.down('xs')]: {
+        marginLeft: theme.spacing(4),
+      },
+    },
+    paper: {
+      overflow: "hidden",
+    },
+    message: {
+      opacity: opacityValue,
+      maxWidth: 250,
+      paddingBottom: theme.spacing(2),
+    },
   
- const handleSubmissionCheck = (event) =>{
-    setSubmissionCheck(true);
-  }
-  const handleSubmissionValidation = (event) => {
-    event.preventDefault();
-    if(password !== '' && username !==''){
-      setUsername('');
-      setPassword('');
-      setSubmissionValidation(true);
-      setSubmissionCheck(false);
-    }
-  };
+  });
+
+function EmergencyServices() {
+    return (
+        <div> 
+          <Navbar></Navbar>
+          <BarkButton></BarkButton>
+
+          <Grid
+            container
+            spacing={0}
+            direction="column"
+            justify="flex-start"
+            alignItems="flex-start"
+            style={{backgroundColor: '#6F4E37', padding: '4vh'}}
+          >
+            <h1 style={{color: 'white'}}>Emergency Serivices</h1>
+            
+            <h3 style={{color: 'white'}}>In the event of an emergency: 9-1-1</h3>
+            <h3 style={{color: 'white'}}>Canadian Coast Guard: 1-800-265-0237</h3>
+
+            <h3 style={{color: 'white'}}>Domestic Abuse Hotline: </h3>
+            <h3 style={{color: 'white'}}>Idk some other number: </h3>
+            <h3 style={{color: 'white'}}>Kids Help Line: 1-800-668-6868</h3>
 
 
-  return (
-    <grid>
-    <Navbar></Navbar>
-    <div className="SignIn">
-  
-      <Grid>
-            <Paper elevation={10} style={cardStyle}>
-                <Grid align='center'>
-                    <div data-testid="foo">Sign In</div>
-                </Grid>
-                <FormControl>
-           <form autoComplete='off' onSubmit={handleSubmissionValidation}>
-                <TextField style={textStyle} label='Username' placeholder='Enter username' variant="outlined" value={username} onChange = {handleUsernameInput} />
-                  {
-                    username === '' && submissionCheck ===true ? (
-                    <div><em style={{color:'red'}}>*Please enter your username!</em></div>) : (<div></div>)
-                  }
-  
-                <TextField style={textStyle} label='Password' placeholder='Enter password' type='password' variant="outlined" value = {password} onChange={handlePasswordInput} fullWidth />
-                {
-                    password === '' && submissionCheck ===true ? (
-                    <div><em style={{color:'red'}}>*Please enter your password!</em></div>) : (<div></div>)
-                  }
-                
-                <Button type='submit' variant="contained" style={buttonStyle} fullWidth  onClick={handleSubmissionCheck} >Sign in</Button>
-                </form>
-             </FormControl> 
-             
-                
-                     <Link href="/CreateAccount" style={{color: 'black'}}>
-                        Create an Account 
-                </Link>
-               
-            </Paper>
-        </Grid>
-       
-    </div>
-    </grid>
-  );
+          </Grid>
+        </div>     
+      )
 }
 
-export default SignIn;
+export default EmergencyServices;
+
