@@ -69,7 +69,7 @@ const theme = createTheme({
 
 function Friends() {
     return (
-        <div> 
+        <Grid style={{backgroundColor: '#6F4E37', height: '100vh'}}> 
           <Navbar></Navbar>
           <BarkButton></BarkButton>
 
@@ -85,7 +85,7 @@ function Friends() {
 
 
           </Grid>
-        </div>     
+        </Grid>     
       )
 }
 

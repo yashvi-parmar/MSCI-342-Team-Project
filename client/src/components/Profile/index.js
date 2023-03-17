@@ -7,17 +7,15 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Box from '@material-ui/core/Box';
-import {Avatar, TextField, Button, Link } from '@material-ui/core'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import SignIn from '../SignIn'
-import { BrowserRouter,Switch,Route} from 'react-router-dom';
+import {Avatar, TextField, Button, Link, CardContent } from '@material-ui/core'
 import Navbar from '../NavBar';
 import BarkButton from '../BarkButton';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import { styled } from '@mui/material/styles';
 
 const cardStyle={padding :30, height:'60vh',width:380, marginTop: "30px", margin:"20px auto"}
-const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
+const buttonStyle={margin:'8px 0', backgroundColor: '#042913', color: 'white'}
 const textStyle={marginBottom: '8px'}
 const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
 
@@ -66,34 +64,43 @@ const theme = createTheme({
   
   });
 
-function LetterAvatars() {
+function Avatars() {
     return (
       <div>
-        <Avatar style={{backgroundColor: '#EBD6C1', color: '#B08968', width: '35vh', height: '35vh', fontSize: '20vh'}}>VP</Avatar>
+        <Avatar style={{backgroundColor: '#EBD6C1', color: '#B08968', width: '35vh', height: '35vh', fontSize: '20vh', left: '20vh', top: '10vh', display: 'flex', justifyContent: 'center'}}>VP</Avatar>
       </div>
     );
-  }
+}
+
+function ProfileCont() {
+  return(
+    <Grid style={{color: 'white', marginLeft: '0vh', marginTop: '15vh'}}>
+      <h3>Name: Vedangi Patel</h3> 
+      <h3>Username: _ve_</h3> 
+      <h3>Email: vedangipatel@gmail.com</h3> 
+      <h3>Phone Number: 0123456789</h3> 
+      <h3>Current Location: insert current location</h3> 
+    </Grid>
+  )
+}
+
 
 function Profile() {
     return (
-        <div> 
+        <Grid style={{backgroundColor: '#6F4E37', height: '100vh'}}> 
           <Navbar></Navbar>
           <BarkButton></BarkButton>
 
-          <Grid
-            container
-            spacing={0}
-            direction="column"
-            justify="flex-start"
-            alignItems="flex-start"
-            style={{backgroundColor: '#6F4E37', padding: '4vh'}}
-          >
-            <h3 style={{color:'white'}}>Your profile</h3>
 
-            <LetterAvatars/>
-
+          <Grid style={{paddingTop: '1vh', display: 'flex'}}>
+          <Grid container={1} display='flex'>
+            <Avatars></Avatars>
           </Grid>
-        </div>     
+          <Grid container={1} display='flex' style={{marginLeft: '0vh'}}>
+            <ProfileCont></ProfileCont>
+          </Grid>
+          </Grid>
+        </Grid>     
       )
 }
 
