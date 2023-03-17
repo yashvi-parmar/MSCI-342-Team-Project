@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Navbar from '../NavBar';
+
 import BarkButton from '../BarkButton';
+
+const opacityValue = 10;
+
 
 const theme = createTheme({
     palette: {
