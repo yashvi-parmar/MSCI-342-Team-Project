@@ -9,10 +9,15 @@ import Paper from "@material-ui/core/Paper";
 import Box from '@material-ui/core/Box';
 import {Avatar, TextField, Button, Link, CardContent } from '@material-ui/core'
 import Navbar from '../NavBar';
+
 import BarkButton from '../BarkButton';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import { styled } from '@mui/material/styles';
+
+
+
+const opacityValue = 10;
 
 const cardStyle={padding :30, height:'60vh',width:380, marginTop: "30px", margin:"20px auto"}
 const buttonStyle={margin:'8px 0', backgroundColor: '#042913', color: 'white'}

@@ -18,7 +18,7 @@ import history from '../Navigation/history';
 import Navbar from '../NavBar';
 import Switch from '@mui/material/Switch';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import {Input} from '@material-ui/core';
+
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -39,7 +39,7 @@ import { HeatmapLayer } from '@react-google-maps/api';
 import { Circle } from '@react-google-maps/api';
 import { InfoBox } from '@react-google-maps/api';
 import { InfoWindow } from '@react-google-maps/api';
-import { RemoveShoppingCartRounded, WindowSharp } from '@mui/icons-material';
+import { RemoveShoppingCartRounded } from '@mui/icons-material';
 import dogBark from "./assets/dogBark.wav"
 const textStyle={marginBottom: '8px', color: 'white'}
 const buttonStyle={margin:'8px 0', backgroundColor: '#2E5129', fontColor: 'white'}
@@ -49,7 +49,7 @@ const containerStyle = {
   height: '500px',
   display: 'flex'
 };
-const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
+const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046";
 
 const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 
@@ -104,8 +104,10 @@ function UseSavedDestination() {
 
 
   return (
+    
     <div style={{fontColor: '#E6CCB2'}} >
-      <Button onClick={handleClickOpen}><p style={{color: 'white'}} >Use Saved Destination</p></Button>
+    <p></p>
+    <Button onClick={handleClickOpen} type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained">Use Saved Destination</Button>
       <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
         <DialogTitle>Select a Saved Destination</DialogTitle>
         <DialogContent>
@@ -188,15 +190,13 @@ function SaveDestination() {
 
   return (
     <div>
-      
-    <Button onClick={handleClickOpen}>
-    <p style={{color: 'white'}} >Save a Destination</p>
-    </Button>
+    <p></p>
+    <Button onClick={handleClickOpen} type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained">Save a Destination</Button>
     <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Set a Destination</DialogTitle>
         <DialogContent>
           <FormControl>
-          <form autoComplete='off'>
+          <form>
              <AddressinForm handleAddress={handleAddress} address={address}/>
              <br></br>
              <br></br>
@@ -255,6 +255,36 @@ function MapFxn() {
     );
   }, []);
 
+  let [alerts,setAlerts]=React.useState([]);
+
+  useEffect(() => {
+    loadApiGetAlerts();
+  }, []);
+
+  const loadApiGetAlerts =() => {
+    callGetAlerts()
+      .then(res => {
+        setAlerts(res.alertData);
+      });
+  }
+
+  const callGetAlerts = async() => {
+    
+    //console.log('t',url)
+    const url = serverURL + "/api/getAlerts";
+    console.log(url)
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+    });
+    const body =await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
+
   const handleLoad = (map) => {
     const directionsServiceOptions = {
       origin: origin,
@@ -264,7 +294,6 @@ function MapFxn() {
 
     const directionsService = new window.google.maps.DirectionsService();
     directionsService.route(directionsServiceOptions, directionsCallback);
-
   };
 
   
@@ -363,7 +392,7 @@ const safetext = [
 ];
 
 const unsafetext = [
-  {id: 1, lat: 43.472120, lng:-80.543550, text: "Avoid due to a broken streetlight"}, 
+  {id: 1, lat: 43.472120, lng0:-80.54355, text: "Avoid due to a broken streetlight"}, 
   {id: 2, lat: 43.472118, lng:-80.563546, text: "Avoid due to flooding"}, 
 ]
 
@@ -377,9 +406,6 @@ const label = { inputProps: { 'aria-label': 'Switch' } };
 const playSound =() => {
   new Audio(dogBark).play();
 }
-/*const handlePlaceSelect = (place) => {
-  setDestination(place.formatted_address);
-};*/
 
 const [autocomplete, setAutocomplete] = useState(null);
 
@@ -413,7 +439,7 @@ const handleAutocompleteLoad = (autocomplete) => {
       id="destination"
       type="text"
       placeholder="Destination"
-      style={{ width: '400px' }}
+      style={{ width: '400px', backgroundColor: 'white'}}
       value={destination}
       onChange={(e) => setDestination(e.target.value)}
     />
@@ -431,8 +457,38 @@ const handleAutocompleteLoad = (autocomplete) => {
     center={{lat: lat, lng: lng}}
     zoom={16}
   >
+    <Grid >
+      <Grid align='center'>
+      </Grid>      
+    <LoadScript
+      googleMapsApiKey = {apiKey}
+      onLoad={handleLoad}
+    >   
+      <FormControl onSubmit={handleSubmit}>
+      <form>
+        <FormLabel htmlFor="destination"></FormLabel>
+        <TextField
+          id="destination"
+          type="text"
+          placeholder="Destination"
+          style={textStyle}
+          value={destination}
+          onChange={(e) => setDestination(e.target.value)}
+        />
+        <Button type='submit' variant="contained" style={{color: 'white', backgroundColor: '#2E5129'}} fullWidth>Go</Button>
+      </form>
+      </FormControl>
+      <Grid container={2}> 
+        <SaveDestination/>  
+        <UseSavedDestination/>     
+      </Grid>
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        center={{lat: lat, lng: lng}}
+        zoom={16}
+      >
 
-{unsafetext.map(item => (
+{alerts.map(item => (
       <InfoBox
       onLoad={onLoadInfo}
       options={options3}
@@ -474,7 +530,7 @@ const handleAutocompleteLoad = (autocomplete) => {
       </div>
     </InfoBox>
     ))}
-        {showedT ? <TrafficLayer onLoad={onLoad} /> : null}
+        {!showedT ? <TrafficLayer onLoad={onLoad} /> : null}
     
    {unsafelocations.map(item => (
       <Circle options={options} center={{lat: item.lat, lng: item.lng}}></Circle>
@@ -492,13 +548,13 @@ const handleAutocompleteLoad = (autocomplete) => {
     <Grid style={{paddingTop: '1vh', display: 'flex'}}> 
     
         <h5 style={{marginLeft: '0px', marginTop: '10px', color: 'white'}} onClick={()=> setShowed(!showed)}>{showed ? 'Show' : 'Hide' } Marked Locations</h5> 
-        <Switch {...label} color="warning" style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowed(!showed)}>{showed ? 'Show' : 'Hide' }</Switch>
+        <Switch {...label} color="success" style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowed(!showed)}>{showed ? 'Show' : 'Hide' }</Switch>
         <p></p>
         <h5 style={{marginLeft: '0px', marginTop: '10px', color: 'white'}} onClick={()=> setShowedF(!showedF)}>{showedF ? 'Show' : 'Hide' } Friends</h5>
-        <Switch {...label} color="warning" style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowedF(!showedF)}>{showedF ? 'Show' : 'Hide' } Friends</Switch>
+        <Switch {...label} color="success" style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowedF(!showedF)}>{showedF ? 'Show' : 'Hide' } Friends</Switch>
         <p></p>
         <h5 style={{marginLeft: '0px', marginTop: '10px', color: 'white'}} onClick={()=> setShowedT(!showedT)}>{showedT ? 'Show' : 'Hide' } Traffic</h5>
-        <Switch {...label} color="warning" style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowedT(!showedT)}>{showedT ? 'Show' : 'Hide' } Traffic</Switch>
+        <Switch {...label} color="success" style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowedT(!showedT)}>{showedT ? 'Show' : 'Hide' } Traffic</Switch>
       </Grid>
       <p></p>
       <Grid container={2} display='flex'> 
@@ -519,38 +575,9 @@ const handleAutocompleteLoad = (autocomplete) => {
     </grid>
 
   );
+
 }
 
 
 
-/*<grid>
-<Grid >
-  <Grid align='center'>
-  </Grid>      
-<LoadScript
-  googleMapsApiKey = {apiKey}
-  onLoad={handleLoad}
->   
-  <FormControl onSubmit={handleSubmit}>
-  <form>
-    <FormLabel htmlFor="destination"></FormLabel>
-    <TextField
-      id="destination"
-      type="text"
-      placeholder="Destination"
-      style={textStyle}
-      value={destination}
-      onChange={(e) => setDestination(e.target.value)}
-    />
-    <Button type='submit' variant="contained" style={{color: 'white', backgroundColor: '#2E5129'}} fullWidth>Go</Button>
-  </form>
-  </FormControl>
-  <Grid container={2}> 
-    <SaveDestination/>  
-    <UseSavedDestination/>     
-  </Grid>
-  <GoogleMap
-    mapContainerStyle={containerStyle}
-    center={{lat: lat, lng: lng}}
-    zoom={16}
-  >*/
+
