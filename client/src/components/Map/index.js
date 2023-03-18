@@ -1,27 +1,54 @@
-import React, { useState, useEffect } from 'react';
+import React, { Component, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import CssBaseline from "@material-ui/core/CssBaseline";
+import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
-import {TextField, Button} from '@material-ui/core'
+import {Avatar, TextField, Button, Link } from '@material-ui/core'
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import CreateAccount from '../CreateAccount'
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import { BrowserRouter,Route} from 'react-router-dom';
+import history from '../Navigation/history';
 import Navbar from '../NavBar';
 import Switch from '@mui/material/Switch';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import {GoogleMap, LoadScript, Marker, DirectionsRenderer, Autocomplete, TrafficLayer, Circle, InfoBox} from '@react-google-maps/api';
+import {GoogleMap, useLoadScript, LoadScript, Marker, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
+import { Autocomplete } from '@react-google-maps/api';
 import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { TrafficLayer } from '@react-google-maps/api';
+import { StreetViewService } from '@react-google-maps/api';
+import { StreetViewPanorama } from '@react-google-maps/api';
+import { TransitLayer } from '@react-google-maps/api';
+import { HeatmapLayer } from '@react-google-maps/api';
+import { Circle } from '@react-google-maps/api';
+import { InfoBox } from '@react-google-maps/api';
+import { InfoWindow } from '@react-google-maps/api';
+import { RemoveShoppingCartRounded } from '@mui/icons-material';
 import dogBark from "./assets/dogBark.wav"
-
+const textStyle={marginBottom: '8px', color: 'white'}
+const buttonStyle={margin:'8px 0', backgroundColor: '#2E5129', fontColor: 'white'}
+const cardStyle={padding :30, height:'160vh',width:580, marginTop: "30px", margin:"20px auto"}
 const containerStyle = {
   width: '100%',
   height: '500px',
   display: 'flex'
 };
-const serverURL = "";
+const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046";
 
 const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 
@@ -36,14 +63,172 @@ function Map() {
             <Paper style={{backgroundColor: '#6F4E37',padding: '4vh'}}>
                 <Grid align='center'>
                 </Grid>
+                   
+                
                      <MapFxn/> 
+                    
+                     <p></p>  
+                    
             </Paper>
         </Grid>
     </div>
     </grid>
-  )
+    
+  ) 
+
 }
 export default Map;
+
+function UseSavedDestination() {
+
+  const [open, setOpen] = useState(false);
+  const [destination, setDestination] = useState('');
+
+  const handleChange = () => {
+    setDestination(10);
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleUnsafe = () => {
+    setOpen(true);
+  };
+
+
+
+  return (
+    <div style={{fontColor: '#E6CCB2'}} >
+      <Button onClick={handleClickOpen}><p style={{color: 'white'}} >Use Saved Destination</p></Button>
+      <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
+        <DialogTitle>Select a Saved Destination</DialogTitle>
+        <DialogContent>
+          <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }} style={{color: '#E6CCB2'}} >
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <InputLabel htmlFor="demo-dialog-native">Destination</InputLabel>
+              <Select
+                native
+                value={destination}
+                onChange={handleChange}
+                fullWidth
+                input={<OutlinedInput label="Destination" id="demo-dialog-native" />}
+              >
+                <option aria-label="None" value="" />
+                <option value={10}>Ten</option>
+                <option value={20}>Twenty</option>
+                <option value={30}>Thirty</option>
+              </Select>
+            </FormControl>
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleClose}> Go!</Button>
+        </DialogActions>
+      </Dialog>
+
+      <div></div>
+
+    </div>
+  );
+}
+
+
+function SaveDestination() {
+
+  const [open, setOpen] = useState(false);
+  const [address, setAddress] = useState('');
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleAddress = (body) => {
+    setAddress(body);
+  }
+
+  const loadApiAddSavedDestination = () => {
+    callApiAddSavedDestination()
+      .then((res) => {
+        console.log(res.message);
+      })
+  };
+
+  const callApiAddSavedDestination = async () => {
+    const url = serverURL + "/api/addSavedDestination";
+    
+    let AddressInfo = {
+      "address": address,
+      "user": 1,
+    };
+
+    console.log(AddressInfo);
+    const response = await fetch(url, {
+      method: "POST", 
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(AddressInfo)
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
+
+
+  return (
+    <div>
+      
+    <Button onClick={handleClickOpen}>
+    <p style={{color: 'white'}} >Save a Destination</p>
+    </Button>
+    <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Set a Destination</DialogTitle>
+        <DialogContent>
+          <FormControl>
+          <form>
+             <AddressinForm handleAddress={handleAddress} address={address}/>
+             <br></br>
+             <br></br>
+             <Button onClick={handleClose} variant="contained" color="primary">Cancel</Button>
+             <Button onClick={handleClose} variant="contained" color="primary" type ='submit'>Save</Button>
+           </form>
+          </FormControl>
+        </DialogContent>
+        <DialogActions>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+}
+
+const AddressinForm = (props) => {
+
+  const handleInput = (event) => {
+    props.handleAddress(event.target.value);
+  };
+  return (
+    <div>
+      <TextField
+        id="address"
+        label="Address"
+        variant="outlined"
+        helperText="Enter Address"
+        value={props.address}
+        onChange = {handleInput}
+      /></div>
+  );
+}
+
 
 function MapFxn() {
   const [directions, setDirections] = useState(null);
@@ -80,6 +265,8 @@ function MapFxn() {
     directionsService.route(directionsServiceOptions, directionsCallback);
   };
 
+  
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -98,14 +285,22 @@ function MapFxn() {
 
   };
 
+ 
   const onLoad = trafficLayer => {
     console.log('trafficLayer: ', trafficLayer)
   }
 
+  const divStyle = {
+    background: `white`,
+    border: `1px solid #ccc`,
+    padding: 7
+  }
+  
   const onLoadInfo = infoBox => {
     console.log('infoBox: ', infoBox)
   };
 
+   
   const options3 = { closeBoxURL: '', enableEventPropagation: true };
 
   const options = {
@@ -135,6 +330,21 @@ function MapFxn() {
     radius: 15,
     zIndex: 1
   }
+  
+  const onLoadCircle = circle => {
+    console.log('Circle onLoad circle: ', circle)
+  }
+  
+  const onUnmount = circle => {
+    console.log('Circle onUnmount circle: ', circle)
+  }
+  
+
+  const center = {
+    lat:  lat,
+    lng: lng
+  };
+
   
 const unsafelocations = [
       {id: 1, lat: 43.472120, lng:-80.543550},
@@ -166,7 +376,6 @@ const label = { inputProps: { 'aria-label': 'Switch' } };
 const playSound =() => {
   new Audio(dogBark).play();
 }
-const [openUse, setOpenUse] = useState(false);
 
 const [autocomplete, setAutocomplete] = useState(null);
 
@@ -178,140 +387,67 @@ const handleAutocompleteLoad = (autocomplete) => {
   setAutocomplete(autocomplete);
 };
 
-const reloadPage = () => {
-    window.location.reload();
-};
+  const [open, setOpen] = React.useState(false);
+  const [emergencyContactsOption,setEmergencyContactsOption]=React.useState("");
+  const [showTextField, setShowTextField] = useState(false);
+  const [showEmergencyContact,setShowEmergencyContact]= useState(false);
 
-const handleChange = (event) => {
-  setDestinationForm(event.target.value);
-};
-
-const submitSaveDestination = () => {
-  if (!destination) {
-    window.alert("Please Enter a Destination to Save");
-  } else {
-    window.alert(destination);
-  }
-};
-
-const handleClickOpenUse = () => {
-  setOpenUse(true);
-};
-
-
-const handleCloseCancelUse = () => {
-  setOpenUse(false);
-};
-
-const handleCloseSubmit = () => {
-  setOpenUse(false);
-  setDestination(destinationForm);
-};
-
-const [destinationForm, setDestinationForm] = useState('');
-
-/*const [address, setAddress] = useState('');
-
-const loadApiAddSavedDestination = () => {
-  callApiAddSavedDestination()
-    .then((res) => {
-      console.log(res.message);
-    })
-};
-
-const callApiAddSavedDestination = async () => {
-  const url = serverURL + "/api/addSavedDestination";
-  
-  let AddressInfo = {
-    "address": address,
-    "user": 1,
+  const handleClickOpen = () => {
+    setOpen(true);
   };
 
-  console.log(AddressInfo);
-  const response = await fetch(url, {
-    method: "POST", 
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(AddressInfo)
-  });
-  const body = await response.json();
-  if (response.status !== 200) throw Error(body.message);
-  return body;
-}*/
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleChange = (event) => {
+    setEmergencyContactsOption(event.target.value);
+    setShowTextField(event.target.value === "Add emergency contacts");
+    setShowEmergencyContact(event.target.value === "View emergency contacts");
+  };
+
+  const emergencyContacts = [
+    {name: "Joanna Hayburt", phoneNumber: "647-724-3423"}, 
+    {name: "Pam Albert", phoneNumber: "647-711-3111"}, 
+  ]
+
 
   return (
 
     <grid>
-<Grid >
-  <Grid align='center'>
-  </Grid>      
-<LoadScript
-  googleMapsApiKey = {apiKey}
-  onLoad={handleLoad}
-  libraries={['places']}
->   
-  <FormControl onSubmit={handleSubmit}>
-  <form>
-    <FormLabel htmlFor="destination"></FormLabel>
-    <Autocomplete 
-      onLoad={handleAutocompleteLoad} 
-      onPlaceChanged={() => handlePlaceSelect(autocomplete.getPlace())}
-      options={{ componentRestrictions: { country: "ca" } }}
-    >
-    <TextField
-      id="destination"
-      type="text"
-      placeholder="Destination"
-      style={{ width: '400px', backgroundColor: 'white'}}
-      value={destination}
-      onChange={(e) => setDestination(e.target.value)}
-    />
-    </Autocomplete>
-    <p></p>
-    <Button type='submit' variant="contained" style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}}>Go</Button>
-    <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px',  marginBottom: '15px'}} variant="contained" onClick={reloadPage} >Reset Map</Button>
-  </form>
-  </FormControl>
-<Grid container >
-    <div>
-    <Button onClick={submitSaveDestination} type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained">Save This Destination</Button>
-    </div>
-    <Button onClick={handleClickOpenUse} type='submit' variant="contained" style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}}>Use Saved Destination</Button>
-      <Dialog disableEscapeKeyDown open={openUse} onClose={handleCloseCancelUse}>
-        <DialogTitle>Use Saved Destination</DialogTitle>
-        <DialogContent>
-          <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }} style={{color: '#E6CCB2'}} >
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <Select
-                native
-                value={destinationForm}
-                onChange={handleChange}
-                fullWidth
-                input={<OutlinedInput label="Destination" id="demo-dialog-native" />}
-              >
-                <option aria-label="None" value="" />
-                <option value={"32 King St N, Waterloo, ON N2J 2W8, Canada"}>32 King St N, Waterloo, ON N2J 2W8, Canada</option>
-                <option value={"42 Green Valley Dr, Kitchener, ON N2P 2J7, Canada"}>42 Green Valley Dr, Kitchener, ON N2P 2J7, Canada</option>
-                <option value={"200 University Ave W, Waterloo, ON N2L 3G1, Canada"}>200 University Ave W, Waterloo, ON N2L 3G1, Canada</option>
-              </Select>
-            </FormControl>
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseCancelUse} type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained">Cancel</Button>
-          <Button onClick={handleCloseSubmit} type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained">Set Destination</Button>
-        </DialogActions>
-      </Dialog>  
-      </Grid> 
-  <GoogleMap
-    mapContainerStyle={containerStyle}
-    center={{lat: lat, lng: lng}}
-    zoom={16}
-  >
+    <Grid >
+      <Grid align='center'>
+      </Grid>      
+    <LoadScript
+      googleMapsApiKey = {apiKey}
+      onLoad={handleLoad}
+    >   
+      <FormControl onSubmit={handleSubmit}>
+      <form>
+        <FormLabel htmlFor="destination"></FormLabel>
+        <TextField
+          id="destination"
+          type="text"
+          placeholder="Destination"
+          style={textStyle}
+          value={destination}
+          onChange={(e) => setDestination(e.target.value)}
+        />
+        <Button type='submit' variant="contained" style={{color: 'white', backgroundColor: '#2E5129'}} fullWidth>Go</Button>
+      </form>
+      </FormControl>
+      <Grid container={2}> 
+        <SaveDestination/>  
+        <UseSavedDestination/>     
+      </Grid>
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        center={{lat: lat, lng: lng}}
+        zoom={16}
+      >
+       \
 
-{unsafetext.map(item => (
-
+{alerts.map(item => (
       <InfoBox
       onLoad={onLoadInfo}
       options={options3}
