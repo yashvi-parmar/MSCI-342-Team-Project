@@ -6,6 +6,8 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import Navbar from '../NavBar';
 import NavbarTop from '../NavBarTop';
+import MenuItem from '@mui/material/MenuItem';
+import DialogContentText from '@mui/material/DialogContentText';
 import Switch from '@mui/material/Switch';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -217,6 +219,31 @@ const handleCloseSubmit = () => {
 
 const [destinationForm, setDestinationForm] = useState('');
 
+const [open, setOpen] = React.useState(false);
+  const [emergencyContactsOption,setEmergencyContactsOption]=React.useState("");
+  const [showTextField, setShowTextField] = useState(false);
+  const [showEmergencyContact,setShowEmergencyContact]= useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleChangeEmergencyOptions = (event) => {
+    setEmergencyContactsOption(event.target.value);
+    setShowTextField(event.target.value === "Add emergency contacts");
+    setShowEmergencyContact(event.target.value === "View emergency contacts");
+  };
+
+  const emergencyContacts = [
+    {name: "Joanna Hayburt", phoneNumber: "647-724-3423"}, 
+    {name: "Pam Albert", phoneNumber: "647-711-3111"}, 
+  ]
+
+
 /*const [address, setAddress] = useState('');
 
 const loadApiAddSavedDestination = () => {
@@ -393,7 +420,44 @@ const callApiAddSavedDestination = async () => {
      
       <p></p>
       <Grid container={2} display='flex'> 
-      <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained">Emergency Contacts</Button>
+      <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained" onClick={handleClickOpen}>Emergency Contacts</Button>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Emergency Contacts</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            What would you like to do?
+          </DialogContentText>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={emergencyContactsOption}
+            label="Emergency Contact"
+            autoWidth
+            onChange={handleChangeEmergencyOptions}
+          >
+            <MenuItem value={"View emergency contacts"}> View emergency contacts </MenuItem>
+            <br></br>
+            <MenuItem value={"Add emergency contacts"}> Add emergency contacts </MenuItem>
+          </Select>
+          {showTextField && (
+            <AddEmergencyContactForm/>
+          )}
+          {showEmergencyContact && 
+            emergencyContacts.map(data => {
+              return (
+                <div key={data.id}>
+                  <li>Name: {data.name}</li>
+                  <li>Phone Number: {data.phoneNumber}</li>
+                  <br/>
+                </div>
+              );
+            })
+          }
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+        </DialogActions>
+      </Dialog>
       <p></p>
       <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px',  marginBottom: '15px'}} variant="contained" >Fake Phone Call</Button>
       </Grid> 
