@@ -16,7 +16,8 @@ import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
 import dogBark from "./assets/dogBark.wav"
-
+const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
+const textStyle={marginBottom: '8px'}
 const containerStyle = {
   width: '100%',
   height: '500px',
