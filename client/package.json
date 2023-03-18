@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/preset-react": "^7.18.6",
     "@material-ui/core": "^4.0.0",
     "@material-ui/icons": "^4.0.0",
     "@material-ui/lab": "^4.0.0-alpha.13",
@@ -29,14 +30,13 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-
     "cypress": "cypress open",
     "test": "jest",
-
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "parser": "@babel/eslint-parser"
   },
   "browserslist": {
     "production": [
@@ -51,11 +51,10 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.21.3",
+    "@babel/eslint-parser": "^7.21.3",
     "@babel/preset-env": "^7.20.2",
-    "@babel/preset-react": "^7.18.6",
-
     "@testing-library/jest-dom": "^5.16.5",
-
     "@testing-library/react": "^12.1.2",
     "babel-jest": "^24.9.0",
     "cypress": "^10.9.0",
