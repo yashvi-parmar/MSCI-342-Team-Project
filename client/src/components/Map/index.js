@@ -5,6 +5,7 @@ import {TextField, Button} from '@material-ui/core'
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import Navbar from '../NavBar';
+import NavbarTop from '../NavBarTop';
 import Switch from '@mui/material/Switch';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -29,8 +30,8 @@ function Map() {
 
   return (
     <grid style={{backgroundColor: '#E6CCB2'}}>
-      
-    <Navbar></Navbar>
+      <NavbarTop></NavbarTop>
+    
     <div className="Map">
       <Grid>
             <Paper style={{backgroundColor: '#6F4E37',padding: '4vh'}}>
@@ -40,6 +41,8 @@ function Map() {
             </Paper>
         </Grid>
     </div>
+    <Navbar></Navbar>
+    
     </grid>
   )
 }
@@ -96,6 +99,7 @@ function MapFxn() {
       
     }
    
+
   };
 
   const onLoad = trafficLayer => {
@@ -153,7 +157,9 @@ const safetext = [
 
 const unsafetext = [
   {id: 1, lat: 43.472120, lng:-80.543550, text: "Avoid due to a broken streetlight"}, 
+
   {id: 2, lat: 43.472118, lng:-80.563546, text: "Avoid due to flooding"}, 
+
 ]
 
 const friends = [
@@ -241,7 +247,9 @@ const callApiAddSavedDestination = async () => {
 }*/
 
   return (
+
     <grid>
+
 <Grid >
   <Grid align='center'>
   </Grid>      
@@ -309,6 +317,7 @@ const callApiAddSavedDestination = async () => {
     zoom={16}
   >
 
+
 {unsafetext.map(item => (
       <InfoBox
       onLoad={onLoadInfo}
@@ -364,6 +373,9 @@ const callApiAddSavedDestination = async () => {
         {directions !== null && <DirectionsRenderer directions={directions} provideRouteAlternatives ={true} />}
       </GoogleMap>
       
+                
+            
+      
    
     </LoadScript> 
     <Grid style={{paddingTop: '1vh', display: 'flex'}}> 
@@ -377,6 +389,7 @@ const callApiAddSavedDestination = async () => {
         <h5 style={{marginLeft: '0px', marginTop: '10px', color: 'white'}} onClick={()=> setShowedT(!showedT)}>{showedT ? 'Show' : 'Hide' } Traffic</h5>
         <Switch {...label} color="success" style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowedT(!showedT)}>{showedT ? 'Show' : 'Hide' } Traffic</Switch>
       </Grid>
+     
       <p></p>
       <Grid container={2} display='flex'> 
       <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained">Emergency Contacts</Button>
@@ -387,13 +400,74 @@ const callApiAddSavedDestination = async () => {
       <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained"  onClick={playSound}>Play Bark</Button>
       <p></p>
       <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px',  marginBottom: '15px'}} variant="contained" >Dial 911</Button>
-      <p></p>
-      <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px',  marginBottom: '15px'}} variant="contained" >Send Friends My Location</Button>
-      <p></p>
-      <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px',  marginBottom: '15px'}} variant="contained" >Notify Friends of Arrival</Button>
        </Grid>
     </Grid>
     </grid>
 
   );
+
 }
+
+const AddEmergencyContactForm = () => {
+  const [name, setName] = React.useState('');
+  const [phoneNumber, setPhoneNumber] = React.useState('');
+  const [submissionCheck, setSubmissionCheck]=React.useState(false)
+  const [submissionValidation,setSubmissionValidation] = React.useState(false);
+
+  const handlePhoneNumber = (phoneNumber) => {
+    setPhoneNumber(phoneNumber);
+  };
+
+  const handlePhoneNumberInput = (event) => {
+    handlePhoneNumber(event.target.value)
+ }
+ 
+  const handleName = (name) => {
+   setName(name);
+ };
+
+ const handleNameInput = (event) => {
+    handleName(event.target.value)
+ }
+  
+  
+  
+ const handleSubmissionCheck = (event) =>{
+    setSubmissionCheck(true);
+  }
+  const handleSubmissionValidation = (event) => {
+    event.preventDefault();
+    if(phoneNumber !== '' && name !==''){
+      setName('');
+      setPhoneNumber('');
+      setSubmissionValidation(true);
+      setSubmissionCheck(false);
+    }
+  };
+
+
+  return (
+      <Grid>
+                <FormControl>
+           <form autoComplete='off' onSubmit={handleSubmissionValidation}>
+              <br></br>
+                <TextField style={textStyle} label='Name' placeholder='Enter name' variant="outlined" value={name} onChange = {handleNameInput} />
+                  {
+                    name === '' && submissionCheck ===true ? (
+                    <div><em style={{color:'red'}}>*Please enter your emergency contact's name!</em></div>) : (<div></div>)
+                  }
+  
+                <TextField style={textStyle} label='Phonenumber' placeholder='Enter phone number' variant="outlined" value = {phoneNumber} onChange={handlePhoneNumberInput} fullWidth />
+                {
+                    phoneNumber === '' && submissionCheck ===true ? (
+                    <div><em style={{color:'red'}}>*Please enter your emergency contact's phone number!</em></div>) : (<div></div>)
+                  }
+                
+                <Button type='submit' variant="contained" style={buttonStyle} fullWidth  onClick={handleSubmissionCheck} >ADD EMERGENCY CONTACT</Button>
+                </form>
+             </FormControl> 
+        </Grid>
+  );
+}
+
+

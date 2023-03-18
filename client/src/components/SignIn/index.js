@@ -60,7 +60,7 @@ function SignIn() {
 
   return (
     <grid>
-    <Navbar></Navbar>
+    
     <div className="SignIn">
   
       <Grid>
@@ -100,3 +100,9 @@ function SignIn() {
 }
 
 export default SignIn;
+
+
+
+
+
+

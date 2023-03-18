@@ -163,7 +163,7 @@ return (
          spacing={3}
          style={{ maxWidth: '50%' }}
          direction="column"
-         justify="flex-start"
+        
          alignItems="stretch"
        >
 
@@ -206,7 +206,7 @@ const AlertLocation = (props) => {
  
  return (
 
-    <div>
+    <div display="flex" style={{alignContent: 'center'}}>
       <TextField
         id="alert-location"
         label="Alert Location"
@@ -258,12 +258,12 @@ const Home = () => {
  
 
     return (
-      <div> 
+      <div style={{textAlign: 'center'}}> 
         <Navbar></Navbar>
         <BarkButton></BarkButton>
         
         <br></br>
-        <h1>Submit a Warning</h1>
+        <h1 style={{alignContent: 'center'}}>Submit a Warning</h1>
         <Alerts /> 
       </div>     
     )
