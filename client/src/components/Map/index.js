@@ -16,6 +16,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import { BrowserRouter,Route} from 'react-router-dom';
 import history from '../Navigation/history';
 import Navbar from '../NavBar';
+import NavbarTop from '../NavBarTop';
 import Switch from '@mui/material/Switch';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Dialog from '@mui/material/Dialog';
@@ -56,8 +57,8 @@ function Map() {
 
   return (
     <grid style={{backgroundColor: '#E6CCB2'}}>
-      
-    <Navbar></Navbar>
+      <NavbarTop></NavbarTop>
+    
     <div className="Map">
       <Grid>
             <Paper style={{backgroundColor: '#6F4E37',padding: '4vh'}}>
@@ -72,6 +73,8 @@ function Map() {
             </Paper>
         </Grid>
     </div>
+    <Navbar></Navbar>
+    
     </grid>
     
   ) 
@@ -372,6 +375,7 @@ const friends = [
 ]
 const [showed, setShowed] = useState(false);
 const [showedF, setShowedF] = useState(false);
+const [showedT, setShowedT] = useState(false);
 const label = { inputProps: { 'aria-label': 'Switch' } };
 const playSound =() => {
   new Audio(dogBark).play();
@@ -447,7 +451,7 @@ const handleAutocompleteLoad = (autocomplete) => {
       >
        \
 
-{alerts.map(item => (
+{unsafetext.map(item => (
       <InfoBox
       onLoad={onLoadInfo}
       options={options3}

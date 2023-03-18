@@ -1,4 +1,4 @@
-import * as React from 'react';
+/*import * as React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -94,14 +94,16 @@ export default function PersistentDrawerLeft() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div" color='white'>
+          <Typography variant="h6" noWrap component="div" color='white' marginLeft="5px">
             Bark
           </Typography>
           
         </Toolbar>
       </AppBar>
       <Drawer
+      
         sx={{
+          
           width: drawerWidth,
           flexShrink: 0,
           '& .MuiDrawer-paper': {
@@ -110,6 +112,7 @@ export default function PersistentDrawerLeft() {
             backgroundColor: "#94B395",
           },
         }}
+        
         variant="persistent"
         anchor="left"
         open={open}
@@ -120,8 +123,8 @@ export default function PersistentDrawerLeft() {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List>
-          <ListItem button component={Link} to="/" onClick={handleDrawerClose}>
+        <List style={{ marginLeft: '10px', color: 'white'}}>
+          <ListItem  button component={Link} to="/" onClick={handleDrawerClose}>
             <ListItemText primary="Home" />
           </ListItem>
           <ListItem button component={Link} to="/Map" onClick={handleDrawerClose}>
@@ -139,12 +142,10 @@ export default function PersistentDrawerLeft() {
           <ListItem button component={Link} to="/Friends" onClick={handleDrawerClose}>
             <ListItemText primary="Friends" />
           </ListItem>
-          <ListItem button component={Link} to="/" onClick={handleDrawerClose}>
-            <ListItemText primary="Friends" />
-          </ListItem>
+        
 
           <ListItem button component={Link} to="/SignIn" onClick={handleDrawerClose}>
-            <ListItemText primary="SignIn" />
+            <ListItemText primary="Sign In" />
           </ListItem>
 
           <Divider/>
@@ -166,3 +167,51 @@ export default function PersistentDrawerLeft() {
     </Box>
   );
 }
+*/
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import CssBaseline from '@mui/material/CssBaseline';
+import BottomNavigation from '@mui/material/BottomNavigation';
+import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+import MapIcon from '@mui/icons-material/Map';
+import AnnouncementIcon from '@mui/icons-material/Announcement';
+import Diversity1Icon from '@mui/icons-material/Diversity1';
+import Paper from '@mui/material/Paper';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemText from '@mui/material/ListItemText';
+import Avatar from '@mui/material/Avatar';
+import { useHistory } from 'react-router-dom';
+
+export default function FixedBottomNavigation() {
+  const [value, setValue] = React.useState(0);
+  const ref = React.useRef(null);
+  const history = useHistory();
+
+  const handleChange = (event, newValue) => {
+    history.push(`/${newValue}`);
+    setValue(newValue);
+  };
+
+  
+
+  return (
+    <Box sx={{ pb: 7 }} ref={ref}>
+      <CssBaseline />
+      
+      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+        <BottomNavigation
+          showLabels
+          value={value}
+          onChange={handleChange} 
+        >
+          <BottomNavigationAction label="Map"  value="Map" icon={<MapIcon />} />
+          <BottomNavigationAction label="Alerts" value="Alerts" icon={<AnnouncementIcon />} />
+          <BottomNavigationAction label="Friends" value="Friends" icon={<Diversity1Icon />} />
+        </BottomNavigation>
+      </Paper>
+    </Box>
+  );
+}
+
