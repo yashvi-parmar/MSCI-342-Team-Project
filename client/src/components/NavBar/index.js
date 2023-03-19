@@ -194,13 +194,9 @@ export default function FixedBottomNavigation() {
     new Audio(dogBark).play();
   }
   const handleChange = (event, newValue) => {
-    if (newValue = 'Bark') {
-      console.log('Bark Pressed')
-    } else { 
       history.push(`/${newValue}`);
       setValue(newValue);
-    }
-
+  
     
   };
 
@@ -226,7 +222,7 @@ export default function FixedBottomNavigation() {
           <BottomNavigationAction color="white" label="Map"  value="Map" icon={<MapIcon />} />
           <BottomNavigationAction label="Alerts" value="Alerts" icon={<AnnouncementIcon />} />
           <BottomNavigationAction label="Friends" value="Friends" icon={<Diversity1Icon />} />
-          <BottomNavigationAction label="Bark Button" onClick={playSound} value="Bark" icon={<VolumeUpIcon />} /> 
+          <BottomNavigationAction label="Bark Button" value="" onClick={playSound}  icon={<VolumeUpIcon />} /> 
          
         </BottomNavigation>
       </Paper>
