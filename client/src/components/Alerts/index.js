@@ -9,8 +9,9 @@ import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import Navbar from '../NavBar';
 import BarkButton from '../BarkButton';
-
-
+import NavbarTop from '../NavBarTop';
+import Paper from "@material-ui/core/Paper";
+const cardStyle={display: 'flex', padding :10, height:'70vh',width:'50vh', marginTop: "5vh", margin:"30px auto"}
 const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
 //Dev mode
 //const serverURL = "";
@@ -54,7 +55,7 @@ const styles = theme => ({
 
   mainMessageContainer: {
     marginTop: "5vh",
-    marginLeft: theme.spacing(5),
+
     [theme.breakpoints.down('xs')]: {
       marginLeft: theme.spacing(4),
     },
@@ -71,7 +72,7 @@ const styles = theme => ({
 });
 
 const MainGridContainer = styled(Grid)(({ theme }) => ({
- margin: theme.spacing(4),
+ margin: theme.spacing(2),
 }))
 
 const Alerts = (props) => {
@@ -148,7 +149,7 @@ const loadApiAddAlert = () => {
 
 return (
   <grid>
-    
+    <h1 style={{alignItems: 'center'}}>Submit a Warning</h1>
    <ThemeProvider theme={theme}>
      <Box
        sx={{
@@ -160,11 +161,11 @@ return (
      >
        <MainGridContainer
          container
-         spacing={3}
-         style={{ maxWidth: '50%' }}
+         spacing={2}
+    
          direction="column"
         
-         alignItems="stretch"
+         alignItems="center"
        >
 
          <br></br>
@@ -192,6 +193,7 @@ return (
        </MainGridContainer>
      </Box>
    </ThemeProvider>
+  
    </grid>
  );
 
@@ -211,7 +213,7 @@ const AlertLocation = (props) => {
         id="alert-location"
         label="Alert Location"
         multiline
-        style={{ width: 600 }}
+        style={{width: '50vh'}}
         minRows={2}
         variant="outlined"
         helperText="Enter Location of danger"
@@ -238,7 +240,7 @@ const AlertMessage = (props) => {
         id="alert-message"
         label="Alert Message"
         multiline
-        style={{ width: 600 }}
+        style={{width: '50vh'}}
         minRows={5}
         variant="outlined"
         helperText="Enter Description of danger"
@@ -258,13 +260,15 @@ const Home = () => {
  
 
     return (
-      <div style={{textAlign: 'center'}}> 
-        <Navbar></Navbar>
-        <BarkButton></BarkButton>
+      <div> 
+       <NavbarTop></NavbarTop>
+     
         
         <br></br>
-        <h1 style={{alignContent: 'center'}}>Submit a Warning</h1>
+        
+        
         <Alerts /> 
+        <Navbar></Navbar>
       </div>     
     )
   };
