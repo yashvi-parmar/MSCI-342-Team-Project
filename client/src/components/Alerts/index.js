@@ -9,12 +9,16 @@ import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import Navbar from '../NavBar';
 import BarkButton from '../BarkButton';
-
+import {GoogleMap, LoadScript, Marker, DirectionsRenderer, Autocomplete, TrafficLayer, Circle, InfoBox} from '@react-google-maps/api';
 import NavbarTop from '../NavBarTop';
 import Paper from "@material-ui/core/Paper";
-import {GoogleMap, LoadScript, Marker, DirectionsRenderer, Autocomplete, TrafficLayer, Circle, InfoBox} from '@react-google-maps/api';
+
 const cardStyle={display: 'flex', padding :10, height:'70vh',width:'50vh', marginTop: "5vh", margin:"30px auto"}
+const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
+const textStyle={marginBottom: '8px'}
 const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
+const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
+
 //Dev mode
 //const serverURL = "";
 //const serverURL = "";
@@ -87,31 +91,49 @@ const Alerts = (props) => {
  const [submissionData,setSubmissionData] = React.useState([]);
  const [userID,setUserID]=React.useState(1);
  let [AlertData,setAlertData] = React.useState({});
+ const [autocomplete, setAutocomplete] = React.useState(null);
+ const [destination, setDestination] = React.useState('');
+ const [lat,setLat]=React.useState('');
+ const [lng,setLng]=React.useState('');
+
+
+ const handleAutocompleteLoad = (autocomplete) => {
+  setAutocomplete(autocomplete);
+};
  
-
- const handleAlertLocation = (title) => {
-  setAlertLocation(title);
+const handlePlaceSelect = (place) => {
+  setDestination(place.formatted_address);
+  setLat(place.geometry.location.lat());
+  setLng(place.geometry.location.lng());
+  console.log(lat);
+  console.log(lng);
 };
 
-const handleAlertMessage = (body) => {
-  setAlertMessage(body);
+
+
+const handleAlertMessage = (message) => {
+  setAlertMessage(message);
 };
+
+const handleAlertInput = (event) => {
+  handleAlertMessage(event.target.value);
+}
 
 const handleSubmissionCheck = (event) =>{
   setSubmissionCheck(true);
 }
 const handleSubmissionValidation = (event) => {
   event.preventDefault();
-  if(alertLocation != '' && alertMessage != ''){
+  if(destination != '' && alertMessage != ''){
     let data = {
       alertLocation: alertLocation,
       alertMessage: alertMessage,
       userID: 1,
     }
-    setSubmissionData([alertLocation,alertMessage])
+    setSubmissionData([destination,alertMessage])
     setAlertData(data);
-    loadApiAddAlert();
-    setAlertLocation("");
+    //loadApiAddAlert();
+    setDestination("");
     setAlertMessage("");
     setSubmissionValidation(true);
     setSubmissionCheck(false);
@@ -153,14 +175,6 @@ return (
   <grid>
     <h1 style={{alignItems: 'center'}}>Submit a Warning</h1>
    <ThemeProvider theme={theme}>
-     <Box
-       sx={{
-         height: '100vh',
-         opacity: opacityValue,
-         overflow: "hidden",
-         //backgroundColor: theme.palette.background.default,
-       }}
-     >
        <MainGridContainer
          container
          spacing={2}
@@ -172,20 +186,63 @@ return (
 
          <br></br>
          <br></br>
- 
+         <LoadScript
+          googleMapsApiKey = {apiKey}
+          libraries={['places']}
+        >  
          <FormControl>
            <form autoComplete='off' onSubmit={handleSubmissionValidation}>
-             <AlertLocation handleAlertLocation={handleAlertLocation} alertLocation={alertLocation} submissionCheck={submissionCheck}/>
+           <Autocomplete 
+              onLoad={handleAutocompleteLoad} 
+              onPlaceChanged={() => handlePlaceSelect(autocomplete.getPlace())}
+              options={{ componentRestrictions: { country: "ca" } }}
+            >
+            <TextField
+              id="destination"
+              type="text"
+              placeholder="Destination"
+              style={{ width: '400px', backgroundColor: 'white'}}
+              helperText="Enter location of danger"
+              value={destination}
+              onChange={(e) => setDestination(e.target.value)}
+            />
+            </Autocomplete>
+           {
+              destination == '' && submissionCheck == true ? (
+                <div><em style={{color:'red'}}>*Please enter the location. It is a mandatory field.</em></div>) : (<div></div>)
+           }
              <br></br>
              <br></br>
-             <AlertMessage handleAlertMessage = {handleAlertMessage} alertMessage = {alertMessage} submissionCheck={submissionCheck}/>
+             <TextField 
+              style={textStyle} 
+              multiline 
+              style={{width: '50vh'}} 
+              label=' Alert Message' 
+              helperText="Enter description of danger" 
+              variant="outlined"  
+              minRows={5} 
+              value={alertMessage} 
+              onChange = {handleAlertInput} 
+             />
+             {
+                alertMessage == '' && submissionCheck == true ? (
+                  <div><em style={{color:'red'}}>*Please enter a description. It is a mandatory field.</em></div>) : (<div></div>)
+              }
              <br></br>
              <br></br>
-             <Button variant="contained" color="primary" type ='submit' onClick={handleSubmissionCheck}>Submit</Button>
+             <Button 
+              variant="contained" 
+              color="primary" 
+              type ='submit' 
+              onClick={handleSubmissionCheck}
+              >
+                Submit
+             </Button>
            </form>
-         </FormControl>                               
+         </FormControl> 
+         </LoadScript>                              
          {
-          submissionValidation == true &&
+          submissionValidation == true && alertMessage === '' && destination === '' &&
           <div>
             <br></br>
             <Typography id='submit' variant="h5">Your message has been received and other users will be alerted!</Typography>
@@ -193,7 +250,6 @@ return (
 
         }        
        </MainGridContainer>
-     </Box>
    </ThemeProvider>
   
    </grid>
@@ -201,62 +257,6 @@ return (
 
 }
 
-
-const AlertLocation = (props) => {
- 
- const handleInput = (event) => {
-   props.handleAlertLocation(event.target.value);
- };
- 
- return (
-
-    <div display="flex" style={{alignContent: 'center'}}>
-      <TextField
-        id="alert-location"
-        label="Alert Location"
-        multiline
-        style={{width: '50vh'}}
-        minRows={2}
-        variant="outlined"
-        helperText="Enter Location of danger"
-        value={props.alertMessage}
-        onChange = {handleInput}
-      />
-       {
-         props.alertLocation == '' && props.submissionCheck == true ? (
-          <div><em style={{color:'red'}}>*Please enter the location. It is a mandatory field.</em></div>) : (<div></div>)
-      }
-    </div>
-);
-}
-
-const AlertMessage = (props) => {
- 
- const handleInput = (event) => {
-   props.handleAlertMessage(event.target.value);
- };
- 
-  return (
-    <div>
-    <TextField
-        id="alert-message"
-        label="Alert Message"
-        multiline
-        style={{width: '50vh'}}
-        minRows={5}
-        variant="outlined"
-        helperText="Enter Description of danger"
-        value={props.alertMessage}
-        onChange = {handleInput}
-      />
-      {
-        props.alertMessage == '' && props.submissionCheck == true ? (
-          <div><em style={{color:'red'}}>*Please enter a description. It is a mandatory field.</em></div>) : (<div></div>)
-       }
-    </div>
-  );
-}
- 
 
 const Home = () => {
  
