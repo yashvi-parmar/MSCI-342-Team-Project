@@ -14,7 +14,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import SignIn from '../SignIn'
 import { BrowserRouter,Switch,Route} from 'react-router-dom';
 import Navbar from '../NavBar';
-
+import NavbarTop from '../NavBarTop';
 import BarkButton from '../BarkButton';
 
 
@@ -82,9 +82,9 @@ function LetterAvatars() {
 function Profile() {
     return (
         <div> 
-          <Navbar></Navbar>
+          
           <BarkButton></BarkButton>
-
+          <NavbarTop></NavbarTop>
           <Grid
             container
             spacing={0}
@@ -94,10 +94,15 @@ function Profile() {
             style={{backgroundColor: '#6F4E37', padding: '4vh'}}
           >
             <h3 style={{color:'white'}}>Your profile</h3>
-
+            
             <LetterAvatars/>
-
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}  >
+          <Link to="/">
+           <p style={{color: 'black',textDecoration: 'none' }}>BARK</p>
+           </Link>
+          </Typography>
           </Grid>
+          <Navbar></Navbar>
         </div>     
       )
 }

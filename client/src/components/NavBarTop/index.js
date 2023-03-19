@@ -6,8 +6,10 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useHistory } from 'react-router-dom';
 import {  Link } from "react-router-dom";
+import BarkLogo from './BarkLogo.jpg';
 export default function MenuAppBar() {
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -28,14 +30,14 @@ export default function MenuAppBar() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1 , backgroundColor: '#6F4E37'}}>
       
-      <AppBar position="static">
+      <AppBar style={{backgroundColor: '#6F4E37', color: 'white'}}position="sticky" >
         <Toolbar>
         
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}  >
           <Link to="/">
-           <p >BARK</p>
+          <img src={BarkLogo} alt="Bark Logo" style={{ width: '50px', marginTop: '5px'}}/>
            </Link>
           </Typography>
           {auth && (
@@ -46,11 +48,11 @@ export default function MenuAppBar() {
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
                 
-                color="inherit"
+                color="#2E5129"
               >
-                    <Link to="/">
-          
-                <AccountCircle />
+                    <Link to="/Profile">
+          <div style={{color: 'white'}}><AccountCircleIcon /> </div>
+
               
            </Link>
               </IconButton>

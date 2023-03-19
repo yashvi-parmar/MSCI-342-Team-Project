@@ -16,7 +16,7 @@ import { useTheme } from '@material-ui/styles';
 import { Box } from '@material-ui/core';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
-import BarkLogo from './BarkLogo.jpg';
+import NavbarTop from '../NavBarTop';
 import BarkButton from '../BarkButton';
 
 
@@ -89,7 +89,7 @@ const styles = theme => ({
 const Home = () => {
   return (
     <div> 
-      <Navbar></Navbar>
+      <NavbarTop></NavbarTop>
       <BarkButton></BarkButton>
       <Grid
         container
@@ -99,9 +99,7 @@ const Home = () => {
         alignItems="flex-start"
         style={{minHeight: '100%' , backgroundColor: '#6F4E37'}}
       >
-        <div style={{marginLeft: '35%', marginTop: '5%'}}>
-          <img src={BarkLogo} alt="Bark Logo" style={{ width: '40%', }}/>
-        </div>
+        
 
         <div style={{marginLeft:'45%'}}>
           <br></br>
@@ -116,7 +114,7 @@ const Home = () => {
         <BarkButton/>
 
       </Grid>
-        
+      <Navbar></Navbar>
     </div>     
   )
 };

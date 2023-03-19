@@ -205,6 +205,7 @@ export default function FixedBottomNavigation() {
           showLabels
           value={value}
           onChange={handleChange} 
+          style={{color: 'white', backgroundColor: '#6F4E37'}}
         >
           <BottomNavigationAction label="Map"  value="Map" icon={<MapIcon />} />
           <BottomNavigationAction label="Alerts" value="Alerts" icon={<AnnouncementIcon />} />
