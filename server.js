@@ -61,13 +61,14 @@ app.post('/api/addAlert', (req, res) => {
 
 	let connection = mysql.createConnection(config);
 
-	location = req.body.alertLocation,
+	lat = req.body.lat,
+	lng = req.body.lng,
 	alertMessage = req.body.alertMessage, 
 	user = req.body.userID
 	
 	  
-	let sql = "INSERT INTO `Alerts` (location, alert, user) VALUES (?,?,?)";
-	let data=[location, alertMessage, user];
+	let sql = "INSERT INTO `Alerts` (lat,lng, alert, user) VALUES (?,?,?),?";
+	let data=[lat,lng, alertMessage, user];
 	console.log(sql);
 	console.log(data);       
  
@@ -235,5 +236,5 @@ app.post('/api/SearchUser', (req, res) => {
  });
 
 
-app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
-//app.listen(port, '172.31.31.77'); //for the deployed version, specify the IP address of the server
+//app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
+app.listen(port, '172.31.31.77'); //for the deployed version, specify the IP address of the server

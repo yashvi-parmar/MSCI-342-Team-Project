@@ -13,24 +13,18 @@ import {GoogleMap, LoadScript, Marker, DirectionsRenderer, Autocomplete, Traffic
 import NavbarTop from '../NavBarTop';
 import Paper from "@material-ui/core/Paper";
 
+
+//const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
+const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
+
+//const serverURL = "";
+const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046";
+
+const opacityValue = 0.95;
+
 const cardStyle={display: 'flex', padding :10, height:'70vh',width:'50vh', marginTop: "5vh", margin:"30px auto"}
 const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
 const textStyle={marginBottom: '8px'}
-const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
-const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
-
-//Dev mode
-//const serverURL = "";
-//const serverURL = "";
-//const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046";
- //enable for dev mode
- //enable for dev mode
-//Deployment mode instructions
-//To find your port number:
-//ssh to ov-research-4.uwaterloo.ca and run the following command:
-//env | grep "PORT"
-//copy the number only and paste it in the serverURL in place of PORT, e.g.: const serverURL = "http://ov-research-4.uwaterloo.ca:3000";
-const opacityValue = 0.95;
  
 const theme = createTheme({
  palette: {
@@ -132,7 +126,7 @@ const handleSubmissionValidation = (event) => {
     }
     setSubmissionData([destination,alertMessage])
     setAlertData(data);
-    //loadApiAddAlert();
+    loadApiAddAlert();
     setDestination("");
     setAlertMessage("");
     setSubmissionValidation(true);
@@ -153,7 +147,8 @@ const loadApiAddAlert = () => {
   const url = serverURL + "/api/addReview";
 
   let AlertInfo = {
-    "alertLocation": alertLocation,
+    "lat": lat,
+    "lng" : lng,
     "alertMessage": alertMessage,
     "userID": userID
   };
