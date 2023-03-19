@@ -10,16 +10,15 @@ import PropTypes from 'prop-types';
 import Navbar from '../NavBar';
 import BarkButton from '../BarkButton';
 import {GoogleMap, LoadScript, Marker, DirectionsRenderer, Autocomplete, TrafficLayer, Circle, InfoBox} from '@react-google-maps/api';
-
 import NavbarTop from '../NavBarTop';
 import Paper from "@material-ui/core/Paper";
+
 const cardStyle={display: 'flex', padding :10, height:'70vh',width:'50vh', marginTop: "5vh", margin:"30px auto"}
 const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
 const textStyle={marginBottom: '8px'}
-
-
 const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
 const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
+
 //Dev mode
 //const serverURL = "";
 //const serverURL = "";
