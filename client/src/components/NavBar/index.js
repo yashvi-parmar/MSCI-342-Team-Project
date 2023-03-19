@@ -178,6 +178,7 @@ import AnnouncementIcon from '@mui/icons-material/Announcement';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import Diversity1Icon from '@mui/icons-material/Diversity1';
 import Paper from '@mui/material/Paper';
+
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
@@ -199,9 +200,7 @@ export default function FixedBottomNavigation() {
   
     
   };
-
   
-
   return (
     <Box sx={{ pb: 7 }} ref={ref}>
       <CssBaseline />

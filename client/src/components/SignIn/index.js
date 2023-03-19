@@ -1,11 +1,7 @@
-import React, { Component, useState } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
+import React from 'react';
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
+
 import {Avatar, TextField, Button, Link } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { FormControl, FormLabel, RadioGroup, FormControlLabel } from '@material-ui/core';
@@ -14,6 +10,8 @@ import CreateAccount from '../CreateAccount'
 import { BrowserRouter,Switch,Route} from 'react-router-dom';
 import Navbar from '../NavBar';
 import { useHistory } from 'react-router-dom';
+import {TextField, Button, Link } from '@material-ui/core'
+import { FormControl } from '@material-ui/core';
 const cardStyle={padding :30, height:'55vh',width:280,  margin:"20px auto", marginTop: "10vh"}
 const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white', marginTop: '5vh'}
 const textStyle={marginBottom: '8px', width: '30vh', color: 'black'}
