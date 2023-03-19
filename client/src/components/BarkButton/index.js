@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import {Avatar, TextField, Button, Link } from '@material-ui/core'
+import React from 'react';
+import {Button} from '@material-ui/core'
 import { Box } from '@material-ui/core';
 import dogBark from "./assets/dogBark.wav";
 

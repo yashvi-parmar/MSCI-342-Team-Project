@@ -6,16 +6,10 @@ import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
-import {Avatar, TextField, Button, Link } from '@material-ui/core'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import { BrowserRouter,Switch,Route} from 'react-router-dom';
+import {Button} from '@material-ui/core'
 import Navbar from '../NavBar';
-import { useTheme } from '@material-ui/styles';
 import { Box } from '@material-ui/core';
-import ReactDOM from "react-dom";
-import App from "./App";
+
 const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
 
 const fetch = require("node-fetch");

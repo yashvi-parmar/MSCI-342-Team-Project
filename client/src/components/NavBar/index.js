@@ -177,11 +177,6 @@ import MapIcon from '@mui/icons-material/Map';
 import AnnouncementIcon from '@mui/icons-material/Announcement';
 import Diversity1Icon from '@mui/icons-material/Diversity1';
 import Paper from '@mui/material/Paper';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemText from '@mui/material/ListItemText';
-import Avatar from '@mui/material/Avatar';
 import { useHistory } from 'react-router-dom';
 
 export default function FixedBottomNavigation() {
@@ -193,9 +188,7 @@ export default function FixedBottomNavigation() {
     history.push(`/${newValue}`);
     setValue(newValue);
   };
-
   
-
   return (
     <Box sx={{ pb: 7 }} ref={ref}>
       <CssBaseline />
