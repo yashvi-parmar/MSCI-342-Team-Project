@@ -26,7 +26,7 @@ const containerStyle = {
   height: '500px',
   display: 'flex'
 };
-const serverURL = "";
+//const serverURL = "";
 
 const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 

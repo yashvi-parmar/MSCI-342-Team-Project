@@ -1,20 +1,15 @@
-import React, { Component, useEffect } from 'react';
+import React from 'react';
 import {createTheme, ThemeProvider, styled} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import { Box } from '@material-ui/core';
 import { TextField } from '@material-ui/core';
 import Grid from "@material-ui/core/Grid";
-import { FormControl, FormLabel, RadioGroup, FormControlLabel } from '@material-ui/core';
+import { FormControl } from '@material-ui/core';
 import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import Navbar from '../NavBar';
-import BarkButton from '../BarkButton';
-import {GoogleMap, LoadScript, Marker, DirectionsRenderer, Autocomplete, TrafficLayer, Circle, InfoBox} from '@react-google-maps/api';
+import {LoadScript, Autocomplete} from '@react-google-maps/api';
 import NavbarTop from '../NavBarTop';
-import Paper from "@material-ui/core/Paper";
 
-const cardStyle={display: 'flex', padding :10, height:'70vh',width:'50vh', marginTop: "5vh", margin:"30px auto"}
-const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
 const textStyle={marginBottom: '8px'}
 const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
 const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
@@ -30,7 +25,6 @@ const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 //ssh to ov-research-4.uwaterloo.ca and run the following command:
 //env | grep "PORT"
 //copy the number only and paste it in the serverURL in place of PORT, e.g.: const serverURL = "http://ov-research-4.uwaterloo.ca:3000";
-const opacityValue = 0.95;
  
 const theme = createTheme({
  palette: {
@@ -45,36 +39,6 @@ const theme = createTheme({
      main: "#94B395",
    },
  },
-});
-
-const styles = theme => ({
-  root: {
-    body: {
-      backgroundColor: "#000000",
-      opacity: opacityValue,
-      overflow: "hidden",
-    },
-  },
-  mainMessage: {
-    opacity: opacityValue,
-  },
-
-  mainMessageContainer: {
-    marginTop: "5vh",
-
-    [theme.breakpoints.down('xs')]: {
-      marginLeft: theme.spacing(4),
-    },
-  },
-  paper: {
-    overflow: "hidden",
-  },
-  message: {
-    opacity: opacityValue,
-    maxWidth: 250,
-    paddingBottom: theme.spacing(2),
-  },
-
 });
 
 const MainGridContainer = styled(Grid)(({ theme }) => ({
@@ -124,7 +88,7 @@ const handleSubmissionCheck = (event) =>{
 }
 const handleSubmissionValidation = (event) => {
   event.preventDefault();
-  if(destination != '' && alertMessage != ''){
+  if(destination !== '' && alertMessage !== ''){
     let data = {
       alertLocation: alertLocation,
       alertMessage: alertMessage,
@@ -149,7 +113,7 @@ const loadApiAddAlert = () => {
 
 
 
- const callApiAddAlert= async () => {
+ const callApiAddAlert = async () => {
   const url = serverURL + "/api/addReview";
 
   let AlertInfo = {
@@ -173,7 +137,10 @@ const loadApiAddAlert = () => {
 
 return (
   <grid>
-    <h1 style={{alignItems: 'center'}}>Submit a Warning</h1>
+    <Grid style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <h1>Submit a Warning</h1>
+    </Grid>
+    
    <ThemeProvider theme={theme}>
        <MainGridContainer
          container
@@ -208,7 +175,7 @@ return (
             />
             </Autocomplete>
            {
-              destination == '' && submissionCheck == true ? (
+              destination === '' && submissionCheck === true ? (
                 <div><em style={{color:'red'}}>*Please enter the location. It is a mandatory field.</em></div>) : (<div></div>)
            }
              <br></br>
@@ -216,7 +183,6 @@ return (
              <TextField 
               style={textStyle} 
               multiline 
-              style={{width: '50vh'}} 
               label=' Alert Message' 
               helperText="Enter description of danger" 
               variant="outlined"  
@@ -225,7 +191,7 @@ return (
               onChange = {handleAlertInput} 
              />
              {
-                alertMessage == '' && submissionCheck == true ? (
+                alertMessage === '' && submissionCheck === true ? (
                   <div><em style={{color:'red'}}>*Please enter a description. It is a mandatory field.</em></div>) : (<div></div>)
               }
              <br></br>
@@ -242,7 +208,7 @@ return (
          </FormControl> 
          </LoadScript>                              
          {
-          submissionValidation == true && alertMessage === '' && destination === '' &&
+          submissionValidation === true && alertMessage === '' && destination === '' &&
           <div>
             <br></br>
             <Typography id='submit' variant="h5">Your message has been received and other users will be alerted!</Typography>
@@ -259,23 +225,15 @@ return (
 
 
 const Home = () => {
- 
-
     return (
       <div> 
-       <NavbarTop></NavbarTop>
-     
-        
-        <br></br>
-        
-        
+       <NavbarTop></NavbarTop>       
+        <br></br>  
         <Alerts /> 
         <Navbar></Navbar>
       </div>     
     )
   };
-
-
 
 Home.propTypes = {
   classes: PropTypes.object.isRequired
