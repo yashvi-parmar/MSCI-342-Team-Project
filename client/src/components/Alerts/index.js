@@ -9,6 +9,7 @@ import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import Navbar from '../NavBar';
 import BarkButton from '../BarkButton';
+import {GoogleMap, LoadScript, Marker, DirectionsRenderer, Autocomplete, TrafficLayer, Circle, InfoBox} from '@react-google-maps/api';
 
 
 const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
