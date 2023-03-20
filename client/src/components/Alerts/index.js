@@ -10,14 +10,18 @@ import Navbar from '../NavBar';
 import {LoadScript, Autocomplete} from '@react-google-maps/api';
 import NavbarTop from '../NavBarTop';
 
-const textStyle={marginBottom: '8px'}
-const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
+//const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
+const serverURL = "";
+
 const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 
-//Dev mode
-//const serverURL = "";
-//const serverURL = "";
-//const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046";
+
+const opacityValue = 0.95;
+
+const cardStyle={display: 'flex', padding :10, height:'70vh',width:'50vh', marginTop: "5vh", margin:"30px auto"}
+const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
+const textStyle={marginBottom: '8px'}
+
  //enable for dev mode
  //enable for dev mode
 //Deployment mode instructions
@@ -87,6 +91,7 @@ const handleSubmissionCheck = (event) =>{
   setSubmissionCheck(true);
 }
 const handleSubmissionValidation = (event) => {
+  console.log("submission was called");
   event.preventDefault();
   if(destination !== '' && alertMessage !== ''){
     let data = {
@@ -96,7 +101,7 @@ const handleSubmissionValidation = (event) => {
     }
     setSubmissionData([destination,alertMessage])
     setAlertData(data);
-    //loadApiAddAlert();
+    loadApiAddAlert();
     setDestination("");
     setAlertMessage("");
     setSubmissionValidation(true);
@@ -113,14 +118,17 @@ const loadApiAddAlert = () => {
 
 
 
- const callApiAddAlert = async () => {
-  const url = serverURL + "/api/addReview";
+ const callApiAddAlert= async () => {
+  const url = serverURL + '/api/addAlert';
 
   let AlertInfo = {
-    "alertLocation": alertLocation,
+    "lat": lat,
+    "lng" : lng,
     "alertMessage": alertMessage,
     "userID": userID
   };
+
+  console.log(AlertInfo);
 
   console.log(AlertInfo);
   const response = await fetch(url, {
