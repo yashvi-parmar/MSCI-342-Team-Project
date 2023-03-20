@@ -16,6 +16,18 @@ function LetterAvatars() {
     );
   }
 
+  function ProfileCont() {
+    return(
+      <Grid style={{color: 'white', marginLeft: '0vh', marginTop: '15vh'}}>
+        <h3>Name: Vedangi Patel</h3> 
+        <h3>Username: _ve_</h3> 
+        <h3>Email: vedangipatel@gmail.com</h3> 
+        <h3>Phone Number: 0123456789</h3> 
+        <h3>Current Location: insert current location</h3> 
+      </Grid>
+    )
+  }
+
 function Profile() {
     return (
         <div> 
@@ -33,6 +45,7 @@ function Profile() {
             <h3 style={{color:'white'}}>Your profile</h3>
             
             <LetterAvatars/>
+            <ProfileCont></ProfileCont>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}  >
           <Link href="/SignIn" style={{color: 'black'}}>
                        Logout
