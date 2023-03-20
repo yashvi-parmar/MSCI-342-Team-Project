@@ -10,7 +10,11 @@ import Navbar from '../NavBar';
 import {LoadScript, Autocomplete} from '@react-google-maps/api';
 import NavbarTop from '../NavBarTop';
 
-const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
+
+//const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
+const serverURL = "";
+
+
 
 
 const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
