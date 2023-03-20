@@ -25,7 +25,7 @@ const opacityValue = 0.95;
 
 const cardStyle={display: 'flex', padding :10, height:'70vh',width:'50vh', marginTop: "5vh", margin:"30px auto"}
 const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
-const textStyle={marginBottom: '8px'}
+
 
  //enable for dev mode
  //enable for dev mode
