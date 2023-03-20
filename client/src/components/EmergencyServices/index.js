@@ -52,7 +52,7 @@ const theme = createTheme({
 
 function EmergencyServices() {
     return (
-        <div> 
+        <Grid style={{backgroundColor: '#6F4E37', height: '100vh'}}> 
           <Navbar></Navbar>
           <BarkButton></BarkButton>
 
@@ -75,7 +75,7 @@ function EmergencyServices() {
 
 
           </Grid>
-        </div>     
+        </Grid>     
       )
 }
 

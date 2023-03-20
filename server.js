@@ -144,5 +144,26 @@ app.post('/api/addAlert', (req, res) => {
 	connection.end();
 });
 
+app.post('/api/getFriends', (req, res) => {
+
+	let connection = mysql.createConnection(config);
+	let userID = 1;
+
+	let sql = `SELECT friendUsername FROM bthalaya.Friends WHERE userID = 2`;
+	console.log(sql);
+
+	connection.query(sql, [], (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		//let obj = JSON.parse(string);
+		res.send({ express: string });
+	});
+	connection.end();
+});
+
+
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
 //app.listen(port, '172.31.31.77'); //for the deployed version, specify the IP address of the server

@@ -148,9 +148,6 @@ export default function PersistentDrawerLeft() {
           <ListItem button component={Link} to="/TermsAndConditions" onClick={handleDrawerClose}>
             <ListItemText primary="Terms and Conditions" />
           </ListItem>
-          <ListItem button component={Link} to="/LogOut" onClick={handleDrawerClose}>
-            <ListItemText primary="Log Out" />
-          </ListItem>
         </List>
       </Drawer>
       <Main open={open}>

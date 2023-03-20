@@ -72,7 +72,7 @@ const theme = createTheme({
 function Avatars() {
     return (
       <div>
-        <Avatar style={{backgroundColor: '#EBD6C1', color: '#B08968', width: '35vh', height: '35vh', fontSize: '20vh', left: '20vh', top: '10vh', display: 'flex', justifyContent: 'center'}}>VP</Avatar>
+        <Avatar style={{backgroundColor: '#EBD6C1', color: '#B08968', width: '35vh', height: '35vh', fontSize: '20vh', left: '40vh', top: '10vh', display: 'flex', justifyContent: 'center'}}>VP</Avatar>
       </div>
     );
 }
@@ -89,22 +89,71 @@ function ProfileCont() {
   )
 }
 
+const Friends = () => {
+
+  const[friends, setFriends] = React.useState([""]);
+
+  React.useEffect(() => {
+    loadFriends(); 
+  }, []);
+
+  const loadFriends = () => {
+    callApiLoadFriends()
+      .then(res => {
+        console.log("callApiLoadFriends returned: ", res)
+        var parsed = JSON.parse(res.express);
+        console.log("callApiLoadFriends parsed: ", parsed);
+        setFriends(parsed);
+        console.log(parsed);
+      })
+  }
+
+  const callApiLoadFriends = async () => {
+    const url = serverURL + "/api/loadFriends";
+    console.log(url);
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    console.log("User settings: ", body);
+    return body;
+  }
+
+  return(
+    <Grid style={{color: 'white', marginLeft: '10vh', marginTop: '10vh'}}>
+      <h3 justifyContent='center'>Your Friends</h3>
+      {friends}
+    </Grid>
+  )
+}
+
 
 function Profile() {
     return (
-        <Grid style={{backgroundColor: '#6F4E37', height: '100vh'}}> 
+        <Grid style={{backgroundColor: '#6F4E37', height: '100vh'}} > 
           <Navbar></Navbar>
           <BarkButton></BarkButton>
 
+          <Grid style={{paddingTop: '1vh', display: 'flex'}} container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+            <Grid container={1} display='flex' item xs={6}>
+              <Avatars></Avatars>
+            </Grid>
+            <Grid container={1} display='flex' style={{marginLeft: '0vh'}} item xs={6}>
+              <ProfileCont></ProfileCont>
+            </Grid>
+          </Grid>
 
-          <Grid style={{paddingTop: '1vh', display: 'flex'}}>
-          <Grid container={1} display='flex'>
-            <Avatars></Avatars>
+          <Grid style={{paddingTop: '1vh', display: 'flex'}} item xs={6}>
+            <Grid container={1} display='flex'>
+              <Friends></Friends>
+            </Grid>
           </Grid>
-          <Grid container={1} display='flex' style={{marginLeft: '0vh'}}>
-            <ProfileCont></ProfileCont>
-          </Grid>
-          </Grid>
+
         </Grid>     
       )
 }
