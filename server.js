@@ -12,7 +12,10 @@ const port = process.env.PORT || 5000;
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
-app.use(express.static(path.join(__dirname, "client/build")));
+
+//app.use(express.static(path.join(__dirname, "client/build")));
+app.use(express.static(path.join(__dirname, "client/public")));
+
 
 app.post('/api/loadUserSettings', (req, res) => {
 
