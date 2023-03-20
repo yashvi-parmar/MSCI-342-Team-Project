@@ -1,73 +1,17 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
+import React from 'react';
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import Box from '@material-ui/core/Box';
-import {Avatar, TextField, Button, Link, CardContent } from '@material-ui/core'
+import {Avatar, Link } from '@material-ui/core'
 import Navbar from '../NavBar';
-
+import NavbarTop from '../NavBarTop';
 import BarkButton from '../BarkButton';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import { styled } from '@mui/material/styles';
 
 
+//const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
 
-const opacityValue = 10;
-
-const cardStyle={padding :30, height:'60vh',width:380, marginTop: "30px", margin:"20px auto"}
-const buttonStyle={margin:'8px 0', backgroundColor: '#042913', color: 'white'}
-const textStyle={marginBottom: '8px'}
-const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
-
-const theme = createTheme({
-    palette: {
-      type: 'light',
-      background: {
-        default: "#042913"
-      },
-      primary: {
-        main: "#b08968",
-      },
-      secondary: {
-        main: "#94b395",
-      },
-    },
-  });
-  
-  const styles = theme => ({
-    root: {
-      body: {
-        backgroundColor: "#000000",
-        opacity: opacityValue,
-        overflow: "hidden",
-      },
-    },
-    mainMessage: {
-      opacity: opacityValue,
-    },
-  
-    mainMessageContainer: {
-      marginTop: "10vh",
-      marginLeft: theme.spacing(10),
-      [theme.breakpoints.down('xs')]: {
-        marginLeft: theme.spacing(4),
-      },
-    },
-    paper: {
-      overflow: "hidden",
-    },
-    message: {
-      opacity: opacityValue,
-      maxWidth: 250,
-      paddingBottom: theme.spacing(2),
-    },
-  
-  });
 
 function Avatars() {
     return (
@@ -135,26 +79,29 @@ const Friends = () => {
 
 function Profile() {
     return (
-        <Grid style={{backgroundColor: '#6F4E37', height: '100vh'}} > 
-          <Navbar></Navbar>
+        <div> 
+          
           <BarkButton></BarkButton>
-
-          <Grid style={{paddingTop: '1vh', display: 'flex'}} container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-            <Grid container={1} display='flex' item xs={6}>
-              <Avatars></Avatars>
-            </Grid>
-            <Grid container={1} display='flex' style={{marginLeft: '0vh'}} item xs={6}>
-              <ProfileCont></ProfileCont>
-            </Grid>
+          <NavbarTop></NavbarTop>
+          <Grid
+            container
+            spacing={0}
+            direction="column"
+            justify="flex-start"
+            alignItems="flex-start"
+            style={{backgroundColor: '#6F4E37', padding: '4vh'}}
+          >
+            <h3 style={{color:'white'}}>Your profile</h3>
+            
+            <LetterAvatars/>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}  >
+          <Link href="/SignIn" style={{color: 'black'}}>
+                       Logout
+                </Link>
+          </Typography>
           </Grid>
-
-          <Grid style={{paddingTop: '1vh', display: 'flex'}} item xs={6}>
-            <Grid container={1} display='flex'>
-              <Friends></Friends>
-            </Grid>
-          </Grid>
-
-        </Grid>     
+          <Navbar></Navbar>
+        </div>     
       )
 }
 

@@ -1,64 +1,13 @@
-import React, { Component } from 'react';
-import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
+import React from 'react';
 import Grid from "@material-ui/core/Grid";
 import Navbar from '../NavBar';
-
 import BarkButton from '../BarkButton';
-
-const opacityValue = 10;
-
-
-const theme = createTheme({
-    palette: {
-      type: 'light',
-      background: {
-        default: "#042913"
-      },
-      primary: {
-        main: "#b08968",
-      },
-      secondary: {
-        main: "#94b395",
-      },
-    },
-  });
-  
-  const styles = theme => ({
-    root: {
-      body: {
-        backgroundColor: "#000000",
-        opacity: opacityValue,
-        overflow: "hidden",
-      },
-    },
-    mainMessage: {
-      opacity: opacityValue,
-    },
-  
-    mainMessageContainer: {
-      marginTop: "10vh",
-      marginLeft: theme.spacing(10),
-      [theme.breakpoints.down('xs')]: {
-        marginLeft: theme.spacing(4),
-      },
-    },
-    paper: {
-      overflow: "hidden",
-    },
-    message: {
-      opacity: opacityValue,
-      maxWidth: 250,
-      paddingBottom: theme.spacing(2),
-    },
-  
-  });
 
 function TermsAndConditions() {
     return (
         <div> 
           <Navbar></Navbar>
           <BarkButton></BarkButton>
-
           <Grid
             container
             spacing={0}
@@ -89,7 +38,6 @@ function TermsAndConditions() {
             <h4 style={{color: 'white'}}>Changes to these terms and conditions: We reserve the right to modify these terms and conditions at any time and without notice. Your continued use of the app following any changes to these terms and conditions constitutes your acceptance of those changes.
             </h4>
             <h4 style={{color: 'white'}}>Thank you for using Bark. We hope that our app will help you feel safer and more secure as you navigate your daily life.</h4>
-
           </Grid>
         </div>     
       )
