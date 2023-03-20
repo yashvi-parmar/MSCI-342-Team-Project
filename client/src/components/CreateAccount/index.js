@@ -60,7 +60,7 @@ const handlePasswordReenterInput = (event) => {
 };
  const handleSubmissionCheck = (event) =>{
   setSubmissionCheck(true)
-  handleChange("/")
+  
 }
 const handleSubmissionValidation = (event) => {
   event.preventDefault();
@@ -71,6 +71,7 @@ const handleSubmissionValidation = (event) => {
     setPasswordReenter('');
     setSubmissionValidation(true);
     setSubmissionCheck(false);
+    handleChange("/")
   }
 };
 
@@ -89,23 +90,23 @@ const handleSubmissionValidation = (event) => {
                 <TextField 
            
                 
-              required style={textStyle} label='Username' placeholder='Enter username' variant="outlined" fullWidth value={username} onChange={handleUsernameInput} />
+               style={textStyle} label='Username' placeholder='Enter username' variant="outlined" fullWidth value={username} onChange={handleUsernameInput} />
                   {
                     username === '' && submissionCheck ===true ? (
                     <div><em style={{color:'red'}}>*Please enter your username!</em></div>) : (<div></div>)
                   }
-                <TextField required style={textStyle} label='Email' placeholder='Enter email' variant="outlined" fullWidth value={email} onChange={handleEmailInput} />
+                <TextField  style={textStyle} label='Email' placeholder='Enter email' variant="outlined" fullWidth value={email} onChange={handleEmailInput} />
                   {
                     email === '' && submissionCheck ===true ? (
                     <div><em style={{color:'red'}}>*Please enter your email!</em></div>) : (<div></div>)
                   }
                 
-                <TextField required style={textStyle} label='Password' placeholder='Enter password' type='password' variant="outlined" fullWidth value={password} onChange={handlePasswordInput} />
+                <TextField  style={textStyle} label='Password' placeholder='Enter password' type='password' variant="outlined" fullWidth value={password} onChange={handlePasswordInput} />
                   {
                     password === '' && submissionCheck ===true ? (
                     <div><em style={{color:'red'}}>*Please enter your password!</em></div>) : (<div></div>)
                   }
-                <TextField required style={textStyle} label='Re-enter Password' placeholder='Re-enter password' type='password' variant="outlined" fullWidth value={passwordReenter} onChange={handlePasswordReenterInput} />
+                <TextField style={textStyle} label='Re-enter Password' placeholder='Re-enter password' type='password' variant="outlined" fullWidth value={passwordReenter} onChange={handlePasswordReenterInput} />
                   {
                     passwordReenter=== '' && submissionCheck ===true ? (
                     <div><em style={{color:'red'}}>*Please re-enter your password!</em></div>) : (<div></div>)

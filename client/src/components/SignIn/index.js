@@ -50,7 +50,7 @@ function SignIn() {
 };
  const handleSubmissionCheck = (event) =>{
   setSubmissionCheck(true)
-  handleChange("/")
+  
  
   
 }
@@ -61,6 +61,7 @@ function SignIn() {
       setPassword('');
       setSubmissionValidation(true);
       setSubmissionCheck(false);
+      handleChange("/")
     }
   };
 
@@ -77,13 +78,13 @@ function SignIn() {
                 </Grid>
                 <FormControl style={{marginTop: '4vh'}}>
            <form autoComplete='off' onSubmit={handleSubmissionValidation}>
-                <TextField  required style={textStyle} label='Username' placeholder='Enter username' variant="outlined" value={username} onChange = {handleUsernameInput} />
+                <TextField style={textStyle} label='Username' placeholder='Enter username' variant="outlined" value={username} onChange = {handleUsernameInput} />
                   {
                     username === '' && submissionCheck ===true ? (
                     <div><em style={{color:'red'}}>*Please enter your username!</em></div>) : (<div></div>)
                   }
   
-                <TextField required style={textStyle} label='Password' placeholder='Enter password' type='password' variant="outlined" value = {password} onChange={handlePasswordInput} fullWidth />
+                <TextField style={textStyle} label='Password' placeholder='Enter password' type='password' variant="outlined" value = {password} onChange={handlePasswordInput} fullWidth />
                 {
                     password === '' && submissionCheck ===true ? (
                     <div><em style={{color:'red'}}>*Please enter your password!</em></div>) : (<div></div>)
