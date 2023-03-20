@@ -1,62 +1,13 @@
-import React, { Component } from 'react';
-import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
+import React from 'react';
 import Grid from "@material-ui/core/Grid";
 import Navbar from '../NavBar';
 import BarkButton from '../BarkButton';
-
-const opacityValue = 1;
-
-const theme = createTheme({
-    palette: {
-      type: 'light',
-      background: {
-        default: "#042913"
-      },
-      primary: {
-        main: "#b08968",
-      },
-      secondary: {
-        main: "#94b395",
-      },
-    },
-  });
-  
-  const styles = theme => ({
-    root: {
-      body: {
-        backgroundColor: "#000000",
-        opacity: opacityValue,
-        overflow: "hidden",
-      },
-    },
-    mainMessage: {
-      opacity: opacityValue,
-    },
-  
-    mainMessageContainer: {
-      marginTop: "10vh",
-      marginLeft: theme.spacing(10),
-      [theme.breakpoints.down('xs')]: {
-        marginLeft: theme.spacing(4),
-      },
-    },
-    paper: {
-      overflow: "hidden",
-    },
-    message: {
-      opacity: opacityValue,
-      maxWidth: 250,
-      paddingBottom: theme.spacing(2),
-    },
-  
-  });
 
 function EmergencyServices() {
     return (
         <div> 
           <Navbar></Navbar>
           <BarkButton></BarkButton>
-
           <Grid
             container
             spacing={0}
@@ -73,8 +24,6 @@ function EmergencyServices() {
             <h3 style={{color: 'white'}}>Domestic Abuse Hotline: </h3>
             <h3 style={{color: 'white'}}>Idk some other number: </h3>
             <h3 style={{color: 'white'}}>Kids Help Line: 1-800-668-6868</h3>
-
-
           </Grid>
         </div>     
       )
