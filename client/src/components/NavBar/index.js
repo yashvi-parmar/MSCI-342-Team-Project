@@ -175,27 +175,32 @@ import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import MapIcon from '@mui/icons-material/Map';
 import AnnouncementIcon from '@mui/icons-material/Announcement';
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import Diversity1Icon from '@mui/icons-material/Diversity1';
 import Paper from '@mui/material/Paper';
+
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
+import dogBark from "../Map/assets/dogBark.wav"
 import { useHistory } from 'react-router-dom';
 
 export default function FixedBottomNavigation() {
   const [value, setValue] = React.useState(0);
   const ref = React.useRef(null);
   const history = useHistory();
-
+  const playSound =() => {
+    new Audio(dogBark).play();
+  }
   const handleChange = (event, newValue) => {
-    history.push(`/${newValue}`);
-    setValue(newValue);
-  };
-
+      history.push(`/${newValue}`);
+      setValue(newValue);
   
-
+    
+  };
+  
   return (
     <Box sx={{ pb: 7 }} ref={ref}>
       <CssBaseline />
@@ -204,12 +209,20 @@ export default function FixedBottomNavigation() {
         <BottomNavigation
           showLabels
           value={value}
-          onChange={handleChange} 
-          style={{color: 'white', backgroundColor: '#6F4E37'}}
+          onChange={handleChange}
+          sx={{
+            backgroundColor: '#6F4E37',
+            ".MuiBottomNavigationAction-root": {color:'#FCFCFC'},
+            ".Mui-selected, svg": {
+              color: "#E6CCB2"
+            }
+         }}
         >
-          <BottomNavigationAction label="Map"  value="Map" icon={<MapIcon />} />
+          <BottomNavigationAction color="white" label="Map"  value="Map" icon={<MapIcon />} />
           <BottomNavigationAction label="Alerts" value="Alerts" icon={<AnnouncementIcon />} />
           <BottomNavigationAction label="Friends" value="Friends" icon={<Diversity1Icon />} />
+          <BottomNavigationAction label="Bark Button" value="" onClick={playSound}  icon={<VolumeUpIcon />} /> 
+         
         </BottomNavigation>
       </Paper>
     </Box>

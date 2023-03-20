@@ -1,23 +1,13 @@
-import React, { Component, useState } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
+import React from 'react';
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
-import {Avatar, TextField, Button, Link } from '@material-ui/core'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import { FormControl, FormLabel, RadioGroup, FormControlLabel } from '@material-ui/core';
-import Checkbox from '@material-ui/core/Checkbox';
-import CreateAccount from '../CreateAccount'
-import { BrowserRouter,Switch,Route} from 'react-router-dom';
-import Navbar from '../NavBar';
+import {TextField, Button, Link } from '@material-ui/core'
+import { FormControl } from '@material-ui/core';
 const cardStyle={padding :30, height:'40vh',width:280, marginTop: "5vh", margin:"90px auto", backgroundColor: '#6F4E37'}
 
 const buttonStyle={margin:'8px 0', backgroundColor: '#2E5129', color: 'white'}
 const textStyle={marginBottom: '8px', color: 'white',  width: 240}
-const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046";
+//const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046";
 
 function Emergency() {
 
