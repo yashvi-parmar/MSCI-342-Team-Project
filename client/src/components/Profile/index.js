@@ -34,9 +34,9 @@ function Profile() {
             
             <LetterAvatars/>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}  >
-          <Link to="/SignIn">
-           <p style={{color: 'black',textDecoration: 'none' }}>Log out</p>
-           </Link>
+          <Link href="/SignIn" style={{color: 'black'}}>
+                       Logout
+                </Link>
           </Typography>
           </Grid>
           <Navbar></Navbar>
