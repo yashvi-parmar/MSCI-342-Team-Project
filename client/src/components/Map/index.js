@@ -19,6 +19,8 @@ import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
 import dogBark from "./assets/dogBark.wav"
+import fakePhoneCall from "./assets/fakePhoneCall.wav"
+
 const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
 const textStyle={marginBottom: '8px'}
 const containerStyle = {
@@ -173,9 +175,7 @@ const [showed, setShowed] = useState(false);
 const [showedF, setShowedF] = useState(false);
 const [showedT, setShowedT] = useState(false);
 const label = { inputProps: { 'aria-label': 'Switch' } };
-const playSound =() => {
-  new Audio(dogBark).play();
-}
+
 const [openUse, setOpenUse] = useState(false);
 
 const [autocomplete, setAutocomplete] = useState(null);
@@ -220,7 +220,7 @@ const handleCloseSubmit = () => {
 
 const [destinationForm, setDestinationForm] = useState('');
 
-const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
   const [emergencyContactsOption,setEmergencyContactsOption]=React.useState("");
   const [showTextField, setShowTextField] = useState(false);
   const [showEmergencyContact,setShowEmergencyContact]= useState(false);
@@ -244,7 +244,40 @@ const [open, setOpen] = React.useState(false);
     {name: "Pam Albert", phoneNumber: "647-711-3111"}, 
   ]
 
+  const [openFakeCall, setOpenFakeCall]=React.useState(false);
+  const [showPhonePlay, setShowPhonePlay] = React.useState(false);
+  const [showPhonePause, setShowPhonePause] = React.useState(false);
+  const [counter, setCounter]=React.useState(0);
 
+  const handleClickOpenPhoneCall = () => {
+    setOpenFakeCall(true);
+    setShowPhonePlay(true);
+  };
+
+  const handleClosePhoneCall = () => {
+    setOpenFakeCall(false);
+  };
+
+  let audio = null;
+
+  const playPhoneCall = () => {
+    audio = new Audio(fakePhoneCall);
+    audio.play();
+    setShowPhonePlay(false);
+    setShowPhonePause(true);
+  }
+  
+  const stopPhoneCall = () => {
+    if (audio !== null) {
+      audio.pause();
+      setShowPhonePlay(true);
+      setShowPhonePause(false);
+    }
+  }
+
+  const playSound =() => {
+    new Audio(dogBark).play();
+  }
 /*const [address, setAddress] = useState('');
 
 const loadApiAddSavedDestination = () => {
@@ -460,7 +493,26 @@ const callApiAddSavedDestination = async () => {
         </DialogActions>
       </Dialog>
       <p></p>
-      <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px',  marginBottom: '15px'}} variant="contained" >Fake Phone Call</Button>
+      <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px',  marginBottom: '15px'}} variant="contained" onClick = {handleClickOpenPhoneCall} >Fake Phone Call</Button>
+      <Dialog open={openFakeCall} onClose={handleClosePhoneCall}>
+        <DialogTitle>Fake Phone Call</DialogTitle>
+        <DialogContent>
+        {showPhonePlay && (
+            <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px',  marginBottom: '15px'}} variant="contained" onClick = {playPhoneCall} >Play Audio</Button>
+          )}
+           {showPhonePause && (
+            <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px',  marginBottom: '15px'}} variant="contained" onClick = {stopPhoneCall} >Stop Audio</Button>
+          )}
+        
+          <DialogContentText>
+            Transcript of Phone Call:
+          </DialogContentText>
+
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClosePhoneCall}>Cancel</Button>
+        </DialogActions>
+      </Dialog>
       </Grid> 
       <Grid container={2} display='flex'> 
       <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained"  onClick={playSound}>Play Bark</Button>

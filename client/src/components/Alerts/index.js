@@ -17,8 +17,8 @@ import Paper from "@material-ui/core/Paper";
 //const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
 const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 
-//const serverURL = "";
-const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046";
+const serverURL = "";
+//const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046";
 
 const opacityValue = 0.95;
 
@@ -117,6 +117,7 @@ const handleSubmissionCheck = (event) =>{
   setSubmissionCheck(true);
 }
 const handleSubmissionValidation = (event) => {
+  console.log("submission was called");
   event.preventDefault();
   if(destination != '' && alertMessage != ''){
     let data = {
@@ -144,7 +145,7 @@ const loadApiAddAlert = () => {
 
 
  const callApiAddAlert= async () => {
-  const url = serverURL + "/api/addAlert";
+  const url = serverURL + '/api/addAlert';
 
   let AlertInfo = {
     "lat": lat,

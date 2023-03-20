@@ -14,7 +14,6 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 app.use(express.static(path.join(__dirname, "client/build")));
 
-
 app.post('/api/loadUserSettings', (req, res) => {
 
 	let connection = mysql.createConnection(config);
@@ -59,6 +58,7 @@ app.post('/api/getAlerts', (req,res) => {
 
 app.post('/api/addAlert', (req, res) => {
 
+	console.log('addAlert was called');
 	let connection = mysql.createConnection(config);
 
 	lat = req.body.lat,
@@ -67,8 +67,8 @@ app.post('/api/addAlert', (req, res) => {
 	user = req.body.userID
 	
 	  
-	let sql = "INSERT INTO `Alerts` (lat,lng, alert, user) VALUES (?,?,?),?";
-	let data=[lat,lng, alertMessage, user];
+	let sql = "INSERT INTO `Alerts` (lat, lng, alert, user) VALUES (?,?,?,?)";
+	let data=[lat, lng, alertMessage, user];
 	console.log(sql);
 	console.log(data);       
  
@@ -236,5 +236,5 @@ app.post('/api/SearchUser', (req, res) => {
  });
 
 
-//app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
-app.listen(port, '172.31.31.77'); //for the deployed version, specify the IP address of the server
+app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
+//app.listen(port, '172.31.31.77'); //for the deployed version, specify the IP address of the server
