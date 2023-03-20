@@ -75,7 +75,7 @@ const Share = () => {
     }
 
 return (
-    <Grid>
+    <Grid style={{backgroundColor: '#EBD6C1', height: '100vh'}}>
         <h3>Share BARK with a friend</h3>
         <Grid>
             <div>

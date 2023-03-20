@@ -3,6 +3,13 @@ import Grid from "@material-ui/core/Grid";
 import Navbar from '../NavBar';
 import NavbarTop from '../NavBarTop';
 
+// function showFriends () {
+//   return (
+    
+//   )
+// }
+
+
 function Friends() {
     return (
         <div> 
