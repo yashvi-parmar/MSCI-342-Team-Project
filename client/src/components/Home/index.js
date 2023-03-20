@@ -22,7 +22,7 @@ const date = `${current.getMonth()+1}-${current.getDate()}-${current.getFullYear
 
 const Home = () => {
   return (
-    <div> 
+    <div style={{backgroundColor: '#6F4E37', color: 'white', height:'100vh'}}> 
       <NavbarTop></NavbarTop>
     
       <Grid
@@ -49,6 +49,7 @@ const Home = () => {
       
 
       </Grid>
+      
       <Navbar></Navbar>
     </div>     
   )

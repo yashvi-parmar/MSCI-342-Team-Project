@@ -11,8 +11,8 @@ import { BrowserRouter,Switch,Route} from 'react-router-dom';
 import Navbar from '../NavBar';
 import { useHistory } from 'react-router-dom';
 
-const cardStyle={padding :30, height:'55vh',width:280,  margin:"20px auto", marginTop: "10vh"}
-const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white', marginTop: '5vh'}
+const cardStyle={padding :30, height:'55vh',width:280,  margin:"20px auto", marginTop: "10vh", backgroundColor: '#E6CCB2', color: '#6F4E37'}
+const buttonStyle={margin:'8px 0', backgroundColor: '#2E5129', color: 'white', marginTop: '5vh'}
 const textStyle={marginBottom: '8px', width: '30vh', color: 'black'}
 const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046";
 
@@ -66,11 +66,11 @@ function SignIn() {
 
 
   return (
-    <grid>
+    <Grid >
     
     <div className="SignIn">
   
-      <Grid>
+      <Grid >
             <Paper align='center'  elevation={10} style={cardStyle}>
                 <Grid align='center'>
                 <h2>Sign In</h2>
@@ -94,7 +94,7 @@ function SignIn() {
              </FormControl> 
              
              <div style={{marginTop: "1vh" }} ></div>
-                     <Link href="/CreateAccount" style={{color: 'black'}}>
+                     <Link href="/CreateAccount" style={{color: '#2E5129'}}>
                         OR CREATE AN ACCOUNT 
                 </Link>
                
@@ -102,7 +102,7 @@ function SignIn() {
         </Grid>
        
     </div>
-    </grid>
+    </Grid>
   );
 }
 
