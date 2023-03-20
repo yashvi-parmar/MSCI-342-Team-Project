@@ -14,7 +14,6 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 app.use(express.static(path.join(__dirname, "client/build")));
 
-
 app.post('/api/loadUserSettings', (req, res) => {
 
 	let connection = mysql.createConnection(config);
@@ -59,15 +58,17 @@ app.post('/api/getAlerts', (req,res) => {
 
 app.post('/api/addAlert', (req, res) => {
 
+	console.log('addAlert was called');
 	let connection = mysql.createConnection(config);
 
-	location = req.body.alertLocation,
+	lat = req.body.lat,
+	lng = req.body.lng,
 	alertMessage = req.body.alertMessage, 
 	user = req.body.userID
 	
 	  
-	let sql = "INSERT INTO `Alerts` (location, alert, user) VALUES (?,?,?)";
-	let data=[location, alertMessage, user];
+	let sql = "INSERT INTO `Alerts` (lat, lng, alert, user) VALUES (?,?,?,?)";
+	let data=[lat, lng, alertMessage, user];
 	console.log(sql);
 	console.log(data);       
  
