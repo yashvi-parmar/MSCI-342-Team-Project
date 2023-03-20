@@ -10,9 +10,9 @@ import Navbar from '../NavBar';
 import {LoadScript, Autocomplete} from '@react-google-maps/api';
 import NavbarTop from '../NavBarTop';
 
-const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
+//const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
+const serverURL = "";
 
-const textStyle={marginBottom: '8px'}
 const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 
 
@@ -63,7 +63,7 @@ const Alerts = (props) => {
  const [destination, setDestination] = React.useState('');
  const [lat,setLat]=React.useState('');
  const [lng,setLng]=React.useState('');
-
+ const [alertsList, setAlertsList] = React.useState([]);
 
  const handleAutocompleteLoad = (autocomplete) => {
   setAutocomplete(autocomplete);
@@ -129,6 +129,8 @@ const loadApiAddAlert = () => {
   };
 
   console.log(AlertInfo);
+
+  console.log(AlertInfo);
   const response = await fetch(url, {
     method: "POST",
     headers: {
@@ -140,12 +142,44 @@ const loadApiAddAlert = () => {
   if (response.status !== 200) throw Error(body.message);
   return body;
 }
+React.useEffect(() => {
+  loadAlerts();
+}, []);
+
+const loadAlerts = () => {
+  callApiLoadAlerts()
+    .then(res => {
+      console.log("callApiLoadRecipes returned: ", res)
+      var parsed = JSON.parse(res.express);
+      console.log("callApiLoadRecipes parsed: ", parsed);
+      setAlertsList(parsed);
+    })
+}
+
+const callApiLoadAlerts = async () => {
+  const url = serverURL + "/api/getAlerts";
+  console.log(url);
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    }
+  
+  });
+  const body = await response.json();
+  console.log(response.status);
+  if (response.status !== 200) throw Error(body.message);
+  console.log("User settings: ", body);
+  return body;
+}
 
 return (
   <grid>
     <Grid style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <h1>Submit a Warning</h1>
     </Grid>
+    <div>{alertsList}</div>
     
    <ThemeProvider theme={theme}>
        <MainGridContainer
