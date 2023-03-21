@@ -14,7 +14,7 @@ import {createTheme, ThemeProvider, styled} from "@material-ui/core/styles";
 const cardStyle={padding :90, height:'95%',width:280,  color: '#29241C', backgroundColor: '#EDECED'}
 const buttonStyle={margin:'8px 0', backgroundColor: '#6D8654', color: '#29241C', marginTop: '5vh', borderRadius: 35, height: '50px'}
 const textStyle={marginBottom: '2vh',  color: 'black', width: '280px'}
-const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046";
+const serverURL = "";
 const theme = createTheme({
   palette: {
     type: 'light',
@@ -93,6 +93,7 @@ function SignIn() {
       }
       setUsername('');
       setPassword('');
+      setSearchAnswer('');
     }
   };
 
@@ -107,7 +108,7 @@ function SignIn() {
   };
 
   const callApiSearchUser = async () => {
-    const url = serverURL + "/api/searchUser";
+    const url = serverURL + "/api/SearchUser";
     console.log(url)
   
     let searchInfo = {
