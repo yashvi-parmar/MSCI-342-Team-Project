@@ -206,6 +206,7 @@ const submitSaveDestination = () => {
 
 const handleClickOpenUse = () => {
   setOpenUse(true);
+  setShouldRefresh(true);
 };
 
 
@@ -273,10 +274,19 @@ const callApiAddSavedDestination = async () => {
 }
 
 let [savedDestinations, setSavedDestinations] = React.useState([]);
+let [shouldRefresh, setShouldRefresh] = React.useState(false);
     
 React.useEffect(() => {
-  getSavedDestinations();
-}, []);
+  if (shouldRefresh) {
+    getSavedDestinations();
+    setShouldRefresh(false);
+  }
+}, [shouldRefresh]);
+
+React.useEffect(() => {
+  console.log(savedDestinations);
+}, [savedDestinations]);
+
 
 const getSavedDestinations = () => {
   callApiGetSavedDestinations()
@@ -297,6 +307,7 @@ const callApiGetSavedDestinations = async() => {
   });
   const body = await response.json();
   if (response.status !== 200) throw Error(body.message);
+  console.log(body);
   return body;
 }
 
@@ -351,13 +362,13 @@ const callApiGetSavedDestinations = async() => {
                 fullWidth
                 input={<OutlinedInput label="Destination" id="demo-dialog-native" />}
               >
-              {savedDestinations.map((savedDestinations) => {
-              return (
-                <MenuItem key = {savedDestinations.id} value = {savedDestinations.address}>{savedDestinations.address}</MenuItem>
-              )
-        
-
-            })}
+                <option aria-label="None" value="" />
+                {savedDestinations.map(savedDestinations => (
+                  <option key={savedDestinations.id} value={savedDestinations.address}>
+                  {savedDestinations.address}
+               </option>
+                ))}
+                {savedDestinations.address}
             </Select>
             </FormControl>
           </Box>
@@ -563,5 +574,3 @@ const AddEmergencyContactForm = () => {
         </Grid>
   );
 }
-
-

@@ -12,8 +12,10 @@ const port = process.env.PORT || 5000;
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
+
 //app.use(express.static(path.join(__dirname, "client/build")));
 app.use(express.static(path.join(__dirname, "client/public")));
+
 
 app.post('/api/loadUserSettings', (req, res) => {
 
@@ -88,10 +90,12 @@ app.post('/api/addAlert', (req, res) => {
 
 	username = req.body.username,
 	email = req.body.email, 
-	password = req.body.password
+	password = req.body.password,
+	firstName = req.body.firstName,
+	lastName = req.body.lastName
 	
 	  
-	let sql = "INSERT INTO `Accounts` (username, email, password) VALUES (?,?,?)";
+	let sql = "INSERT INTO `Profiles` (userName, email, password,firstName,lastName) VALUES (?,?,?)";
 	let data=[username, email, password];
 	console.log(sql);
 	console.log(data);       
@@ -139,8 +143,8 @@ app.post('/api/addAlert', (req, res) => {
 			return res.json({ status : "ERROR", error});
 		}
 		let string = JSON.stringify(data);
-		let object = JSON.parse(string);
-		res.send({ destinationsData: object });
+		let obj = JSON.parse(string);
+		res.send({ destinationsData: obj});
 	});
 	connection.end();
 });
@@ -149,11 +153,12 @@ app.post('/api/UpdateLastSeenLocated', (req, res) => {
 
 	let connection = mysql.createConnection(config);
 
-	user1D = req.body.userID,
-	location = req.body.location
+	userID = req.body.userID,
+	latitude = req.body.latitude,
+	longitude = req.body.longitude
 
-	let sql = "UPDATE `Profile` SET lastSeen = '?' WHERE userID = '?' VALUES (?,?)";
-	let data=[location,userID];
+	let sql = "UPDATE `Profile` SET longitude='?' AND latitude = '?' WHERE userID = '?' VALUES (?,?,?)";
+	let data=[longitude,latitude,userID];
 	console.log(sql);
 	console.log(data);       
 
@@ -170,12 +175,10 @@ app.post('/api/UpdateLastSeenLocated', (req, res) => {
 
 	let connection = mysql.createConnection(config);
 
-	username = req.body.username,
-	email = req.body.email, 
-	phoneNumber = req.body.phoneNumber
+	username = req.body.username
 
-	let sql = 'SELECT * FROM Alerts WHERE userName =? OR email=? OR phoneNumber=?' 
-	let data = [username,email,phoneNumber]
+	let sql = "SELECT * FROM Alerts WHERE userName ='?' VALUES (?)"
+	let data = [username]
 	console.log(sql);
 	console.log(data);
 
@@ -235,6 +238,12 @@ app.post('/api/SearchUser', (req, res) => {
 	 });
 	 connection.end();
  });
+
+ app.post('/api/loadAlerts', (req, res) => {
+	let string = JSON.stringify(recipes);
+	console.log(string);
+	res.send({ express: string });
+});
 
 
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
