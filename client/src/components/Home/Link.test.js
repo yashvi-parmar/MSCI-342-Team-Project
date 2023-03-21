@@ -21,14 +21,4 @@ tree.props.onMouseLeave();
 // re-rendering
 tree = component.toJSON();
 expect(tree).toMatchSnapshot();
-<<<<<<< HEAD
 });
-=======
-
-});
-
-
-
-  
-
->>>>>>> 4e3bb1a432a42209c50881791fcf5d83555804cd
