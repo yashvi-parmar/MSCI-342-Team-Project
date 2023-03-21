@@ -10,11 +10,26 @@ import CreateAccount from '../CreateAccount'
 import { BrowserRouter,Switch,Route} from 'react-router-dom';
 import Navbar from '../NavBar';
 import { useHistory } from 'react-router-dom';
-
-const cardStyle={padding :30, height:'55vh',width:280,  margin:"20px auto", marginTop: "10vh", backgroundColor: '#E6CCB2', color: '#6F4E37'}
-const buttonStyle={margin:'8px 0', backgroundColor: '#2E5129', color: 'white', marginTop: '5vh'}
-const textStyle={marginBottom: '8px', width: '30vh', color: 'black'}
+import {createTheme, ThemeProvider, styled} from "@material-ui/core/styles";
+const cardStyle={padding :90, height:'95%',width:280,  color: '#29241C', backgroundColor: '#EDECED'}
+const buttonStyle={margin:'8px 0', backgroundColor: '#6D8654', color: '#29241C', marginTop: '5vh', borderRadius: 35, height: '50px'}
+const textStyle={marginBottom: '2vh',  color: 'black', width: '280px'}
 const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046";
+const theme = createTheme({
+  palette: {
+    type: 'light',
+    background: {
+      default: "#6D8654"
+    },
+    primary: {
+      main: '#29241C',
+    },
+    secondary: {
+      main: "#29241C",
+    },
+  },
+ });
+ 
 
 function SignIn() {
 
@@ -67,14 +82,19 @@ function SignIn() {
 
 
   return (
-    <Grid >
+    <Grid style={{backgroundColor: '#6D8654', height: '100vh', color: '#29241C'}}>
+     <ThemeProvider theme={theme}>
+       
     
-    <div className="SignIn">
   
-      <Grid >
+      <Grid style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', padding: '5vh'}} >
+      <Grid style={{display: 'flex', flexDirection: 'column', flexBasis: '100%', flex: 1}}>
+        <h3 style={{letterSpacing: '0.05rem', color: '#EDECED'}}>Good to See You Again,</h3>
+       </Grid>
+        <Grid style={{display: 'flex', flexDirection: 'column', flexBasis: '100%', flex: 1}}>
             <Paper align='center'  elevation={10} style={cardStyle}>
                 <Grid align='center'>
-                <h2>Sign In</h2>
+                <h3 style={{letterSpacing: '0.05rem', color: '#29241C', marginTop: '-20px'}}>Login</h3>
                 </Grid>
                 <FormControl style={{marginTop: '4vh'}}>
            <form autoComplete='off' onSubmit={handleSubmissionValidation}>
@@ -90,19 +110,24 @@ function SignIn() {
                     <div><em style={{color:'red'}}>*Please enter your password!</em></div>) : (<div></div>)
                   }
                 
-                <Button type='submit' variant="contained" style={buttonStyle} fullWidth  onClick={handleSubmissionCheck} >Sign in</Button>
+                <Button type='submit' variant="contained" style={buttonStyle} fullWidth  onClick={handleSubmissionCheck} ><h3 style={{letterSpacing: '0.05rem', color: '#EDECED'}}>LOGIN</h3></Button>
                 </form>
              </FormControl> 
              
              <div style={{marginTop: "1vh" }} ></div>
-                     <Link href="/CreateAccount" style={{color: '#2E5129'}}>
+                     <Link href="/CreateAccount" style={{color: '#131411'}}>
                         OR CREATE AN ACCOUNT 
                 </Link>
                
             </Paper>
+            </Grid>
+            
         </Grid>
        
-    </div>
+    
+  
+   </ThemeProvider>
+  
     </Grid>
   );
 }
