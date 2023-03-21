@@ -9,9 +9,11 @@ import BarkButton from '../BarkButton';
 //const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
 
 function LetterAvatars() {
+  const fri = 'Vedangi Patel'
+  const firstLetters = fri[0];
     return (
       <div>
-        <Avatar style={{backgroundColor: '#EBD6C1', color: '#B08968', width: '35vh', height: '35vh', fontSize: '20vh'}}>VP</Avatar>
+        <Avatar style={{backgroundColor: '#EBD6C1', color: '#B08968', width: '35vh', height: '35vh', fontSize: '20vh'}}>{firstLetters} </Avatar>
       </div>
     );
   }
