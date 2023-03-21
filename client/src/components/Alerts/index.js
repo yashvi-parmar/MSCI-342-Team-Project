@@ -16,7 +16,7 @@ const serverURL = "";
 
 
 const cardStyle={padding :30,width:380,  color: '#29241C', backgroundColor: '#EDECED'}
-
+const textStyle={marginBottom: '8px'}
 
 const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 
