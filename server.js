@@ -94,9 +94,9 @@ app.post('/api/addAlert', (req, res) => {
 	firstName = req.body.firstName,
 	lastName = req.body.lastName
 	
-	  
-	let sql = "INSERT INTO `Profiles` (userName, email, password,firstName,lastName) VALUES (?,?,?)";
-	let data=[username, email, password];
+	let sql = "INSERT INTO `Profiles` (userName, email, password,firstName,lastName) VALUES (?,?,?,?,?)";
+	let data=[username, email, password,firstName,lastName];
+
 	console.log(sql);
 	console.log(data);       
  

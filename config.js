@@ -5,4 +5,5 @@ let config = {
   database: 'bthalaya'
 };
  
+
 module.exports = config;
