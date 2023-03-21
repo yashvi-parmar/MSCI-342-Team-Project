@@ -33,7 +33,7 @@ const Home = () => {
         <Share></Share>
       </Grid>
       <Navbar></Navbar>
-    </Grid>     
+    </div>     
   )
 };
 

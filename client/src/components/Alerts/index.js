@@ -14,7 +14,6 @@ import Paper from "@material-ui/core/Paper";
 //const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
 const serverURL = "";
 
-
 const cardStyle={padding :30,width:380,  color: '#29241C', backgroundColor: '#EDECED'}
 
 const textStyle={marginBottom: '8px'}
@@ -265,7 +264,7 @@ return (
        </MainGridContainer>
    </ThemeProvider>
    </Grid>
-   <Grid style={{marginLeft: '2vh', alignItems: 'flex-end'}}>
+   <Grid style={{marginLeft: '2vh', alignItems: 'flex-end', }}>
    <h1 style={{color: '#46341C'}}>List of Alerts</h1>
     <div>{alertsList}</div>
     </Grid>
