@@ -211,10 +211,10 @@ export default function FixedBottomNavigation() {
           value={value}
           onChange={handleChange}
           sx={{
-            backgroundColor: '#6F4E37',
+            backgroundColor: '#29241C',
             ".MuiBottomNavigationAction-root": {color:'#FCFCFC'},
             ".Mui-selected, svg": {
-              color: "#E6CCB2"
+              color: "#EDECED"
             }
          }}
         >
