@@ -10,12 +10,19 @@ import Navbar from '../NavBar';
 import {LoadScript, Autocomplete} from '@react-google-maps/api';
 import NavbarTop from '../NavBarTop';
 import Paper from "@material-ui/core/Paper";
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Divider from '@mui/material/Divider';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
 
 //const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
 const serverURL = "";
 
 
-const cardStyle={padding :30,width:380,  color: '#29241C', backgroundColor: '#EDECED'}
+const cardStyle={padding :'4vh', height:'100%',width:480,  color: '#29241C', backgroundColor: '#EDECED'}
+
 const textStyle={marginBottom: '8px'}
 
 const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
@@ -24,7 +31,7 @@ const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 const opacityValue = 0.95;
 
 
-const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
+const buttonStyle={marginTop: '-6vh', backgroundColor: '#29241C', color: 'white'}
 
 
  //enable for dev mode
@@ -148,7 +155,7 @@ const loadApiAddAlert = () => {
   return body;
 }
 React.useEffect(() => {
-  loadAlerts();
+  loadAlerts(); 
 }, []);
 
 const loadAlerts = () => {
@@ -179,26 +186,19 @@ const callApiLoadAlerts = async () => {
   return body;
 }
 
-return (
-  <Grid style={{backgroundColor: '#6D8654', height: '85vh', display: 'flex', padding: '10vh'}}>
-   
-    <Grid> 
-    <h1 style={{color: '#46341C'}}>Submit a Warning</h1>
-    
-  
-    
-   <ThemeProvider theme={theme}>
-       <MainGridContainer
-         container
-         spacing={2}
-    
-         direction="column"
-        
-         alignItems="center"
-       >
+const alerts = [
+  {id: 1, lat: 43.472120, lng:-80.543550, address: 'University of Waterloo', timestamp: "2023-01-10", alert: "avoid area around geese", name: 'YP'}, 
 
-         <br></br>
-         <br></br>
+  {id: 1, lat: 43.472120, lng:-80.643550,address: 'University of Waterloo', timestamp: "2023-02-10", alert: "avoid area around ml ", name: 'LS'}, 
+
+]
+const friends = ['Vedangi', 'Yashvi', 'Anna', 'Bhairavi']
+const firstLetters = friends.map((fri) => fri[0]);
+return (
+  <Grid style={{backgroundColor: '#6D8654', padding: '10vh', color: 'white', height: '90vh', display: 'flex', flexDirection: 'row', flexBasis: '100%', flex: 1 , justifyContent: 'center'}}>
+    <Paper elevation={10} style={cardStyle}> 
+    <ThemeProvider theme={theme}> 
+    <h1 style={{color: '#29241C'}}>Submit a Warning</h1>
          <LoadScript
           googleMapsApiKey = {apiKey}
           libraries={['places']}
@@ -244,7 +244,7 @@ return (
              <br></br>
              <Button 
               variant="contained" 
-              color="primary" 
+              style={buttonStyle}
               type ='submit' 
               onClick={handleSubmissionCheck}
               >
@@ -261,12 +261,49 @@ return (
           </div>
 
         }        
-       </MainGridContainer>
-   </ThemeProvider>
-   </Grid>
-   <Grid style={{marginLeft: '2vh', alignItems: 'flex-end'}}>
-   <h1 style={{color: '#46341C'}}>List of Alerts</h1>
-    <div>{alertsList}</div>
+       </ThemeProvider>
+   </Paper>
+  
+   
+   <Grid style={{marginLeft: '5vh'}} >
+   <Paper elevation={10} style={cardStyle}> 
+    <ThemeProvider theme={theme}> 
+    <h1 style={{color: '#29241C'}}>Alerts</h1>
+ 
+    <List sx={{ width: '100%', maxWidth: 460, bgcolor: 'background.paper' }}>
+    {alerts.map(item => (
+      <List>
+      <ListItem alignItems="flex-start">
+        <ListItemAvatar>
+          <Avatar>{item.name}</Avatar>
+        </ListItemAvatar>
+        <ListItemText
+          primary={item.address}
+          secondary={
+            <React.Fragment>
+              <Typography
+                sx={{ display: 'inline' }}
+                component="span"
+                variant="body2"
+                color="text.primary"
+              >
+                
+              </Typography>
+              {item.alert}
+            </React.Fragment>
+          }
+        />
+
+      </ListItem>
+      <Divider />
+      </List>
+        ))}
+      
+      </List>
+    
+       </ThemeProvider>
+   </Paper>
+    
     </Grid>
    </Grid>
  );
@@ -278,7 +315,7 @@ const Home = () => {
     return (
       <div> 
        <NavbarTop></NavbarTop>       
-        <br></br>  
+       
         <Alerts /> 
         <Navbar></Navbar>
       </div>     

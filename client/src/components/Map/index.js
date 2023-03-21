@@ -516,7 +516,7 @@ const callApiAddSavedDestination = async () => {
       </Dialog>
       </Grid> 
       <Grid container={2} display='flex'> 
-      <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px', marginBottom: '15px'}} variant="contained"  onClick={playSound}>Play Bark</Button>
+    
       <p></p>
       <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px',  marginBottom: '15px'}} variant="contained" >Dial 911</Button>
        </Grid>
