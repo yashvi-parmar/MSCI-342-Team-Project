@@ -7,6 +7,7 @@ import BarkButton from '../BarkButton';
 import Share from '../Share';
 import Dog from './dog.png';
 import {Button} from '@material-ui/core'
+import './index.css'
 
 //Dev mode
 //const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046"; //enable for dev mode
@@ -21,7 +22,7 @@ import {Button} from '@material-ui/core'
   
 
 const Home = () => {
-
+  const buttonStyle={margin:'8px 0', backgroundColor: '#29241C', color: 'white', fontFamily: 'Oswald', letterSpacing: '0.1rem'}
   const runButton = event => {
     event.preventDefault();
     var copyText = "this is the link";
@@ -43,14 +44,15 @@ const Home = () => {
       <Grid >
       <img src={Dog} alt="Dog" />
       </Grid>
+    
       <Grid style={{marginLeft: '15vh', justifyContent: 'center', alignContent: 'center'}}> 
-        <h1>Welcome User, </h1>
-        <h5 >For many, walking home after nightfall can be a scary experience.
+        <h1 style={{fontFamily: 'Oswald', letterSpacing: '0.05rem', fontSize:  '5rem'}}>Welcome User, </h1>
+        <h5 style={{fontFamily: 'Noto Sans Lepcha', fontSize: '1rem', marginTop: '-5vh'}}>For many, walking home after nightfall can be a scary experience.
            Bark is an app created to be a system to help users safer and more protected when walking home alone at night. 
            We aim to empower people to navigate the city of Waterloo with confidence by knowing that the routes they are 
            taking to get to their destination are the safest ones available. 
           Our system will be geared towards communities and peoples that may feel unsafe walking alone.</h5>
-          <Button variant="contained" style={{color: '#29241C'}} onClick= {runButton}>
+          <Button variant="contained" style={buttonStyle} onClick= {runButton}>
                 SHARE BARK
          </Button>
        
