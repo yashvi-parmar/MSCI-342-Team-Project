@@ -20,13 +20,18 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
 import dogBark from "./assets/dogBark.wav"
 import { DeskOutlined } from '@mui/icons-material';
-const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
+import fakePhoneCall from "./assets/fakePhoneCall.wav"
+
+const buttonStyle={margin:'8px 0', backgroundColor: '#29241C', color: 'white'}
+
 const textStyle={marginBottom: '8px'}
 const containerStyle = {
   width: '100%',
   height: '500px',
   display: 'flex'
 };
+
+
 const serverURL = "";
 
 const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
@@ -34,12 +39,12 @@ const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 function Map() {
 
   return (
-    <grid style={{backgroundColor: '#E6CCB2'}}>
+    <grid style={{backgroundColor: '#6D8654'}}>
       <NavbarTop></NavbarTop>
     
     <div className="Map">
       <Grid>
-            <Paper style={{backgroundColor: '#6F4E37',padding: '4vh'}}>
+            <Paper style={{backgroundColor: '#6D8654',padding: '4vh'}}>
                 <Grid align='center'>
                 </Grid>
                      <MapFxn/> 
@@ -173,9 +178,7 @@ const [showed, setShowed] = useState(false);
 const [showedF, setShowedF] = useState(false);
 const [showedT, setShowedT] = useState(false);
 const label = { inputProps: { 'aria-label': 'Switch' } };
-const playSound =() => {
-  new Audio(dogBark).play();
-}
+
 const [openUse, setOpenUse] = useState(false);
 
 const [autocomplete, setAutocomplete] = useState(null);
@@ -244,6 +247,43 @@ const [destinationForm, setDestinationForm] = useState('');
     {name: "Joanna Hayburt", phoneNumber: "647-724-3423"}, 
     {name: "Pam Albert", phoneNumber: "647-711-3111"}, 
   ]
+
+
+  const [openFakeCall, setOpenFakeCall]=React.useState(false);
+  const [showPhonePlay, setShowPhonePlay] = React.useState(false);
+  const [showPhonePause, setShowPhonePause] = React.useState(false);
+  const [counter, setCounter]=React.useState(0);
+
+  const handleClickOpenPhoneCall = () => {
+    setOpenFakeCall(true);
+    setShowPhonePlay(true);
+  };
+
+  const handleClosePhoneCall = () => {
+    setOpenFakeCall(false);
+  };
+
+  let audio = null;
+
+  const playPhoneCall = () => {
+    audio = new Audio(fakePhoneCall);
+    audio.play();
+    setShowPhonePlay(false);
+    setShowPhonePause(true);
+  }
+  
+  const stopPhoneCall = () => {
+    if (audio !== null) {
+      audio.pause();
+      setShowPhonePlay(true);
+      setShowPhonePause(false);
+    }
+  }
+
+  const playSound =() => {
+    new Audio(dogBark).play();
+  }
+
 
 const loadApiAddSavedDestination = () => {
   callApiAddSavedDestination()
@@ -341,15 +381,15 @@ const callApiGetSavedDestinations = async() => {
     />
     </Autocomplete>
     <p></p>
-    <Button type='submit' variant="contained" style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}}>Go</Button>
-    <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px',  marginBottom: '15px'}} variant="contained" onClick={reloadPage} >Reset Map</Button>
+    <Button type='submit' variant="contained" style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px', marginBottom: '15px'}}>Go</Button>
+    <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px',  marginBottom: '15px'}} variant="contained" onClick={reloadPage} >Reset Map</Button>
   </form>
   </FormControl>
 <Grid container >
     <div>
-    <Button onClick={submitSaveDestination} type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained">Save This Destination</Button>
+    <Button onClick={submitSaveDestination} type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px', marginBottom: '15px'}} variant="contained">Save This Destination</Button>
     </div>
-    <Button onClick={handleClickOpenUse} type='submit' variant="contained" style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}}>Use Saved Destination</Button>
+    <Button onClick={handleClickOpenUse} type='submit' variant="contained" style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px', marginBottom: '15px'}}>Use Saved Destination</Button>
       <Dialog disableEscapeKeyDown open={openUse} onClose={handleCloseCancelUse}>
         <DialogTitle>Use Saved Destination</DialogTitle>
         <DialogContent>
@@ -374,8 +414,8 @@ const callApiGetSavedDestinations = async() => {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseCancelUse} type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained">Cancel</Button>
-          <Button onClick={handleCloseSubmit} type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained">Set Destination</Button>
+          <Button onClick={handleCloseCancelUse} type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px', marginBottom: '15px'}} variant="contained">Cancel</Button>
+          <Button onClick={handleCloseSubmit} type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px', marginBottom: '15px'}} variant="contained">Set Destination</Button>
         </DialogActions>
       </Dialog>  
       </Grid> 
@@ -460,7 +500,7 @@ const callApiGetSavedDestinations = async() => {
      
       <p></p>
       <Grid container={2} display='flex'> 
-      <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained" onClick={handleClickOpen}>Emergency Contacts</Button>
+      <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px', marginBottom: '15px'}} variant="contained" onClick={handleClickOpen}>Emergency Contacts</Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Emergency Contacts</DialogTitle>
         <DialogContent>
@@ -499,12 +539,31 @@ const callApiGetSavedDestinations = async() => {
         </DialogActions>
       </Dialog>
       <p></p>
-      <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px',  marginBottom: '15px'}} variant="contained" >Fake Phone Call</Button>
+      <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px',  marginBottom: '15px'}} variant="contained" onClick = {handleClickOpenPhoneCall} >Fake Phone Call</Button>
+      <Dialog open={openFakeCall} onClose={handleClosePhoneCall}>
+        <DialogTitle>Fake Phone Call</DialogTitle>
+        <DialogContent>
+        {showPhonePlay && (
+            <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px',  marginBottom: '15px'}} variant="contained" onClick = {playPhoneCall} >Play Audio</Button>
+          )}
+           {showPhonePause && (
+            <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px',  marginBottom: '15px'}} variant="contained" onClick = {stopPhoneCall} >Stop Audio</Button>
+          )}
+        
+          <DialogContentText>
+            Transcript of Phone Call:
+          </DialogContentText>
+
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClosePhoneCall}>Cancel</Button>
+        </DialogActions>
+      </Dialog>
       </Grid> 
       <Grid container={2} display='flex'> 
-      <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained"  onClick={playSound}>Play Bark</Button>
+    
       <p></p>
-      <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px',  marginBottom: '15px'}} variant="contained" >Dial 911</Button>
+      <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px',  marginBottom: '15px'}} variant="contained" >Dial 911</Button>
        </Grid>
     </Grid>
     </grid>

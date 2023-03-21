@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Koulen&family=Tajawal:wght@400;500&display=swap');
 .flex-container {
   margin-top: 15px;
   display: flex;
   flex-direction: column;
+  font-family: 'Koulen', cursive;
 }
