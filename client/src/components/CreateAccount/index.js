@@ -33,11 +33,15 @@ const theme = createTheme({
 
  function CreateAccount() {
 
+    const [firstName, setFirstName] = React.useState('');
+    const [lastName, setLastName] = React.useState('');
     const [username, setUsername] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [passwordReenter, setPasswordReenter]=React.useState('');
-    const [submissionCheck, setSubmissionCheck]=React.useState(false)
+    const [phoneNumber, setPhoneNumber] = React.useState('');
+    const [submissionCheck, setSubmissionCheck]=React.useState(false);
+    const [searchAnswer,setSearchAnswer] = React.useState('');
     const [submissionValidation,setSubmissionValidation] = React.useState(false);
   
     const handlePassword = (password) => {
@@ -71,6 +75,24 @@ const theme = createTheme({
    const handleEmailInput = (event) => {
     handleEmail(event.target.value);
    }
+
+   const handleFirstName = (firstName) => {
+    setFirstName(firstName);
+  };
+ 
+  const handleFirstNameInput = (event) => {
+     handleFirstName(event.target.value)
+  }
+
+  const handleLastName = (lastName) => {
+    setLastName(lastName);
+  };
+ 
+  const handleLastNameInput = (event) => {
+     handleLastName(event.target.value)
+  }
+
+
    const history = useHistory();
    const [value, setValue] = React.useState(0);
    const handleChange = (newValue) => {
@@ -85,15 +107,86 @@ const theme = createTheme({
   const handleSubmissionValidation = (event) => {
     event.preventDefault();
     if(password !== '' && username !=='' && email !== '' && passwordReenter !== '' && (password===passwordReenter)){
-      setUsername('');
-      setPassword('');
-      setEmail('');
-      setPasswordReenter('');
-      setSubmissionValidation(true);
-      setSubmissionCheck(false);
-      handleChange("/")
+      loadApiCheckUser();
+      if(searchAnswer === ''){
+        loadApiAddProfile();
+        setUsername('');
+        setPassword('');
+        setEmail('');
+        setPasswordReenter('');
+        setSubmissionValidation(true);
+        setSubmissionCheck(false);
+        handleChange("/")
+      }
     }
   };
+
+  const loadApiCheckUser = () => {
+    callApiCheckUser()
+      .then((res) => {
+        console.log(res)
+          var parsed = JSON.parse(res.data);
+          console.log(parsed[0]);
+          setSearchAnswer(parsed);
+      })
+  };
+
+  const callApiCheckUser = async () => {
+    const url = serverURL + "/api/CheckUser";
+    console.log(url)
+  
+    let searchInfo = {
+      "username": username,
+    };
+  
+    console.log(searchInfo);
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(searchInfo)
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
+
+  const loadApiAddProfile = () => {
+    callApiAddProfile()
+      .then((res) => {
+        console.log(res)
+          var parsed = JSON.parse(res.data);
+          console.log(parsed[0]);
+          setSearchAnswer(parsed);
+      })
+  };
+
+  const callApiAddProfile = async () => {
+    const url = serverURL + "/api/addProfile";
+    console.log(url)
+  
+    let searchInfo = {
+      "username": username,
+      "email": email,
+      "password":password,
+      "firstName": firstName,
+      "lastName": lastName
+      
+    };
+  
+    console.log(searchInfo);
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(searchInfo)
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
 
   return (
     <Grid style={{backgroundColor: '#6D8654', height: '100vh', color: '#29241C'}}>
@@ -112,6 +205,16 @@ const theme = createTheme({
                 </Grid>
                 <FormControl>
                 <form autoComplete='off' onSubmit={handleSubmissionValidation}>
+                <TextField style={textStyle} label='First Name' placeholder='Enter first name' variant="outlined" fullWidth value={firstName} onChange={handleFirstName} />
+                  {
+                    firstName === '' && submissionCheck ===true ? (
+                    <div><em style={{color:'red'}}>*Please enter your username!</em></div>) : (<div></div>)
+                  }
+                <TextField style={textStyle} label='Last Name' placeholder='Enter last name' variant="outlined" fullWidth value={lastName} onChange={handleLastNameInput} />
+                  {
+                    lastName === '' && submissionCheck ===true ? (
+                    <div><em style={{color:'red'}}>*Please enter your username!</em></div>) : (<div></div>)
+                  }
                 <TextField 
            
                 
