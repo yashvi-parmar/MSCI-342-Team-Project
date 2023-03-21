@@ -19,15 +19,18 @@ import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
 import dogBark from "./assets/dogBark.wav"
+import { DeskOutlined } from '@mui/icons-material';
 import fakePhoneCall from "./assets/fakePhoneCall.wav"
 
 const buttonStyle={margin:'8px 0', backgroundColor: '#29241C', color: 'white'}
+
 const textStyle={marginBottom: '8px'}
 const containerStyle = {
   width: '100%',
   height: '500px',
   display: 'flex'
 };
+
 
 const serverURL = "";
 
@@ -105,7 +108,6 @@ function MapFxn() {
       directionsService.route(directionsServiceOptions, directionsCallback);
       
     }
-   
 
   };
 
@@ -201,12 +203,13 @@ const submitSaveDestination = () => {
   if (!destination) {
     window.alert("Please Enter a Destination to Save");
   } else {
-    window.alert(destination);
+    loadApiAddSavedDestination();
   }
 };
 
 const handleClickOpenUse = () => {
   setOpenUse(true);
+  setShouldRefresh(true);
 };
 
 
@@ -245,6 +248,7 @@ const [destinationForm, setDestinationForm] = useState('');
     {name: "Pam Albert", phoneNumber: "647-711-3111"}, 
   ]
 
+
   const [openFakeCall, setOpenFakeCall]=React.useState(false);
   const [showPhonePlay, setShowPhonePlay] = React.useState(false);
   const [showPhonePause, setShowPhonePause] = React.useState(false);
@@ -279,7 +283,7 @@ const [destinationForm, setDestinationForm] = useState('');
   const playSound =() => {
     new Audio(dogBark).play();
   }
-/*const [address, setAddress] = useState('');
+
 
 const loadApiAddSavedDestination = () => {
   callApiAddSavedDestination()
@@ -292,7 +296,7 @@ const callApiAddSavedDestination = async () => {
   const url = serverURL + "/api/addSavedDestination";
   
   let AddressInfo = {
-    "address": address,
+    "address": destination,
     "user": 1,
   };
 
@@ -307,7 +311,45 @@ const callApiAddSavedDestination = async () => {
   const body = await response.json();
   if (response.status !== 200) throw Error(body.message);
   return body;
-}*/
+}
+
+let [savedDestinations, setSavedDestinations] = React.useState([]);
+let [shouldRefresh, setShouldRefresh] = React.useState(false);
+    
+React.useEffect(() => {
+  if (shouldRefresh) {
+    getSavedDestinations();
+    setShouldRefresh(false);
+  }
+}, [shouldRefresh]);
+
+React.useEffect(() => {
+  console.log(savedDestinations);
+}, [savedDestinations]);
+
+
+const getSavedDestinations = () => {
+  callApiGetSavedDestinations()
+    .then(res => {
+      setSavedDestinations(res.destinationsData);
+    })
+}
+
+const callApiGetSavedDestinations = async() => {
+  const url = serverURL + "/api/getSavedDestinations";
+  console.log(url);
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const body = await response.json();
+  if (response.status !== 200) throw Error(body.message);
+  console.log(body);
+  return body;
+}
 
   return (
 
@@ -361,10 +403,13 @@ const callApiAddSavedDestination = async () => {
                 input={<OutlinedInput label="Destination" id="demo-dialog-native" />}
               >
                 <option aria-label="None" value="" />
-                <option value={"32 King St N, Waterloo, ON N2J 2W8, Canada"}>32 King St N, Waterloo, ON N2J 2W8, Canada</option>
-                <option value={"42 Green Valley Dr, Kitchener, ON N2P 2J7, Canada"}>42 Green Valley Dr, Kitchener, ON N2P 2J7, Canada</option>
-                <option value={"200 University Ave W, Waterloo, ON N2L 3G1, Canada"}>200 University Ave W, Waterloo, ON N2L 3G1, Canada</option>
-              </Select>
+                {savedDestinations.map(savedDestinations => (
+                  <option key={savedDestinations.id} value={savedDestinations.address}>
+                  {savedDestinations.address}
+               </option>
+                ))}
+                {savedDestinations.address}
+            </Select>
             </FormControl>
           </Box>
         </DialogContent>
@@ -588,5 +633,3 @@ const AddEmergencyContactForm = () => {
         </Grid>
   );
 }
-
-
