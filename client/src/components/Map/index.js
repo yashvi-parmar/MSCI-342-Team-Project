@@ -21,7 +21,7 @@ import Select from '@mui/material/Select';
 import dogBark from "./assets/dogBark.wav"
 import fakePhoneCall from "./assets/fakePhoneCall.wav"
 
-const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
+const buttonStyle={margin:'8px 0', backgroundColor: '#29241C', color: 'white'}
 const textStyle={marginBottom: '8px'}
 const containerStyle = {
   width: '100%',
@@ -36,12 +36,12 @@ const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 function Map() {
 
   return (
-    <grid style={{backgroundColor: '#E6CCB2'}}>
+    <grid style={{backgroundColor: '#6D8654'}}>
       <NavbarTop></NavbarTop>
     
     <div className="Map">
       <Grid>
-            <Paper style={{backgroundColor: '#6F4E37',padding: '4vh'}}>
+            <Paper style={{backgroundColor: '#6D8654',padding: '4vh'}}>
                 <Grid align='center'>
                 </Grid>
                      <MapFxn/> 
@@ -339,15 +339,15 @@ const callApiAddSavedDestination = async () => {
     />
     </Autocomplete>
     <p></p>
-    <Button type='submit' variant="contained" style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}}>Go</Button>
-    <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px',  marginBottom: '15px'}} variant="contained" onClick={reloadPage} >Reset Map</Button>
+    <Button type='submit' variant="contained" style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px', marginBottom: '15px'}}>Go</Button>
+    <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px',  marginBottom: '15px'}} variant="contained" onClick={reloadPage} >Reset Map</Button>
   </form>
   </FormControl>
 <Grid container >
     <div>
-    <Button onClick={submitSaveDestination} type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained">Save This Destination</Button>
+    <Button onClick={submitSaveDestination} type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px', marginBottom: '15px'}} variant="contained">Save This Destination</Button>
     </div>
-    <Button onClick={handleClickOpenUse} type='submit' variant="contained" style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}}>Use Saved Destination</Button>
+    <Button onClick={handleClickOpenUse} type='submit' variant="contained" style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px', marginBottom: '15px'}}>Use Saved Destination</Button>
       <Dialog disableEscapeKeyDown open={openUse} onClose={handleCloseCancelUse}>
         <DialogTitle>Use Saved Destination</DialogTitle>
         <DialogContent>
@@ -369,8 +369,8 @@ const callApiAddSavedDestination = async () => {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseCancelUse} type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained">Cancel</Button>
-          <Button onClick={handleCloseSubmit} type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained">Set Destination</Button>
+          <Button onClick={handleCloseCancelUse} type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px', marginBottom: '15px'}} variant="contained">Cancel</Button>
+          <Button onClick={handleCloseSubmit} type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px', marginBottom: '15px'}} variant="contained">Set Destination</Button>
         </DialogActions>
       </Dialog>  
       </Grid> 
@@ -455,7 +455,7 @@ const callApiAddSavedDestination = async () => {
      
       <p></p>
       <Grid container={2} display='flex'> 
-      <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained" onClick={handleClickOpen}>Emergency Contacts</Button>
+      <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px', marginBottom: '15px'}} variant="contained" onClick={handleClickOpen}>Emergency Contacts</Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Emergency Contacts</DialogTitle>
         <DialogContent>
@@ -494,15 +494,15 @@ const callApiAddSavedDestination = async () => {
         </DialogActions>
       </Dialog>
       <p></p>
-      <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px',  marginBottom: '15px'}} variant="contained" onClick = {handleClickOpenPhoneCall} >Fake Phone Call</Button>
+      <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px',  marginBottom: '15px'}} variant="contained" onClick = {handleClickOpenPhoneCall} >Fake Phone Call</Button>
       <Dialog open={openFakeCall} onClose={handleClosePhoneCall}>
         <DialogTitle>Fake Phone Call</DialogTitle>
         <DialogContent>
         {showPhonePlay && (
-            <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px',  marginBottom: '15px'}} variant="contained" onClick = {playPhoneCall} >Play Audio</Button>
+            <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px',  marginBottom: '15px'}} variant="contained" onClick = {playPhoneCall} >Play Audio</Button>
           )}
            {showPhonePause && (
-            <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px',  marginBottom: '15px'}} variant="contained" onClick = {stopPhoneCall} >Stop Audio</Button>
+            <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px',  marginBottom: '15px'}} variant="contained" onClick = {stopPhoneCall} >Stop Audio</Button>
           )}
         
           <DialogContentText>
@@ -516,9 +516,9 @@ const callApiAddSavedDestination = async () => {
       </Dialog>
       </Grid> 
       <Grid container={2} display='flex'> 
-      <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px', marginBottom: '15px'}} variant="contained"  onClick={playSound}>Play Bark</Button>
+      <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px', marginBottom: '15px'}} variant="contained"  onClick={playSound}>Play Bark</Button>
       <p></p>
-      <Button type='submit' style={{color: 'white', backgroundColor: '#2E5129', marginRight: '10px',  marginBottom: '15px'}} variant="contained" >Dial 911</Button>
+      <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px',  marginBottom: '15px'}} variant="contained" >Dial 911</Button>
        </Grid>
     </Grid>
     </grid>
