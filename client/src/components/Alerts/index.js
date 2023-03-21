@@ -20,6 +20,7 @@ import Avatar from '@mui/material/Avatar';
 //const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
 const serverURL = "";
 
+
 const cardStyle={padding :'4vh', height:'100%',width:480,  color: '#29241C', backgroundColor: '#EDECED'}
 
 const textStyle={marginBottom: '8px'}
