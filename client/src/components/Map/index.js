@@ -29,7 +29,7 @@ const containerStyle = {
   display: 'flex'
 };
 
-const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046";
+const serverURL = "";
 
 const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 
@@ -516,7 +516,7 @@ const callApiAddSavedDestination = async () => {
       </Dialog>
       </Grid> 
       <Grid container={2} display='flex'> 
-      <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px', marginBottom: '15px'}} variant="contained"  onClick={playSound}>Play Bark</Button>
+    
       <p></p>
       <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px',  marginBottom: '15px'}} variant="contained" >Dial 911</Button>
        </Grid>

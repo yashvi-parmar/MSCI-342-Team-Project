@@ -40,7 +40,6 @@ const Home = () => {
 
 
       <Grid  style={{backgroundColor: '#6D8654', padding: '10vh', color: 'white', height: '90vh', display: 'flex', flexDirection: 'row', flexBasis: '100%', flex: 1 }}> 
-    
       <Grid >
       <img src={Dog} alt="Dog" />
       </Grid>

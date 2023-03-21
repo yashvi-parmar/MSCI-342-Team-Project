@@ -14,7 +14,7 @@ import {createTheme, ThemeProvider, styled} from "@material-ui/core/styles";
 const cardStyle={padding :90, height:'95%',width:280,  color: '#29241C', backgroundColor: '#EDECED'}
 const buttonStyle={margin:'8px 0', backgroundColor: '#6D8654', color: '#29241C', marginTop: '5vh', borderRadius: 35, height: '50px'}
 const textStyle={marginBottom: '2vh',  color: 'black', width: '280px'}
-const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046";
+const serverURL = "";
 const theme = createTheme({
   palette: {
     type: 'light',
@@ -35,7 +35,8 @@ function SignIn() {
 
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [submissionCheck, setSubmissionCheck]=React.useState(false)
+  const [searchAnswer,setSearchAnswer] = React.useState('');
+  const [submissionCheck, setSubmissionCheck]=React.useState(false);
   const [submissionValidation,setSubmissionValidation] = React.useState(false);
 
   const handlePassword = (password) => {
@@ -54,6 +55,17 @@ function SignIn() {
     handleUsername(event.target.value)
  }
   
+ const [lat, setLat] = React.useState(null);
+ const [lng, setLng] = React.useState(null);
+
+ React.useEffect(() => {
+   navigator.geolocation.getCurrentPosition(
+     (position) => {
+       setLat(position.coords.latitude);
+       setLng(position.coords.longitude);
+     },
+   );
+ }, []);
   
   
  const history = useHistory();
@@ -72,14 +84,82 @@ function SignIn() {
   const handleSubmissionValidation = (event) => {
     event.preventDefault();
     if(password !== '' && username !==''){
+      loadApiSearchUser();
+      if(searchAnswer != ""){
+        setSubmissionValidation(true);
+        loadApiAddLastSeenLocation();
+        setSubmissionCheck(false);
+        handleChange("/")
+      }
       setUsername('');
       setPassword('');
-      setSubmissionValidation(true);
-      setSubmissionCheck(false);
-      handleChange("/")
+      setSearchAnswer('');
     }
   };
 
+  const loadApiSearchUser = () => {
+    callApiSearchUser()
+      .then((res) => {
+        console.log(res)
+          var parsed = JSON.parse(res.data);
+          console.log(parsed[0]);
+          setSearchAnswer(parsed);
+      })
+  };
+
+  const callApiSearchUser = async () => {
+    const url = serverURL + "/api/SearchUser";
+    console.log(url)
+  
+    let searchInfo = {
+      "username": username,
+      "password": password
+    };
+  
+    console.log(searchInfo);
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(searchInfo)
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
+
+  const loadApiAddLastSeenLocation = () => {
+    callApiAddLastSeenLocation()
+      .then((res) => {
+        console.log(res)
+          var parsed = JSON.parse(res.data);
+          console.log(parsed[0]);
+      })
+  };
+
+  const callApiAddLastSeenLocation = async () => {
+    const url = serverURL + "/api/UpdateLastSeenLocated";
+    console.log(url)
+  
+    let searchInfo = {
+      "userID": 1,
+      "latitude": lat,
+      "longitude": lng
+    };
+  
+    console.log(searchInfo);
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(searchInfo)
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
 
   return (
     <Grid style={{backgroundColor: '#6D8654', height: '100vh', color: '#29241C'}}>
@@ -111,6 +191,10 @@ function SignIn() {
                   }
                 
                 <Button type='submit' variant="contained" style={buttonStyle} fullWidth  onClick={handleSubmissionCheck} ><h3 style={{letterSpacing: '0.05rem', color: '#EDECED'}}>LOGIN</h3></Button>
+                {
+                    password !== '' && username !== '' && submissionCheck ===true ? (
+                    <div><em style={{color:'red'}}>*Your credentials do not match our records. Please try again!</em></div>) : (<div></div>)
+                  }
                 </form>
              </FormControl> 
              
