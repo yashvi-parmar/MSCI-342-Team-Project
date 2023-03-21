@@ -238,6 +238,12 @@ app.post('/api/SearchUser', (req, res) => {
 	 connection.end();
  });
 
+ app.post('/api/loadAlerts', (req, res) => {
+	let string = JSON.stringify(recipes);
+	console.log(string);
+	res.send({ express: string });
+});
+
 
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
 //app.listen(port, '172.31.31.77'); //for the deployed version, specify the IP address of the server

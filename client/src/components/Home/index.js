@@ -16,9 +16,9 @@ import BarkButton from '../BarkButton';
 
 const Home = () => {
   return (
-    <div style={{backgroundColor: '#6F4E37', color: 'white', height:'100vh'}}> 
+    <div style={{backgroundColor: '#6D8654', color: 'white', height:'100vh'}}> 
       <NavbarTop></NavbarTop>
-      <Grid style={{textAlign: 'center', backgroundColor: '#6F4E37', color: 'white'}}>
+      <Grid style={{textAlign: 'center', backgroundColor: '#6D8654', color: 'white'}}>
         <h1 style={{margin: '1vh'}}>BARK</h1>
         <h5 >For many, walking home after nightfall can be a scary experience.
            Bark is an app created to be a system to help users safer and more protected when walking home alone at night. 
