@@ -59,12 +59,8 @@ const Home = () => {
       
      
       <Navbar></Navbar>
-<<<<<<< HEAD
-    </div>     
-=======
       </Grid>
     </Grid>     
->>>>>>> 8c08d66867506f9d9b2c6818db5f0268e4dddd9e
   )
 };
 
