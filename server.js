@@ -12,11 +12,24 @@ const port = process.env.PORT || 5000;
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
+const recipes = [
+	{id: 1, lat: 43.472120, lng:-80.543550, text: "Avoid due to a broken streetlight"}, 
+  
+	{id: 2, lat: 43.472118, lng:-80.563546, text: "Avoid due to flooding"}, 
+  
+  ];
 
+console.log(recipes)
 //app.use(express.static(path.join(__dirname, "client/build")));
 app.use(express.static(path.join(__dirname, "client/public")));
 
-
+app.post('/api/loadAlerts', (req, res) => {
+	console.log(recipes)
+	let string = JSON.stringify(recipes);
+	console.log(recipes)
+	console.log(string.text());
+	res.send({ express: string });
+});
 app.post('/api/loadUserSettings', (req, res) => {
 
 	let connection = mysql.createConnection(config);
@@ -55,6 +68,25 @@ app.post('/api/getAlerts', (req,res) => {
 		let string = JSON.stringify(data);
 		let obj = JSON.parse(string);
 		res.send({ alertData: obj });
+	});
+	connection.end();
+});
+
+app.get('/api/getUser', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+
+	let sql = 'SELECT firstName FROM User'
+	console.log(sql);
+	let data = []
+
+	connection.query(sql, data, (error,data) => {
+		if (error) {
+			return res.json({ status : "ERROR", error});
+		}
+		let string = JSON.stringify(data);
+		let obj = JSON.parse(string);
+		res.send({ name: obj });
 	});
 	connection.end();
 });
