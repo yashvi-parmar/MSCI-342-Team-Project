@@ -19,14 +19,21 @@ import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
 import dogBark from "./assets/dogBark.wav"
-const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
+
+import { DeskOutlined } from '@mui/icons-material';
+import fakePhoneCall from "./assets/fakePhoneCall.wav"
+
+const buttonStyle={margin:'8px 0', backgroundColor: '#29241C', color: 'white'}
+
 const textStyle={marginBottom: '8px'}
 const containerStyle = {
   width: '100%',
   height: '500px',
   display: 'flex'
 };
-//const serverURL = "";
+
+const serverURL = "";
+
 
 const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 
@@ -243,7 +250,41 @@ const [destinationForm, setDestinationForm] = useState('');
   ]
 
 
-/*const [address, setAddress] = useState('');
+  const [openFakeCall, setOpenFakeCall]=React.useState(false);
+  const [showPhonePlay, setShowPhonePlay] = React.useState(false);
+  const [showPhonePause, setShowPhonePause] = React.useState(false);
+  const [counter, setCounter]=React.useState(0);
+
+  const handleClickOpenPhoneCall = () => {
+    setOpenFakeCall(true);
+    setShowPhonePlay(true);
+  };
+
+  const handleClosePhoneCall = () => {
+    setOpenFakeCall(false);
+  };
+
+  let audio = null;
+
+  const playPhoneCall = () => {
+    audio = new Audio(fakePhoneCall);
+    audio.play();
+    setShowPhonePlay(false);
+    setShowPhonePause(true);
+  }
+  
+  const stopPhoneCall = () => {
+    if (audio !== null) {
+      audio.pause();
+      setShowPhonePlay(true);
+      setShowPhonePause(false);
+    }
+  }
+
+  const playSound =() => {
+    new Audio(dogBark).play();
+  }
+
 
 const loadApiAddSavedDestination = () => {
   callApiAddSavedDestination()
