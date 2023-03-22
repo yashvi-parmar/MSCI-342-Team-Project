@@ -6,7 +6,7 @@ import { Card, CardContent, Typography} from '@material-ui/core';
 import {Avatar, Link } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-
+import '../Home/index.css'
 const serverURL = ""; //enable for dev mode
 // const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:PORT";
 
@@ -112,7 +112,7 @@ const SearchFriends = () => {
       <Grid>
         <Grid>
           <SearchBar setEnteredUsername={setEnteredUsername} isError={isEmpty}></SearchBar>
-          <Button variant="contained" onClick= {runButton} style={{marginLeft: '2vh', marginTop: '2vh', marginBottom: '2vh', width: "20vh", backgroundColor: '#29241C', color: 'white'}}>
+          <Button variant="contained" onClick= {runButton} style={{ fontFamily: 'Oswald', marginLeft: '2vh', marginTop: '2vh', marginBottom: '2vh', width: "20vh", backgroundColor: '#29241C', color: 'white'}}>
             Search
           </Button>
         </Grid>
@@ -144,7 +144,7 @@ const SearchFriends = () => {
       <Grid>
         <Grid>
           <SearchBar setEnteredUsername={setEnteredUsername} isError={isEmpty}></SearchBar>
-          <Button variant="contained" onClick= {runButton} style={{marginLeft: '2vh', marginTop: '2vh', width: "20vh", color: 'white', backgroundColor: '#29241C'}}>
+          <Button variant="contained" onClick= {runButton} style={{marginLeft: '2vh',fontFamily: 'Oswald', marginTop: '2vh', width: "20vh", color: 'white', backgroundColor: '#29241C'}}>
             Search
           </Button>
         </Grid>
@@ -156,7 +156,7 @@ const SearchFriends = () => {
 
 function Friends() {
     return (
-        <Grid style={{backgroundColor: '#6D8654', height: '100%'}}> 
+        <Grid style={{backgroundColor: '#6D8654', height: '100%', fontFamily: 'Noto Sans Lepcha'}}> 
           <NavbarTop></NavbarTop>
           <Grid
             container
@@ -167,11 +167,11 @@ function Friends() {
             style={{padding: '4vh', flexDirection: 'row', flexBasis: '100%', flex: 1}}
           >
             <Grid item xs={6}>
-              <h1 style={{color: 'white'}}>Your Friends</h1>
+              <h1 style={{color: 'white', fontFamily: 'Oswald'}}>FRIENDS</h1>
               <ShowFriends></ShowFriends>
             </Grid>
             <Grid item xs={6}>
-              <h1 style={{color: 'white'}}>Find Your Friends</h1>
+              <h1 style={{color: 'white', fontFamily: 'Oswald'}}>FIND MY FRIENDS</h1>
               <SearchFriends></SearchFriends>
             </Grid>
           </Grid>

@@ -7,7 +7,7 @@ const cardStyle={padding :30, height:'40vh',width:280, marginTop: "5vh", margin:
 
 const buttonStyle={margin:'8px 0', backgroundColor: '#2E5129', color: 'white'}
 const textStyle={marginBottom: '8px', color: 'white',  width: 240}
-//const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046";
+const serverURL = "";
 
 function Emergency() {
 
@@ -47,12 +47,55 @@ function Emergency() {
     }
   };
 
+  const [recipesList, setRecipesList] = React.useState([]);
+  
+  React.useEffect(() => {
+    loadRecipes();
+  }, []);
+
+const loadRecipes = () => {
+  callApiLoadRecipes()
+    .then(res => {
+      console.log("callApiLoadRecipes returned: ", res)
+      var parsed = JSON.parse(res.express);
+      console.log("callApiLoadRecipes parsed: ", parsed);
+      setRecipesList(parsed);
+    })
+}
+
+const callApiLoadRecipes = async () => {
+  const url = serverURL + "/api/loadRecipes";
+  console.log(url);
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    }
+  });
+  const body = await response.json();
+  if (response.status !== 200) throw Error(body.message);
+  console.log("User settings: ", body);
+  return body;
+}
+
+
 
   return (
     <grid>
     
     <div className="SignIn">
-  
+    {recipesList.map(item => (
+      <Grid
+    
+    >
+      <div >
+        <div style={{ fontSize: 10, fontColor: `#08233B` }}>
+         {item.title}
+        </div>
+      </div>
+    </Grid>
+    ))}
       <Grid align="center">
             <Paper elevation={10} style={cardStyle}>
                 <Grid align='center'>

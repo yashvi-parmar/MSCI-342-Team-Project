@@ -38,6 +38,7 @@ function SignIn() {
   const [searchAnswer,setSearchAnswer] = React.useState('');
   const [submissionCheck, setSubmissionCheck]=React.useState(false);
   const [submissionValidation,setSubmissionValidation] = React.useState(false);
+  const [matchRecord,setMatchRecord] = React.useState(true);
 
   const handlePassword = (password) => {
     setPassword(password);
@@ -76,11 +77,9 @@ function SignIn() {
   setValue(newValue);
 };
  const handleSubmissionCheck = (event) =>{
-  setSubmissionCheck(true)
-  
- 
-  
+  setSubmissionCheck(true) 
 }
+
   const handleSubmissionValidation = (event) => {
     event.preventDefault();
     if(password !== '' && username !==''){
@@ -89,11 +88,18 @@ function SignIn() {
         setSubmissionValidation(true);
         loadApiAddLastSeenLocation();
         setSubmissionCheck(false);
-        handleChange("/")
+        handleChange("/");
+      }else{
+        {
+          setMatchRecord(false);
+          setSubmissionCheck(false);
+
+        }
       }
       setUsername('');
       setPassword('');
       setSearchAnswer('');
+
     }
   };
 
@@ -192,8 +198,8 @@ function SignIn() {
                 
                 <Button type='submit' variant="contained" style={buttonStyle} fullWidth  onClick={handleSubmissionCheck} ><h3 style={{letterSpacing: '0.05rem', color: '#EDECED'}}>LOGIN</h3></Button>
                 {
-                    password !== '' && username !== '' && submissionCheck ===true ? (
-                    <div><em style={{color:'red'}}>*Your credentials do not match our records. Please try again!</em></div>) : (<div></div>)
+                    matchRecord == false ? (
+                    <div><em style={{color:'red'}}>*Your credentials do not match our records! Please try</em></div>) : (<div></div>)
                   }
                 </form>
              </FormControl> 

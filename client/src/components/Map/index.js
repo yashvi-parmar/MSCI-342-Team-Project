@@ -19,10 +19,11 @@ import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
 import dogBark from "./assets/dogBark.wav"
+
 import { DeskOutlined } from '@mui/icons-material';
 import fakePhoneCall from "./assets/fakePhoneCall.wav"
-
-const buttonStyle={margin:'8px 0', backgroundColor: '#29241C', color: 'white'}
+import '../Home/index.css'
+const buttonStyle={margin:'8px 0', backgroundColor: '#29241C',  marginRight: '10px', marginBottom: '15px', color: 'white', fontFamily: 'Oswald', letterSpacing: '0.05rem'} 
 
 const textStyle={marginBottom: '8px'}
 const containerStyle = {
@@ -31,15 +32,15 @@ const containerStyle = {
   display: 'flex'
 };
 
-
 const serverURL = "";
+
 
 const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 
 function Map() {
 
   return (
-    <grid style={{backgroundColor: '#6D8654'}}>
+    <grid style={{backgroundColor: '#6D8654', fontFamily: 'Noto Sans Lepcha'}}>
       <NavbarTop></NavbarTop>
     
     <div className="Map">
@@ -119,25 +120,40 @@ function MapFxn() {
     console.log('infoBox: ', infoBox)
   };
 
-  const options3 = { closeBoxURL: '', enableEventPropagation: true };
+  const options = {     
+  strokeColor: '#FF0000',
+  strokeOpacity: 0.8,
+  strokeWeight: 2,
+  fillColor: '#FF0000',
+  fillOpacity: 0.35,
+  clickable: false,
+  draggable: false,
+  editable: false,
+  visible: true,
+  radius: 10,
+  zIndex: 1,
+  closeBoxURL: '', enableEventPropagation: true 
+  
+}
 
-  const options = {
-    strokeColor: '#FF0000',
+  const options3 = {
+    strokeColor: '#000000',
     strokeOpacity: 0.8,
     strokeWeight: 2,
-    fillColor: '#FF0000',
+    fillColor: '#271f1f',
     fillOpacity: 0.35,
     clickable: false,
     draggable: false,
     editable: false,
     visible: true,
     radius: 10,
-    zIndex: 1
+    zIndex: 1, closeBoxURL: '', enableEventPropagation: true 
   }
 
   const options2 = {
     strokeColor: '#00ff44',
     strokeOpacity: 0.8,
+    closeBoxURL: '', enableEventPropagation: true ,
     strokeWeight: 2,
     fillColor: '#00ff44',
     fillOpacity: 0.35,
@@ -145,7 +161,7 @@ function MapFxn() {
     draggable: false,
     editable: false,
     visible: true,
-    radius: 15,
+    radius: 10,
     zIndex: 1
   }
   
@@ -339,16 +355,62 @@ const callApiGetSavedDestinations = async() => {
   const url = serverURL + "/api/getSavedDestinations";
   console.log(url);
 
+  let info = {
+    "user": 1
+  };
+
   const response = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
+    body: JSON.stringify(info)
+  });
+  const body = await response.json();
+  if (response.status !== 200) throw Error(body.message);
+  console.log(response);
+  return body;
+}
+
+let [friendsEmails, setFriendsEmails] = React.useState([]);
+React.useEffect(() => {
+  getFriendsEmails();
+}, []);
+
+const getFriendsEmails = () => {
+  callAPIGetFriendsEmails()
+    .then(res => {
+      setFriendsEmails(res.friendEmailData);
+    })
+}
+
+const callAPIGetFriendsEmails = async() => {
+  const url = serverURL + "/api/getFriendsEmails";
+  console.log(url);
+
+  let userData = {
+    "userID": 2
+  }
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userData)
   });
   const body = await response.json();
   if (response.status !== 200) throw Error(body.message);
   console.log(body);
   return body;
+}
+
+const handleSendFriendsEmail = () => {
+  const allFriendEmails = friendsEmails.map((friendsEmails) => friendsEmails.email);
+  const subject = "Made It To My Destination Safely!";
+  const body = "I love BARK!";
+  const mailtoURL = `mailto:?bcc=${encodeURIComponent(allFriendEmails)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.open(mailtoURL);
 }
 
   return (
@@ -357,6 +419,7 @@ const callApiGetSavedDestinations = async() => {
 
 <Grid >
   <Grid align='center'>
+
   </Grid>      
 <LoadScript
   googleMapsApiKey = {apiKey}
@@ -381,15 +444,15 @@ const callApiGetSavedDestinations = async() => {
     />
     </Autocomplete>
     <p></p>
-    <Button type='submit' variant="contained" style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px', marginBottom: '15px'}}>Go</Button>
-    <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px',  marginBottom: '15px'}} variant="contained" onClick={reloadPage} >Reset Map</Button>
+    <Button type='submit' variant="contained" style={buttonStyle}>Go</Button>
+    <Button type='submit' style={buttonStyle} variant="contained" onClick={reloadPage} >Reset Map</Button>
   </form>
   </FormControl>
 <Grid container >
     <div>
-    <Button onClick={submitSaveDestination} type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px', marginBottom: '15px'}} variant="contained">Save This Destination</Button>
+    <Button onClick={submitSaveDestination} type='submit' style={buttonStyle} variant="contained">Save This Destination</Button>
     </div>
-    <Button onClick={handleClickOpenUse} type='submit' variant="contained" style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px', marginBottom: '15px'}}>Use Saved Destination</Button>
+    <Button onClick={handleClickOpenUse} type='submit' variant="contained" style={buttonStyle}>Use Saved Destination</Button>
       <Dialog disableEscapeKeyDown open={openUse} onClose={handleCloseCancelUse}>
         <DialogTitle>Use Saved Destination</DialogTitle>
         <DialogContent>
@@ -414,8 +477,8 @@ const callApiGetSavedDestinations = async() => {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseCancelUse} type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px', marginBottom: '15px'}} variant="contained">Cancel</Button>
-          <Button onClick={handleCloseSubmit} type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px', marginBottom: '15px'}} variant="contained">Set Destination</Button>
+          <Button onClick={handleCloseCancelUse} type='submit' style={buttonStyle} variant="contained">Cancel</Button>
+          <Button onClick={handleCloseSubmit} type='submit' style={buttonStyle} variant="contained">Set Destination</Button>
         </DialogActions>
       </Dialog>  
       </Grid> 
@@ -432,8 +495,8 @@ const callApiGetSavedDestinations = async() => {
       options={options3}
       position={{lat: item.lat, lng: item.lng}}
     >
-      <div style={{ display: showed ? "none": "", backgroundColor: '#E6CCB2', opacity: 1, padding: 2 }}>
-        <div style={{ fontSize: 10, fontColor: `#08233B` }}>
+      <div style={{ display: showed ? "none": "", backgroundColor: '#EFCA43', opacity: 1, padding: 4 }}>
+        <div style={{ fontSize: 10, fontColor: '#29241C', fontFamily: 'Noto Sans Lepcha'}}>
          {item.text}
         </div>
       </div>
@@ -446,8 +509,8 @@ const callApiGetSavedDestinations = async() => {
       options={options3}
       position={{lat: item.lat, lng: item.lng}}
     >
-      <div style={{ display: showed ? "none": "", backgroundColor: '#2E5129', opacity: 1}}>
-        <p style={{ fontSize: 10, color: 'white', padding: 2  }}>
+      <div style={{ display: showed ? "none": "", backgroundColor: '#6D8654', opacity: 1}}>
+        <p style={{ fontSize: 10, color: 'white', padding: 4  }}>
          {item.text}
         </p>
       </div>
@@ -461,8 +524,8 @@ const callApiGetSavedDestinations = async() => {
       options={options3}
       position={{lat: item.lat, lng: item.lng}}
     >
-      <div style={{ display: showedF ? "none": "", fontColor: '#FFFFFF', backgroundColor: '#6F4E37', opacity: 1 }}>
-        <p style={{ fontSize: 10, color: '#FFFFFF', padding: 2 }}>
+      <div style={{ display: showedF ? "none": "", fontColor: '#FFFFFF', backgroundColor: '#29241C', opacity: 0.85 }}>
+        <p style={{ fontSize: 10, color: '#FFFFFF', padding: 4 }}>
          {item.friendName}
         </p>
       </div>
@@ -470,13 +533,19 @@ const callApiGetSavedDestinations = async() => {
     ))}
         {!showedT ? <TrafficLayer onLoad={onLoad} /> : null}
     
-   {unsafelocations.map(item => (
+   {unsafetext.map(item => (
       <Circle options={options} center={{lat: item.lat, lng: item.lng}}></Circle>
     ))}
 
-  {safelocations.map(item2 => (
+  {safetext.map(item2 => (
       <Circle options={options2} center={{lat: item2.lat, lng: item2.lng}}></Circle>
     ))}
+
+{friends.map(item3 => (
+      <Circle options={options3} center={{lat: item3.lat, lng: item3.lng}}></Circle>
+    ))}
+
+
         <Marker  position={{lat: lat, lng: lng}}></Marker>
         {directions !== null && <DirectionsRenderer directions={directions} provideRouteAlternatives ={true} />}
       </GoogleMap>
@@ -500,7 +569,7 @@ const callApiGetSavedDestinations = async() => {
      
       <p></p>
       <Grid container={2} display='flex'> 
-      <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px', marginBottom: '15px'}} variant="contained" onClick={handleClickOpen}>Emergency Contacts</Button>
+      <Button type='submit' style={buttonStyle} variant="contained" onClick={handleClickOpen}>Emergency Contacts</Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Emergency Contacts</DialogTitle>
         <DialogContent>
@@ -539,15 +608,15 @@ const callApiGetSavedDestinations = async() => {
         </DialogActions>
       </Dialog>
       <p></p>
-      <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px',  marginBottom: '15px'}} variant="contained" onClick = {handleClickOpenPhoneCall} >Fake Phone Call</Button>
+      <Button type='submit' style={buttonStyle} variant="contained" onClick = {handleClickOpenPhoneCall} >Fake Phone Call</Button>
       <Dialog open={openFakeCall} onClose={handleClosePhoneCall}>
         <DialogTitle>Fake Phone Call</DialogTitle>
         <DialogContent>
         {showPhonePlay && (
-            <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px',  marginBottom: '15px'}} variant="contained" onClick = {playPhoneCall} >Play Audio</Button>
+            <Button type='submit' style={buttonStyle} variant="contained" onClick = {playPhoneCall} >Play Audio</Button>
           )}
            {showPhonePause && (
-            <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px',  marginBottom: '15px'}} variant="contained" onClick = {stopPhoneCall} >Stop Audio</Button>
+            <Button type='submit' style={buttonStyle} variant="contained" onClick = {stopPhoneCall} >Stop Audio</Button>
           )}
         
           <DialogContentText>
@@ -564,6 +633,7 @@ const callApiGetSavedDestinations = async() => {
     
       <p></p>
       <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px',  marginBottom: '15px'}} variant="contained" >Dial 911</Button>
+      <Button onClick={handleSendFriendsEmail} type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px',  marginBottom: '15px'}} variant="contained" >Reached Safety</Button>
        </Grid>
     </Grid>
     </grid>

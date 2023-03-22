@@ -12,11 +12,24 @@ const port = process.env.PORT || 5000;
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
+const recipes = [
+	{id: 1, lat: 43.472120, lng:-80.543550, text: "Avoid due to a broken streetlight"}, 
+  
+	{id: 2, lat: 43.472118, lng:-80.563546, text: "Avoid due to flooding"}, 
+  
+  ];
 
+console.log(recipes)
 //app.use(express.static(path.join(__dirname, "client/build")));
 app.use(express.static(path.join(__dirname, "client/public")));
 
-
+app.post('/api/loadAlerts', (req, res) => {
+	console.log(recipes)
+	let string = JSON.stringify(recipes);
+	console.log(recipes)
+	console.log(string.text());
+	res.send({ express: string });
+});
 app.post('/api/loadUserSettings', (req, res) => {
 
 	let connection = mysql.createConnection(config);
@@ -59,6 +72,25 @@ app.post('/api/getAlerts', (req,res) => {
 	connection.end();
 });
 
+app.get('/api/getUser', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+
+	let sql = 'SELECT firstName FROM User'
+	console.log(sql);
+	let data = []
+
+	connection.query(sql, data, (error,data) => {
+		if (error) {
+			return res.json({ status : "ERROR", error});
+		}
+		let string = JSON.stringify(data);
+		let obj = JSON.parse(string);
+		res.send({ name: obj });
+	});
+	connection.end();
+});
+
 app.post('/api/addAlert', (req, res) => {
 
 	console.log('addAlert was called');
@@ -94,9 +126,6 @@ app.post('/api/addAlert', (req, res) => {
 	firstName = req.body.firstName,
 	lastName = req.body.lastName
 	
-	  
-
-
 	let sql = "INSERT INTO `Profiles` (userName, email, password,firstName,lastName) VALUES (?,?,?,?,?)";
 	let data=[username, email, password,firstName,lastName];
 
@@ -137,7 +166,9 @@ app.post('/api/addAlert', (req, res) => {
 
 	let connection = mysql.createConnection(config);
 
-	let sql = 'SELECT * FROM savedDestinations WHERE user = 1'
+	user = req.body.user
+
+	let sql = "SELECT * FROM savedDestinations WHERE user = " + user
 	console.log(sql);
 	let data = []
 
@@ -265,6 +296,29 @@ app.post('/api/getSearchResult', (req, res) => {
 		let string = JSON.stringify(results);
 		//let obj = JSON.parse(string);
 		res.send({ express: string });
+	});
+
+	connection.end();
+});
+
+app.post('/api/getFriendsEmails', (req, res) => {
+
+	let connection = mysql.createConnection(config);
+
+	userID = req.body.userID
+	let sql = "SELECT p.email FROM Friends f INNER JOIN Profiles p ON f.friendUserID = p.userID WHERE f.userID = " + userID;
+
+	let data = [];
+	console.log(data);
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		let obj = JSON.parse(string);
+		res.send({ friendEmailData: obj });
 	});
 
 	connection.end();
