@@ -340,16 +340,62 @@ const callApiGetSavedDestinations = async() => {
   const url = serverURL + "/api/getSavedDestinations";
   console.log(url);
 
+  let info = {
+    "user": 1
+  };
+
   const response = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
+    body: JSON.stringify(info)
   });
   const body = await response.json();
   if (response.status !== 200) throw Error(body.message);
   console.log(body);
   return body;
+}
+
+let [friendsEmails, setFriendsEmails] = React.useState([]);
+React.useEffect(() => {
+  getFriendsEmails();
+}, []);
+
+const getFriendsEmails = () => {
+  callAPIGetFriendsEmails()
+    .then(res => {
+      setFriendsEmails(res.friendEmailData);
+    })
+}
+
+const callAPIGetFriendsEmails = async() => {
+  const url = serverURL + "/api/getFriendsEmails";
+  console.log(url);
+
+  let userData = {
+    "userID": 2
+  }
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userData)
+  });
+  const body = await response.json();
+  if (response.status !== 200) throw Error(body.message);
+  console.log(body);
+  return body;
+}
+
+const handleSendFriendsEmail = () => {
+  const allFriendEmails = friendsEmails.map((friendsEmails) => friendsEmails.email);
+  const subject = "Made It To My Destination Safely!";
+  const body = "I love BARK!";
+  const mailtoURL = `mailto:?bcc=${encodeURIComponent(allFriendEmails)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.open(mailtoURL);
 }
 
   return (
@@ -565,6 +611,7 @@ const callApiGetSavedDestinations = async() => {
     
       <p></p>
       <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px',  marginBottom: '15px'}} variant="contained" >Dial 911</Button>
+      <Button onClick={handleSendFriendsEmail} type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px',  marginBottom: '15px'}} variant="contained" >Reached Safety</Button>
        </Grid>
     </Grid>
     </grid>
