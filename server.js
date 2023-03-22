@@ -113,8 +113,11 @@ app.post('/api/addAlert', (req, res) => {
 	password = req.body.password
 	
 	  
-	let sql = "INSERT INTO `Accounts` (username, email, password) VALUES (?,?,?)";
-	let data=[username, email, password];
+
+
+	let sql = "INSERT INTO `Profiles` (userName, email, password,firstName,lastName) VALUES (?,?,?,?,?)";
+	let data=[username, email, password,firstName,lastName];
+
 	console.log(sql);
 	console.log(data);       
  
@@ -126,6 +129,165 @@ app.post('/api/addAlert', (req, res) => {
 	 });
 	 connection.end();
  });
+
+ app.post('/api/addSavedDestination', (req, res) => {
+
+	let connection = mysql.createConnection(config);
+
+	address = req.body.address
+	user = req.body.user
+	  
+	let sql = "INSERT INTO savedDestinations (address, user) VALUES (?,?)"
+	let data=[address, user];
+	console.log(sql);
+	console.log(data);       
+ 
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+		res.send({message: "Destination successfully added"});
+	 });
+	 connection.end();
+ });
+
+ app.post('/api/getSavedDestinations', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+
+	let sql = 'SELECT * FROM savedDestinations WHERE user = 1'
+	console.log(sql);
+	let data = []
+
+	connection.query(sql, data, (error,data) => {
+		if (error) {
+			return res.json({ status : "ERROR", error});
+		}
+		let string = JSON.stringify(data);
+		let obj = JSON.parse(string);
+		res.send({ destinationsData: obj});
+	});
+	connection.end();
+});
+
+app.post('/api/UpdateLastSeenLocated', (req, res) => {
+
+	let connection = mysql.createConnection(config);
+
+	userID = req.body.userID,
+	latitude = req.body.latitude,
+	longitude = req.body.longitude
+
+	let sql = "UPDATE `Profile` SET longitude='?' AND latitude = '?' WHERE userID = '?' VALUES (?,?,?)";
+	let data=[longitude,latitude,userID];
+	console.log(sql);
+	console.log(data);       
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+		res.send({message: "Location Successfully Updated"});
+	 });
+	 connection.end();
+ });
+
+ app.post('/api/checkAccount', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+
+	username = req.body.username
+
+	let sql = "SELECT * FROM Alerts WHERE userName ='?' VALUES (?)"
+	let data = [username]
+	console.log(sql);
+	console.log(data);
+
+	connection.query(sql, data, (error,data) => {
+		if (error) {
+			return res.json({ status : "ERROR", error});
+		}
+		let string = JSON.stringify(data);
+		if(string==""){
+			return res.send(false)
+		}else {
+			return res.send(true)
+		}
+	});
+	connection.end();
+});
+
+app.post('/api/SearchUser', (req, res) => {
+
+	let connection = mysql.createConnection(config);
+
+	username = req.body.username,
+	password = req.body.password
+	  
+	let sql = "SELECT * FROM Profiles WHERE userName='" + username + "' AND password = '" + password + "' ";
+	let data=[username,password];
+	console.log(sql);
+	console.log(data);       
+ 
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+		let string = JSON.stringify(data);
+		res.send({data:string})
+	 });
+	 connection.end();
+ });
+
+ app.post('/api/GetFriends', (req, res) => {
+
+	let connection = mysql.createConnection(config);
+
+	userID = req.body.userID;
+	  
+	let sql = "SELECT CONCAT(firstName,' ',lastName) AS FullName, longitude, latitude FROM Profiles INNER JOIN Friends ON Friends.FriendUserID=Profiles.userID WHERE Friends.userID='?' VALUES(?)";
+	let data=[userID];
+	console.log(sql);
+	console.log(data);       
+ 
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+		let string = JSON.stringify(data);
+		res.send({data:string})
+	 });
+	 connection.end();
+ });
+
+ app.post('/api/loadAlerts', (req, res) => {
+	let string = JSON.stringify(recipes);
+	console.log(string);
+	res.send({ express: string });
+});
+
+app.post('/api/getSearchResult', (req, res) => {
+
+	let connection = mysql.createConnection(config);
+
+	let username = `SELECT * FROM Profiles WHERE userName LIKE CONCAT (?, "%")`;
+
+	let data = [req.body.userSearch];
+	console.log(data);
+
+	connection.query(username, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		//let obj = JSON.parse(string);
+		res.send({ express: string });
+	});
+
+	connection.end();
+});
+
 
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
 //app.listen(port, '129.97.25.211'); //for the deployed version, specify the IP address of the server
