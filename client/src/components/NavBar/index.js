@@ -178,7 +178,7 @@ import AnnouncementIcon from '@mui/icons-material/Announcement';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import Diversity1Icon from '@mui/icons-material/Diversity1';
 import Paper from '@mui/material/Paper';
-
+import '../Home/index.css'
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
@@ -205,7 +205,7 @@ export default function FixedBottomNavigation() {
     <Box sx={{ pb: 7 }} ref={ref}>
       <CssBaseline />
       
-      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3} style={{fontFamily: 'Oswald'}}>
         <BottomNavigation
           showLabels
           value={value}
@@ -218,7 +218,7 @@ export default function FixedBottomNavigation() {
             }
          }}
         >
-          <BottomNavigationAction color="white" label="Map"  value="Map" icon={<MapIcon />} />
+          <BottomNavigationAction  color="white" label="Map"  value="Map" icon={<MapIcon />} />
           <BottomNavigationAction label="Alerts" value="Alerts" icon={<AnnouncementIcon />} />
           <BottomNavigationAction label="Friends" value="Friends" icon={<Diversity1Icon />} />
           <BottomNavigationAction label="Bark Button" value="" onClick={playSound}  icon={<VolumeUpIcon />} /> 

@@ -1,38 +1,39 @@
-import React, { Component, useEffect } from 'react';
+import React from 'react';
 import {createTheme, ThemeProvider, styled} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import { Select } from '@material-ui/core';
-import { InputLabel } from '@material-ui/core';
-import { MenuItem } from '@material-ui/core';
-import { FormHelperText } from '@material-ui/core';
-import {makeStyles} from "@material-ui/core/styles";
-import { Box } from '@material-ui/core';
 import { TextField } from '@material-ui/core';
 import Grid from "@material-ui/core/Grid";
-import Radio from '@material-ui/core/Radio';
-import { FormControl, FormLabel, RadioGroup, FormControlLabel } from '@material-ui/core';
+import { FormControl } from '@material-ui/core';
 import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import Paper from "@material-ui/core/Paper";
-import { withStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
-import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-//import ListItemButton from '@material-ui/core/ListItemButton';
-import history from '../Navigation/history';
-//import ListItemButton from '@mui/material/ListItemButton'
-import ListItemText from '@material-ui/core/ListItemText';
-import MenuIcon from "@material-ui/core/Menu";
-import Toolbar from '@material-ui/core/Toolbar';
 import Navbar from '../NavBar';
-
-//Dev mode
-//const serverURL = "";
-//const serverURL = "";
+import {LoadScript, Autocomplete} from '@react-google-maps/api';
+import NavbarTop from '../NavBarTop';
+import Paper from "@material-ui/core/Paper";
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Divider from '@mui/material/Divider';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
+import '../Home/index.css'
+//const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
 const serverURL = "";
+
+
+const cardStyle={padding :'4vh', height:'100%',width:480,  color: '#29241C', backgroundColor: '#EDECED', display: 'flex', flex:1, flexDirection: 'column'}
+
+const textStyle={marginBottom: '8px'}
+
+const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
+
+
+const opacityValue = 0.95;
+
+
+const buttonStyle={ backgroundColor: '#29241C', color: 'white', fontFamily: 'Oswald'}
+
+
  //enable for dev mode
  //enable for dev mode
 //Deployment mode instructions
@@ -40,7 +41,6 @@ const serverURL = "";
 //ssh to ov-research-4.uwaterloo.ca and run the following command:
 //env | grep "PORT"
 //copy the number only and paste it in the serverURL in place of PORT, e.g.: const serverURL = "http://ov-research-4.uwaterloo.ca:3000";
-const opacityValue = 0.95;
  
 const theme = createTheme({
  palette: {
@@ -49,49 +49,19 @@ const theme = createTheme({
      default: "#042913"
    },
    primary: {
-     main: '#B08968',
+     main: '#46341C',
    },
    secondary: {
-     main: "#94B395",
+     main: '#46341C',
    },
  },
 });
 
-const styles = theme => ({
-  root: {
-    body: {
-      backgroundColor: "#000000",
-      opacity: opacityValue,
-      overflow: "hidden",
-    },
-  },
-  mainMessage: {
-    opacity: opacityValue,
-  },
-
-  mainMessageContainer: {
-    marginTop: "5vh",
-    marginLeft: theme.spacing(5),
-    [theme.breakpoints.down('xs')]: {
-      marginLeft: theme.spacing(4),
-    },
-  },
-  paper: {
-    overflow: "hidden",
-  },
-  message: {
-    opacity: opacityValue,
-    maxWidth: 250,
-    paddingBottom: theme.spacing(2),
-  },
-
-});
-
 const MainGridContainer = styled(Grid)(({ theme }) => ({
- margin: theme.spacing(4),
+
 }))
 
-const Dashboard = (props) => {
+const Alerts = (props) => {
  
 
  const [alertLocation, setAlertLocation] = React.useState('');
@@ -101,33 +71,50 @@ const Dashboard = (props) => {
  const [submissionData,setSubmissionData] = React.useState([]);
  const [userID,setUserID]=React.useState(1);
  let [AlertData,setAlertData] = React.useState({});
+ const [autocomplete, setAutocomplete] = React.useState(null);
+ const [destination, setDestination] = React.useState('');
+ const [lat,setLat]=React.useState('');
+ const [lng,setLng]=React.useState('');
+ const [alertsList, setAlertsList] = React.useState([]);
+
+ const handleAutocompleteLoad = (autocomplete) => {
+  setAutocomplete(autocomplete);
+};
  
-
- const handleAlertLocation = (title) => {
-  setAlertLocation(title);
+const handlePlaceSelect = (place) => {
+  setDestination(place.formatted_address);
+  setLat(place.geometry.location.lat());
+  setLng(place.geometry.location.lng());
+  console.log(lat);
+  console.log(lng);
 };
 
-const handleAlertMessage = (body) => {
-  setAlertMessage(body);
+
+
+const handleAlertMessage = (message) => {
+  setAlertMessage(message);
 };
+
+const handleAlertInput = (event) => {
+  handleAlertMessage(event.target.value);
+}
 
 const handleSubmissionCheck = (event) =>{
   setSubmissionCheck(true);
 }
 const handleSubmissionValidation = (event) => {
+  console.log("submission was called");
   event.preventDefault();
-  console.log('event passed')
-  if(alertLocation != '' && alertMessage != ''){
+  if(destination !== '' && alertMessage !== ''){
     let data = {
       alertLocation: alertLocation,
       alertMessage: alertMessage,
       userID: 1,
     }
-    console.log('in if')
-    setSubmissionData([alertLocation,alertMessage])
+    setSubmissionData([destination,alertMessage])
     setAlertData(data);
     loadApiAddAlert();
-    setAlertLocation("");
+    setDestination("");
     setAlertMessage("");
     setSubmissionValidation(true);
     setSubmissionCheck(false);
@@ -144,16 +131,18 @@ const loadApiAddAlert = () => {
 
 
  const callApiAddAlert= async () => {
-  const url = serverURL + "/api/addAlert";
+  const url = serverURL + '/api/addAlert';
 
   let AlertInfo = {
-    "alertLocation": alertLocation,
+    "lat": lat,
+    "lng" : lng,
     "alertMessage": alertMessage,
-    "userID": "yparmar"
+    "userID": userID
   };
 
-  console.log(url);
+  console.log(AlertInfo);
 
+  console.log(AlertInfo);
   const response = await fetch(url, {
     method: "POST",
     headers: {
@@ -161,135 +150,148 @@ const loadApiAddAlert = () => {
     },
     body: JSON.stringify(AlertInfo)
   });
-  console.log(response)
-  console.log(1232)
   const body = await response.json();
   if (response.status !== 200) throw Error(body.message);
   return body;
 }
 
-return (
-  <grid>
-    <Navbar></Navbar>
-   <ThemeProvider theme={theme}>
-     <Box
-       sx={{
-         height: '100vh',
-         opacity: opacityValue,
-         overflow: "hidden",
-         backgroundColor: theme.palette.background.default,
-       }}
-     >
-       <MainGridContainer
-         container
-         spacing={3}
-         style={{ maxWidth: '50%' }}
-         direction="column"
-         justify="flex-start"
-         alignItems="stretch"
-       >
 
-         <br></br>
-         <br></br>
-         <Typography variant="h3" gutterBottom component="div" color='primary' >
-           Submit Message
-         </Typography>
-        
+const alerts = [
+  {id: 1, lat: 43.472120, lng:-80.543550, address: 'University of Waterloo', timestamp: "2023-01-10", alert: "avoid area around geese", name: 'YP'}, 
+
+  {id: 1, lat: 43.472120, lng:-80.643550,address: 'University of Waterloo', timestamp: "2023-02-10", alert: "avoid area around ml ", name: 'LS'}, 
+
+]
+
+return (
+  <Grid style={{backgroundColor: '#6D8654',fontFamily: 'Noto Sans Lepcha', padding: '10vh', color: 'white', height: '90vh', display: 'flex', flexDirection: 'row', flexBasis: '100%', flex: 1 , justifyContent: 'center'}}>
+    <Paper elevation={10} style={cardStyle}> 
+    <ThemeProvider theme={theme}> 
+    <h1 style={{color: '#29241C', fontFamily: 'Oswald'}}>Submit a Warning</h1>
+         <LoadScript
+          googleMapsApiKey = {apiKey}
+          libraries={['places']}
+        >  
          <FormControl>
            <form autoComplete='off' onSubmit={handleSubmissionValidation}>
-             <AlertLocation handleAlertLocation={handleAlertLocation} alertLocation={alertLocation} submissionCheck={submissionCheck}/>
+           <Autocomplete 
+              onLoad={handleAutocompleteLoad} 
+              onPlaceChanged={() => handlePlaceSelect(autocomplete.getPlace())}
+              options={{ componentRestrictions: { country: "ca" } }}
+            >
+            <TextField
+              id="destination"
+              type="text"
+              placeholder="Destination"
+              style={{ width: '400px'}}
+              helperText="Enter location of danger"
+              value={destination}
+              onChange={(e) => setDestination(e.target.value)}
+            />
+            </Autocomplete>
+           {
+              destination === '' && submissionCheck === true ? (
+                <div><em style={{color:'red'}}>*Please enter the location. It is a mandatory field.</em></div>) : (<div></div>)
+           }
              <br></br>
              <br></br>
-             <AlertMessage handleAlertMessage = {handleAlertMessage} alertMessage = {alertMessage} submissionCheck={submissionCheck}/>
+             <TextField 
+              
+              multiline 
+              label=' Alert Message' 
+              helperText="Enter description of danger" 
+              variant="outlined"  
+              minRows={5} 
+              value={alertMessage} 
+              onChange = {handleAlertInput} 
+             />
+             {
+                alertMessage === '' && submissionCheck === true ? (
+                  <div><em style={{color:'red'}}>*Please enter a description. It is a mandatory field.</em></div>) : (<div></div>)
+              }
              <br></br>
              <br></br>
-             <Button variant="contained" color="primary" type ='submit' onClick={handleSubmissionCheck}>Submit</Button>
+             <Button 
+              variant="contained" 
+              style={buttonStyle}
+              type ='submit' 
+              onClick={handleSubmissionCheck}
+              >
+                Submit
+             </Button>
            </form>
-         </FormControl>                               
+         </FormControl> 
+         </LoadScript>                              
          {
-          submissionValidation == true &&
+          submissionValidation === true && alertMessage === '' && destination === '' &&
           <div>
             <br></br>
             <Typography id='submit' variant="h5">Your message has been received and other users will be alerted!</Typography>
           </div>
 
         }        
-       </MainGridContainer>
-     </Box>
-   </ThemeProvider>
-   </grid>
+       </ThemeProvider>
+   </Paper>
+  
+   
+   <Grid style={{marginLeft: '5vh'}} >
+   <Paper elevation={10} style={cardStyle}> 
+    <ThemeProvider theme={theme}> 
+    <h1 style={{color: '#29241C', fontFamily: 'Oswald'}}>Alerts</h1>
+    <p style={{fontSize: 10, marginTop: '-1vh'}}>Only displays latest 5 messages in your area. Please see map for more alerts.</p>
+ 
+    <List sx={{ width: '100%', maxWidth: 460, bgcolor: 'background.paper' }}>
+    {alerts.map(item => (
+      <List>
+      <ListItem alignItems="flex-start" style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: '#29241C', color: 'white'}}>
+        <ListItemAvatar >
+          <Avatar style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: 'white', color: '#29241C'}}>{item.name}</Avatar>
+        </ListItemAvatar>
+        <ListItemText
+          primary={item.address}
+          secondary={
+            <React.Fragment>
+              <Typography
+                sx={{ display: 'inline' }}
+                component="span"
+                variant="body2"
+                color="white"
+              >
+                
+              </Typography>
+              <p style={{color: 'white', margin: '-0.1vh'}}>{item.alert}</p>
+              
+            </React.Fragment>
+          }
+        />
+
+      </ListItem>
+      <Divider />
+      </List>
+        ))}
+      
+      </List>
+    
+       </ThemeProvider>
+   </Paper>
+    
+    </Grid>
+   </Grid>
  );
 
 }
 
 
-const AlertLocation = (props) => {
- 
- const handleInput = (event) => {
-   props.handleAlertLocation(event.target.value);
- };
- 
- return (
-
-    <div>
-      <TextField
-        id="alert-location"
-        label="Alert Location"
-        multiline
-        style={{ width: 600 }}
-        minRows={2}
-        variant="outlined"
-        helperText="Enter Location of danger"
-        value={props.alertMessage}
-        onChange = {handleInput}
-      />
-       {
-         props.alertLocation == '' && props.submissionCheck == true ? (
-          <div><em style={{color:'red'}}>*Please enter the location. It is a mandatory field.</em></div>) : (<div></div>)
-      }
-    </div>
-);
-}
-
-const AlertMessage = (props) => {
- 
- const handleInput = (event) => {
-   props.handleAlertMessage(event.target.value);
- };
- 
-  return (
-    <div>
-    <TextField
-        id="alert-message"
-        label="Alert Message"
-        multiline
-        style={{ width: 600 }}
-        minRows={5}
-        variant="outlined"
-        helperText="Enter Description of danger"
-        value={props.alertMessage}
-        onChange = {handleInput}
-      />
-      {
-        props.alertMessage == '' && props.submissionCheck == true ? (
-          <div><em style={{color:'red'}}>*Please enter a description. It is a mandatory field.</em></div>) : (<div></div>)
-       }
-    </div>
-  );
-}
- 
-
 const Home = () => {
- 
-
     return (
       <div> 
-        <Dashboard /> 
+       <NavbarTop></NavbarTop>       
+       
+        <Alerts /> 
+        <Navbar></Navbar>
       </div>     
     )
   };
-
-
 
 Home.propTypes = {
   classes: PropTypes.object.isRequired
