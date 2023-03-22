@@ -126,9 +126,6 @@ app.post('/api/addAlert', (req, res) => {
 	firstName = req.body.firstName,
 	lastName = req.body.lastName
 	
-	  
-
-
 	let sql = "INSERT INTO `Profiles` (userName, email, password,firstName,lastName) VALUES (?,?,?,?,?)";
 	let data=[username, email, password,firstName,lastName];
 
@@ -169,7 +166,9 @@ app.post('/api/addAlert', (req, res) => {
 
 	let connection = mysql.createConnection(config);
 
-	let sql = 'SELECT * FROM savedDestinations WHERE user = 1'
+	user = req.body.user
+
+	let sql = "SELECT * FROM savedDestinations WHERE user = " + user
 	console.log(sql);
 	let data = []
 
@@ -297,6 +296,29 @@ app.post('/api/getSearchResult', (req, res) => {
 		let string = JSON.stringify(results);
 		//let obj = JSON.parse(string);
 		res.send({ express: string });
+	});
+
+	connection.end();
+});
+
+app.post('/api/getFriendsEmails', (req, res) => {
+
+	let connection = mysql.createConnection(config);
+
+	userID = req.body.userID
+	let sql = "SELECT p.email FROM Friends f INNER JOIN Profiles p ON f.friendUserID = p.userID WHERE f.userID = " + userID;
+
+	let data = [];
+	console.log(data);
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		let obj = JSON.parse(string);
+		res.send({ friendEmailData: obj });
 	});
 
 	connection.end();
