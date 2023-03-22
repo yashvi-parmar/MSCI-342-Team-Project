@@ -16,12 +16,12 @@ import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
-
+import '../Home/index.css'
 //const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
 const serverURL = "";
 
 
-const cardStyle={padding :'4vh', height:'100%',width:480,  color: '#29241C', backgroundColor: '#EDECED'}
+const cardStyle={padding :'4vh', height:'100%',width:480,  color: '#29241C', backgroundColor: '#EDECED', display: 'flex', flex:1, flexDirection: 'column'}
 
 const textStyle={marginBottom: '8px'}
 
@@ -31,7 +31,7 @@ const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 const opacityValue = 0.95;
 
 
-const buttonStyle={marginTop: '-6vh', backgroundColor: '#29241C', color: 'white'}
+const buttonStyle={ backgroundColor: '#29241C', color: 'white', fontFamily: 'Oswald'}
 
 
  //enable for dev mode
@@ -154,37 +154,7 @@ const loadApiAddAlert = () => {
   if (response.status !== 200) throw Error(body.message);
   return body;
 }
-React.useEffect(() => {
-  loadAlerts(); 
-}, []);
 
-const loadAlerts = () => {
-  callApiLoadAlerts()
-    .then(res => {
-      console.log("callApiLoadRecipes returned: ", res)
-      var parsed = JSON.parse(res.express);
-      console.log("callApiLoadRecipes parsed: ", parsed);
-      setAlertsList(parsed);
-    })
-}
-
-const callApiLoadAlerts = async () => {
-  const url = serverURL + "/api/getAlerts";
-  console.log(url);
-
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    }
-  
-  });
-  const body = await response.json();
-  console.log(response.status);
-  if (response.status !== 200) throw Error(body.message);
-  console.log("User settings: ", body);
-  return body;
-}
 
 const alerts = [
   {id: 1, lat: 43.472120, lng:-80.543550, address: 'University of Waterloo', timestamp: "2023-01-10", alert: "avoid area around geese", name: 'YP'}, 
@@ -192,13 +162,12 @@ const alerts = [
   {id: 1, lat: 43.472120, lng:-80.643550,address: 'University of Waterloo', timestamp: "2023-02-10", alert: "avoid area around ml ", name: 'LS'}, 
 
 ]
-const friends = ['Vedangi', 'Yashvi', 'Anna', 'Bhairavi']
-const firstLetters = friends.map((fri) => fri[0]);
+
 return (
-  <Grid style={{backgroundColor: '#6D8654', padding: '10vh', color: 'white', height: '90vh', display: 'flex', flexDirection: 'row', flexBasis: '100%', flex: 1 , justifyContent: 'center'}}>
+  <Grid style={{backgroundColor: '#6D8654',fontFamily: 'Noto Sans Lepcha', padding: '10vh', color: 'white', height: '90vh', display: 'flex', flexDirection: 'row', flexBasis: '100%', flex: 1 , justifyContent: 'center'}}>
     <Paper elevation={10} style={cardStyle}> 
     <ThemeProvider theme={theme}> 
-    <h1 style={{color: '#29241C'}}>Submit a Warning</h1>
+    <h1 style={{color: '#29241C', fontFamily: 'Oswald'}}>Submit a Warning</h1>
          <LoadScript
           googleMapsApiKey = {apiKey}
           libraries={['places']}
@@ -227,7 +196,7 @@ return (
              <br></br>
              <br></br>
              <TextField 
-              style={textStyle} 
+              
               multiline 
               label=' Alert Message' 
               helperText="Enter description of danger" 
@@ -268,14 +237,15 @@ return (
    <Grid style={{marginLeft: '5vh'}} >
    <Paper elevation={10} style={cardStyle}> 
     <ThemeProvider theme={theme}> 
-    <h1 style={{color: '#29241C'}}>Alerts</h1>
+    <h1 style={{color: '#29241C', fontFamily: 'Oswald'}}>Alerts</h1>
+    <p style={{fontSize: 10, marginTop: '-1vh'}}>Only displays latest 5 messages in your area. Please see map for more alerts.</p>
  
     <List sx={{ width: '100%', maxWidth: 460, bgcolor: 'background.paper' }}>
     {alerts.map(item => (
       <List>
-      <ListItem alignItems="flex-start">
-        <ListItemAvatar>
-          <Avatar>{item.name}</Avatar>
+      <ListItem alignItems="flex-start" style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: '#29241C', color: 'white'}}>
+        <ListItemAvatar >
+          <Avatar style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: 'white', color: '#29241C'}}>{item.name}</Avatar>
         </ListItemAvatar>
         <ListItemText
           primary={item.address}
@@ -285,11 +255,12 @@ return (
                 sx={{ display: 'inline' }}
                 component="span"
                 variant="body2"
-                color="text.primary"
+                color="white"
               >
                 
               </Typography>
-              {item.alert}
+              <p style={{color: 'white', margin: '-0.1vh'}}>{item.alert}</p>
+              
             </React.Fragment>
           }
         />

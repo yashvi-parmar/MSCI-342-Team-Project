@@ -33,6 +33,7 @@ export default function PrivateRoute({
       <Route path="/EmergencyServices" exact component={EmergencyServices} />
       <Route path="/TermsAndConditions" exact component={TermsAndConditions} />
       <Route path="/CreateAccount" exact component={CreateAccount} />
+      <Route path="/Emergency" exact component={Emergency} />
 
       </Switch>
     </Router>
