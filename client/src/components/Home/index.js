@@ -8,22 +8,52 @@ import Share from '../Share';
 import Dog from './dog.png';
 import {Button} from '@material-ui/core'
 import './index.css'
+import List from '@mui/material/List';
 
 //Dev mode
 //const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046"; //enable for dev mode
 //Deployment mode instructions
-// const serverURL = "http://ov-research-4.uwaterloo.ca:3013"; //enable for deployed mode; Change PORT to the port number given to you;
+const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3034" //enable for deployed mode; Change PORT to the port number given to you;
 //To find your port number: 
 //ssh to ov-research-4.uwaterloo.ca and run the following command: 
 //env | grep "PORT"
 //copy the number only and paste it in the serverURL in place of PORT, e.g.: const serverURL = "http://ov-research-4.uwaterloo.ca:3000";
 
 
+const fetch = require("node-fetch");
   
 
 const Home = () => {
+  const [userList, setUsersList] = React.useState([]);
+  const loadUsers = () => {
+    callApiLoadUsers()
+      .then(res => {
+        console.log("callApiLoadRecipes returned: ", res)
+        var parsed = JSON.parse(res.express);
+        console.log("callApiLoadRecipes parsed: ", parsed);
+        setUsersList(parsed);
+      })
+  }
+
+  const callApiLoadUsers = async () => {
+    const url = serverURL + "/api/loadUsers";
+    console.log(url);
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    console.log("User settings: ", body);
+    return body;
+  }
+ 
   const buttonStyle={margin:'8px 0', backgroundColor: '#29241C', color: 'white', fontFamily: 'Oswald', letterSpacing: '0.1rem'}
   const runButton = event => {
+    loadUsers();
     event.preventDefault();
     var copyText = "this is the link";
     navigator.clipboard.writeText(copyText).then(() => {
@@ -39,7 +69,7 @@ const Home = () => {
 
 
 
-
+      <List userList={userList}></List>
       <Grid  style={{backgroundColor: '#6D8654', padding: '10vh', color: 'white', height: '90vh', display: 'flex', flexDirection: 'row', flexBasis: '100%', flex: 1 }}> 
       <Grid >
       <img src={Dog} alt="Dog" />

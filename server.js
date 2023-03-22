@@ -12,9 +12,30 @@ const port = process.env.PORT || 5000;
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
+app.use(express.static(path.join(__dirname, "client/build")));
+const recipes = [
+	{
+		title: 'Fruit Salad',
+		difficulty: '2',
+		ingredients: ['apple', 'banana', 'blueberries', 'raisins', 'walnuts'],
+		calories: "200",
+		instructions: "Wash fresh fruit. Slice fruit into pieces. Mix all ingredients in a bowl.",
+		recipeID: 1,
+	}, {
+		title: 'Avocado Wrap',
+		difficulty: '3',
+		ingredients: ['avocado', 'spinach', 'pine nuts', 'mayo', 'apple', 'tortilla bread'],
+		calories: "400",
+		instructions: "Wash all fruits and vegetables. Slice avocados and apples. Mix all ingredients and wrap them in a tortilla bread.",
+		recipeID: 2
+	},
+];
 
-//app.use(express.static(path.join(__dirname, "client/build")));
-app.use(express.static(path.join(__dirname, "client/public")));
+app.post('/api/loadRecipes', (req, res) => {
+	let string = JSON.stringify(recipes);
+	console.log(string);
+	res.send({ express: string });
+});
 
 
 app.post('/api/loadUserSettings', (req, res) => {
@@ -39,6 +60,7 @@ app.post('/api/loadUserSettings', (req, res) => {
 	connection.end();
 });
 
+//---------------------------------------------------------
 
 app.post('/api/getAlerts', (req,res) => {
 
@@ -61,17 +83,15 @@ app.post('/api/getAlerts', (req,res) => {
 
 app.post('/api/addAlert', (req, res) => {
 
-	console.log('addAlert was called');
 	let connection = mysql.createConnection(config);
-
-	lat = req.body.lat,
-	lng = req.body.lng,
+	console.log(connection)
+	location = req.body.alertLocation,
 	alertMessage = req.body.alertMessage, 
 	user = req.body.userID
 	
 	  
-	let sql = "INSERT INTO `Alerts` (lat, lng, alert, user) VALUES (?,?,?,?)";
-	let data=[lat, lng, alertMessage, user];
+	let sql = "INSERT INTO `AlertTest` (location, alert, user) VALUES (?,?,?)";
+	let data=[location, alertMessage, user];
 	console.log(sql);
 	console.log(data);       
  
@@ -90,13 +110,11 @@ app.post('/api/addAlert', (req, res) => {
 
 	username = req.body.username,
 	email = req.body.email, 
-	password = req.body.password,
-	firstName = req.body.firstName,
-	lastName = req.body.lastName
+	password = req.body.password
 	
 	  
-	let sql = "INSERT INTO `Profiles` (userName, email, password,firstName,lastName) VALUES (?,?,?,?,?)";
-	let data=[username, email, password,firstName,lastName];
+	let sql = "INSERT INTO `Accounts` (username, email, password) VALUES (?,?,?)";
+	let data=[username, email, password];
 	console.log(sql);
 	console.log(data);       
  
@@ -109,142 +127,5 @@ app.post('/api/addAlert', (req, res) => {
 	 connection.end();
  });
 
- app.post('/api/addSavedDestination', (req, res) => {
-
-	let connection = mysql.createConnection(config);
-
-	address = req.body.address
-	user = req.body.user
-	  
-	let sql = "INSERT INTO 'savedDestinations' (address, user)"
-	let data=[address, user];
-	console.log(sql);
-	console.log(data);       
- 
-	connection.query(sql, data, (error, results, fields) => {
-		if (error) {
-			return console.error(error.message);
-		}
-		res.send({message: "Destination successfully added"});
-	 });
-	 connection.end();
- });
-
- app.post('/api/getSavedDestination', (req,res) => {
-
-	let connection = mysql.createConnection(config);
-
-	let sql = 'SELECT * FROM savedDestinations WHERE user = 1'
-	console.log(sql);
-	let data = []
-
-	connection.query(sql, data, (error,data) => {
-		if (error) {
-			return res.json({ status : "ERROR", error});
-		}
-		let string = JSON.stringify(data);
-		let obj = JSON.parse(string);
-		res.send({ alertData: obj });
-	});
-	connection.end();
-});
-
-app.post('/api/UpdateLastSeenLocated', (req, res) => {
-
-	let connection = mysql.createConnection(config);
-
-	userID = req.body.userID,
-	latitude = req.body.latitude,
-	longitude = req.body.longitude
-
-	let sql = "UPDATE `Profile` SET longitude='?' AND latitude = '?' WHERE userID = '?' VALUES (?,?,?)";
-	let data=[longitude,latitude,userID];
-	console.log(sql);
-	console.log(data);       
-
-	connection.query(sql, data, (error, results, fields) => {
-		if (error) {
-			return console.error(error.message);
-		}
-		res.send({message: "Location Successfully Updated"});
-	 });
-	 connection.end();
- });
-
- app.post('/api/checkAccount', (req,res) => {
-
-	let connection = mysql.createConnection(config);
-
-	username = req.body.username
-
-	let sql = "SELECT * FROM Alerts WHERE userName ='?' VALUES (?)"
-	let data = [username]
-	console.log(sql);
-	console.log(data);
-
-	connection.query(sql, data, (error,data) => {
-		if (error) {
-			return res.json({ status : "ERROR", error});
-		}
-		let string = JSON.stringify(data);
-		if(string==""){
-			return res.send(false)
-		}else {
-			return res.send(true)
-		}
-	});
-	connection.end();
-});
-
-app.post('/api/SearchUser', (req, res) => {
-
-	let connection = mysql.createConnection(config);
-
-	username = req.body.username,
-	password = req.body.password
-	  
-	let sql = "SELECT * FROM Profiles WHERE userName='" + username + "' AND password = '" + password + "' ";
-	let data=[username,password];
-	console.log(sql);
-	console.log(data);       
- 
-	connection.query(sql, data, (error, results, fields) => {
-		if (error) {
-			return console.error(error.message);
-		}
-		let string = JSON.stringify(data);
-		res.send({data:string})
-	 });
-	 connection.end();
- });
-
- app.post('/api/GetFriends', (req, res) => {
-
-	let connection = mysql.createConnection(config);
-
-	userID = req.body.userID;
-	  
-	let sql = "SELECT CONCAT(firstName,' ',lastName) AS FullName, longitude, latitude FROM Profiles INNER JOIN Friends ON Friends.FriendUserID=Profiles.userID WHERE Friends.userID='?' VALUES(?)";
-	let data=[userID];
-	console.log(sql);
-	console.log(data);       
- 
-	connection.query(sql, data, (error, results, fields) => {
-		if (error) {
-			return console.error(error.message);
-		}
-		let string = JSON.stringify(data);
-		res.send({data:string})
-	 });
-	 connection.end();
- });
-
- app.post('/api/loadAlerts', (req, res) => {
-	let string = JSON.stringify(recipes);
-	console.log(string);
-	res.send({ express: string });
-});
-
-
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
-//app.listen(port, '172.31.31.77'); //for the deployed version, specify the IP address of the server
+//app.listen(port, '129.97.25.211'); //for the deployed version, specify the IP address of the server

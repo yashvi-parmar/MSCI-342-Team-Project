@@ -1,39 +1,38 @@
-import React from 'react';
+import React, { Component, useEffect } from 'react';
 import {createTheme, ThemeProvider, styled} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import { Select } from '@material-ui/core';
+import { InputLabel } from '@material-ui/core';
+import { MenuItem } from '@material-ui/core';
+import { FormHelperText } from '@material-ui/core';
+import {makeStyles} from "@material-ui/core/styles";
+import { Box } from '@material-ui/core';
 import { TextField } from '@material-ui/core';
 import Grid from "@material-ui/core/Grid";
-import { FormControl } from '@material-ui/core';
+import Radio from '@material-ui/core/Radio';
+import { FormControl, FormLabel, RadioGroup, FormControlLabel } from '@material-ui/core';
 import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import Navbar from '../NavBar';
-import {LoadScript, Autocomplete} from '@react-google-maps/api';
-import NavbarTop from '../NavBarTop';
 import Paper from "@material-ui/core/Paper";
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import Divider from '@mui/material/Divider';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
+import { withStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
+import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+//import ListItemButton from '@material-ui/core/ListItemButton';
+import history from '../Navigation/history';
+//import ListItemButton from '@mui/material/ListItemButton'
+import ListItemText from '@material-ui/core/ListItemText';
+import MenuIcon from "@material-ui/core/Menu";
+import Toolbar from '@material-ui/core/Toolbar';
+import Navbar from '../NavBar';
 
-//const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
+//Dev mode
+//const serverURL = "";
+//const serverURL = "";
 const serverURL = "";
-
-
-const cardStyle={padding :'4vh', height:'100%',width:480,  color: '#29241C', backgroundColor: '#EDECED'}
-
-const textStyle={marginBottom: '8px'}
-
-const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
-
-
-const opacityValue = 0.95;
-
-
-const buttonStyle={marginTop: '-6vh', backgroundColor: '#29241C', color: 'white'}
-
-
  //enable for dev mode
  //enable for dev mode
 //Deployment mode instructions
@@ -41,6 +40,7 @@ const buttonStyle={marginTop: '-6vh', backgroundColor: '#29241C', color: 'white'
 //ssh to ov-research-4.uwaterloo.ca and run the following command:
 //env | grep "PORT"
 //copy the number only and paste it in the serverURL in place of PORT, e.g.: const serverURL = "http://ov-research-4.uwaterloo.ca:3000";
+const opacityValue = 0.95;
  
 const theme = createTheme({
  palette: {
@@ -49,19 +49,49 @@ const theme = createTheme({
      default: "#042913"
    },
    primary: {
-     main: '#46341C',
+     main: '#B08968',
    },
    secondary: {
-     main: '#46341C',
+     main: "#94B395",
    },
  },
 });
 
-const MainGridContainer = styled(Grid)(({ theme }) => ({
+const styles = theme => ({
+  root: {
+    body: {
+      backgroundColor: "#000000",
+      opacity: opacityValue,
+      overflow: "hidden",
+    },
+  },
+  mainMessage: {
+    opacity: opacityValue,
+  },
 
+  mainMessageContainer: {
+    marginTop: "5vh",
+    marginLeft: theme.spacing(5),
+    [theme.breakpoints.down('xs')]: {
+      marginLeft: theme.spacing(4),
+    },
+  },
+  paper: {
+    overflow: "hidden",
+  },
+  message: {
+    opacity: opacityValue,
+    maxWidth: 250,
+    paddingBottom: theme.spacing(2),
+  },
+
+});
+
+const MainGridContainer = styled(Grid)(({ theme }) => ({
+ margin: theme.spacing(4),
 }))
 
-const Alerts = (props) => {
+const Dashboard = (props) => {
  
 
  const [alertLocation, setAlertLocation] = React.useState('');
@@ -71,50 +101,33 @@ const Alerts = (props) => {
  const [submissionData,setSubmissionData] = React.useState([]);
  const [userID,setUserID]=React.useState(1);
  let [AlertData,setAlertData] = React.useState({});
- const [autocomplete, setAutocomplete] = React.useState(null);
- const [destination, setDestination] = React.useState('');
- const [lat,setLat]=React.useState('');
- const [lng,setLng]=React.useState('');
- const [alertsList, setAlertsList] = React.useState([]);
-
- const handleAutocompleteLoad = (autocomplete) => {
-  setAutocomplete(autocomplete);
-};
  
-const handlePlaceSelect = (place) => {
-  setDestination(place.formatted_address);
-  setLat(place.geometry.location.lat());
-  setLng(place.geometry.location.lng());
-  console.log(lat);
-  console.log(lng);
+
+ const handleAlertLocation = (title) => {
+  setAlertLocation(title);
 };
 
-
-
-const handleAlertMessage = (message) => {
-  setAlertMessage(message);
+const handleAlertMessage = (body) => {
+  setAlertMessage(body);
 };
-
-const handleAlertInput = (event) => {
-  handleAlertMessage(event.target.value);
-}
 
 const handleSubmissionCheck = (event) =>{
   setSubmissionCheck(true);
 }
 const handleSubmissionValidation = (event) => {
-  console.log("submission was called");
   event.preventDefault();
-  if(destination !== '' && alertMessage !== ''){
+  console.log('event passed')
+  if(alertLocation != '' && alertMessage != ''){
     let data = {
       alertLocation: alertLocation,
       alertMessage: alertMessage,
       userID: 1,
     }
-    setSubmissionData([destination,alertMessage])
+    console.log('in if')
+    setSubmissionData([alertLocation,alertMessage])
     setAlertData(data);
     loadApiAddAlert();
-    setDestination("");
+    setAlertLocation("");
     setAlertMessage("");
     setSubmissionValidation(true);
     setSubmissionCheck(false);
@@ -131,18 +144,16 @@ const loadApiAddAlert = () => {
 
 
  const callApiAddAlert= async () => {
-  const url = serverURL + '/api/addAlert';
+  const url = serverURL + "/api/addAlert";
 
   let AlertInfo = {
-    "lat": lat,
-    "lng" : lng,
+    "alertLocation": alertLocation,
     "alertMessage": alertMessage,
-    "userID": userID
+    "userID": "yparmar"
   };
 
-  console.log(AlertInfo);
+  console.log(url);
 
-  console.log(AlertInfo);
   const response = await fetch(url, {
     method: "POST",
     headers: {
@@ -150,177 +161,135 @@ const loadApiAddAlert = () => {
     },
     body: JSON.stringify(AlertInfo)
   });
+  console.log(response)
+  console.log(1232)
   const body = await response.json();
   if (response.status !== 200) throw Error(body.message);
   return body;
 }
-React.useEffect(() => {
-  loadAlerts(); 
-}, []);
 
-const loadAlerts = () => {
-  callApiLoadAlerts()
-    .then(res => {
-      console.log("callApiLoadRecipes returned: ", res)
-      var parsed = JSON.parse(res.express);
-      console.log("callApiLoadRecipes parsed: ", parsed);
-      setAlertsList(parsed);
-    })
-}
-
-const callApiLoadAlerts = async () => {
-  const url = serverURL + "/api/getAlerts";
-  console.log(url);
-
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    }
-  
-  });
-  const body = await response.json();
-  console.log(response.status);
-  if (response.status !== 200) throw Error(body.message);
-  console.log("User settings: ", body);
-  return body;
-}
-
-const alerts = [
-  {id: 1, lat: 43.472120, lng:-80.543550, address: 'University of Waterloo', timestamp: "2023-01-10", alert: "avoid area around geese", name: 'YP'}, 
-
-  {id: 1, lat: 43.472120, lng:-80.643550,address: 'University of Waterloo', timestamp: "2023-02-10", alert: "avoid area around ml ", name: 'LS'}, 
-
-]
-const friends = ['Vedangi', 'Yashvi', 'Anna', 'Bhairavi']
-const firstLetters = friends.map((fri) => fri[0]);
 return (
-  <Grid style={{backgroundColor: '#6D8654', padding: '10vh', color: 'white', height: '90vh', display: 'flex', flexDirection: 'row', flexBasis: '100%', flex: 1 , justifyContent: 'center'}}>
-    <Paper elevation={10} style={cardStyle}> 
-    <ThemeProvider theme={theme}> 
-    <h1 style={{color: '#29241C'}}>Submit a Warning</h1>
-         <LoadScript
-          googleMapsApiKey = {apiKey}
-          libraries={['places']}
-        >  
+  <grid>
+    <Navbar></Navbar>
+   <ThemeProvider theme={theme}>
+     <Box
+       sx={{
+         height: '100vh',
+         opacity: opacityValue,
+         overflow: "hidden",
+         backgroundColor: theme.palette.background.default,
+       }}
+     >
+       <MainGridContainer
+         container
+         spacing={3}
+         style={{ maxWidth: '50%' }}
+         direction="column"
+         justify="flex-start"
+         alignItems="stretch"
+       >
+
+         <br></br>
+         <br></br>
+         <Typography variant="h3" gutterBottom component="div" color='primary' >
+           Submit Message
+         </Typography>
+        
          <FormControl>
            <form autoComplete='off' onSubmit={handleSubmissionValidation}>
-           <Autocomplete 
-              onLoad={handleAutocompleteLoad} 
-              onPlaceChanged={() => handlePlaceSelect(autocomplete.getPlace())}
-              options={{ componentRestrictions: { country: "ca" } }}
-            >
-            <TextField
-              id="destination"
-              type="text"
-              placeholder="Destination"
-              style={{ width: '400px'}}
-              helperText="Enter location of danger"
-              value={destination}
-              onChange={(e) => setDestination(e.target.value)}
-            />
-            </Autocomplete>
-           {
-              destination === '' && submissionCheck === true ? (
-                <div><em style={{color:'red'}}>*Please enter the location. It is a mandatory field.</em></div>) : (<div></div>)
-           }
+             <AlertLocation handleAlertLocation={handleAlertLocation} alertLocation={alertLocation} submissionCheck={submissionCheck}/>
              <br></br>
              <br></br>
-             <TextField 
-              style={textStyle} 
-              multiline 
-              label=' Alert Message' 
-              helperText="Enter description of danger" 
-              variant="outlined"  
-              minRows={5} 
-              value={alertMessage} 
-              onChange = {handleAlertInput} 
-             />
-             {
-                alertMessage === '' && submissionCheck === true ? (
-                  <div><em style={{color:'red'}}>*Please enter a description. It is a mandatory field.</em></div>) : (<div></div>)
-              }
+             <AlertMessage handleAlertMessage = {handleAlertMessage} alertMessage = {alertMessage} submissionCheck={submissionCheck}/>
              <br></br>
              <br></br>
-             <Button 
-              variant="contained" 
-              style={buttonStyle}
-              type ='submit' 
-              onClick={handleSubmissionCheck}
-              >
-                Submit
-             </Button>
+             <Button variant="contained" color="primary" type ='submit' onClick={handleSubmissionCheck}>Submit</Button>
            </form>
-         </FormControl> 
-         </LoadScript>                              
+         </FormControl>                               
          {
-          submissionValidation === true && alertMessage === '' && destination === '' &&
+          submissionValidation == true &&
           <div>
             <br></br>
             <Typography id='submit' variant="h5">Your message has been received and other users will be alerted!</Typography>
           </div>
 
         }        
-       </ThemeProvider>
-   </Paper>
-  
-   
-   <Grid style={{marginLeft: '5vh'}} >
-   <Paper elevation={10} style={cardStyle}> 
-    <ThemeProvider theme={theme}> 
-    <h1 style={{color: '#29241C'}}>Alerts</h1>
- 
-    <List sx={{ width: '100%', maxWidth: 460, bgcolor: 'background.paper' }}>
-    {alerts.map(item => (
-      <List>
-      <ListItem alignItems="flex-start">
-        <ListItemAvatar>
-          <Avatar>{item.name}</Avatar>
-        </ListItemAvatar>
-        <ListItemText
-          primary={item.address}
-          secondary={
-            <React.Fragment>
-              <Typography
-                sx={{ display: 'inline' }}
-                component="span"
-                variant="body2"
-                color="text.primary"
-              >
-                
-              </Typography>
-              {item.alert}
-            </React.Fragment>
-          }
-        />
-
-      </ListItem>
-      <Divider />
-      </List>
-        ))}
-      
-      </List>
-    
-       </ThemeProvider>
-   </Paper>
-    
-    </Grid>
-   </Grid>
+       </MainGridContainer>
+     </Box>
+   </ThemeProvider>
+   </grid>
  );
 
 }
 
 
+const AlertLocation = (props) => {
+ 
+ const handleInput = (event) => {
+   props.handleAlertLocation(event.target.value);
+ };
+ 
+ return (
+
+    <div>
+      <TextField
+        id="alert-location"
+        label="Alert Location"
+        multiline
+        style={{ width: 600 }}
+        minRows={2}
+        variant="outlined"
+        helperText="Enter Location of danger"
+        value={props.alertMessage}
+        onChange = {handleInput}
+      />
+       {
+         props.alertLocation == '' && props.submissionCheck == true ? (
+          <div><em style={{color:'red'}}>*Please enter the location. It is a mandatory field.</em></div>) : (<div></div>)
+      }
+    </div>
+);
+}
+
+const AlertMessage = (props) => {
+ 
+ const handleInput = (event) => {
+   props.handleAlertMessage(event.target.value);
+ };
+ 
+  return (
+    <div>
+    <TextField
+        id="alert-message"
+        label="Alert Message"
+        multiline
+        style={{ width: 600 }}
+        minRows={5}
+        variant="outlined"
+        helperText="Enter Description of danger"
+        value={props.alertMessage}
+        onChange = {handleInput}
+      />
+      {
+        props.alertMessage == '' && props.submissionCheck == true ? (
+          <div><em style={{color:'red'}}>*Please enter a description. It is a mandatory field.</em></div>) : (<div></div>)
+       }
+    </div>
+  );
+}
+ 
+
 const Home = () => {
+ 
+
     return (
       <div> 
-       <NavbarTop></NavbarTop>       
-       
-        <Alerts /> 
-        <Navbar></Navbar>
+        <Dashboard /> 
       </div>     
     )
   };
+
+
 
 Home.propTypes = {
   classes: PropTypes.object.isRequired
