@@ -6,7 +6,7 @@ import {Avatar, TextField, Button, Link } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { FormControl, FormLabel, RadioGroup, FormControlLabel } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
-
+import CreateAccount from '../CreateAccount'
 import { BrowserRouter,Switch,Route} from 'react-router-dom';
 import Navbar from '../NavBar';
 import { useHistory } from 'react-router-dom';
@@ -31,98 +31,80 @@ const theme = createTheme({
  });
  
 
- function CreateAccount() {
+function SignIn() {
 
-    const [firstName, setFirstName] = React.useState('');
-    const [lastName, setLastName] = React.useState('');
-    const [username, setUsername] = React.useState('');
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
-    const [passwordReenter, setPasswordReenter]=React.useState('');
-    const [phoneNumber, setPhoneNumber] = React.useState('');
-    const [submissionCheck, setSubmissionCheck]=React.useState(false);
-    const [searchAnswer,setSearchAnswer] = React.useState('');
-    const [submissionValidation,setSubmissionValidation] = React.useState(false);
-  
-    const handlePassword = (password) => {
-      setPassword(password);
-    };
-  
-    const handlePasswordInput = (event) => {
-      handlePassword(event.target.value)
-   }
-  
-   const handlePasswordReenter = (passwordReenter) => {
-    setPasswordReenter(passwordReenter);
-  };
-  
-  const handlePasswordReenterInput = (event) => {
-    handlePasswordReenter(event.target.value)
-  }
-   
-    const handleUsername = (username) => {
-     setUsername(username);
-   };
-  
-   const handleUsernameInput = (event) => {
-      handleUsername(event.target.value)
-   }
-  
-   const handleEmail = (email) => {
-    setEmail(email);
-   }
-  
-   const handleEmailInput = (event) => {
-    handleEmail(event.target.value);
-   }
+  const [username, setUsername] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [searchAnswer,setSearchAnswer] = React.useState('');
+  const [submissionCheck, setSubmissionCheck]=React.useState(false);
+  const [submissionValidation,setSubmissionValidation] = React.useState(false);
+  const [matchRecord,setMatchRecord] = React.useState(true);
 
-   const handleFirstName = (firstName) => {
-    setFirstName(firstName);
+  const handlePassword = (password) => {
+    setPassword(password);
   };
+
+  const handlePasswordInput = (event) => {
+    handlePassword(event.target.value)
+ }
  
-  const handleFirstNameInput = (event) => {
-     handleFirstName(event.target.value)
-  }
+  const handleUsername = (username) => {
+   setUsername(username);
+ };
 
-  const handleLastName = (lastName) => {
-    setLastName(lastName);
-  };
- 
-  const handleLastNameInput = (event) => {
-     handleLastName(event.target.value)
-  }
+ const handleUsernameInput = (event) => {
+    handleUsername(event.target.value)
+ }
+  
+ const [lat, setLat] = React.useState(null);
+ const [lng, setLng] = React.useState(null);
 
+ React.useEffect(() => {
+   navigator.geolocation.getCurrentPosition(
+     (position) => {
+       setLat(position.coords.latitude);
+       setLng(position.coords.longitude);
+     },
+   );
+ }, []);
+  
+  
+ const history = useHistory();
+ const [value, setValue] = React.useState(0);
+ const handleChange = (newValue) => {
+  history.push(`${newValue}`);
+  console.log(newValue)
+  setValue(newValue);
+};
+ const handleSubmissionCheck = (event) =>{
+  setSubmissionCheck(true) 
+}
 
-   const history = useHistory();
-   const [value, setValue] = React.useState(0);
-   const handleChange = (newValue) => {
-    history.push(`${newValue}`);
-    console.log(newValue)
-    setValue(newValue);
-  };
-   const handleSubmissionCheck = (event) =>{
-    setSubmissionCheck(true)
-    
-  }
   const handleSubmissionValidation = (event) => {
     event.preventDefault();
-    if(password !== '' && username !=='' && email !== '' && passwordReenter !== '' && (password===passwordReenter)){
-      loadApiCheckUser();
-      if(searchAnswer === ''){
-        loadApiAddProfile();
-        setUsername('');
-        setPassword('');
-        setEmail('');
-        setPasswordReenter('');
+    if(password !== '' && username !==''){
+      loadApiSearchUser();
+      if(searchAnswer != ""){
         setSubmissionValidation(true);
+        loadApiAddLastSeenLocation();
         setSubmissionCheck(false);
-        handleChange("/")
+        handleChange("/");
+      }else{
+        {
+          setMatchRecord(false);
+          setSubmissionCheck(false);
+
+        }
       }
+      setUsername('');
+      setPassword('');
+      setSearchAnswer('');
+
     }
   };
 
-  const loadApiCheckUser = () => {
-    callApiCheckUser()
+  const loadApiSearchUser = () => {
+    callApiSearchUser()
       .then((res) => {
         console.log(res)
           var parsed = JSON.parse(res.data);
@@ -131,12 +113,13 @@ const theme = createTheme({
       })
   };
 
-  const callApiCheckUser = async () => {
-    const url = serverURL + "/api/CheckUser";
+  const callApiSearchUser = async () => {
+    const url = serverURL + "/api/SearchUser";
     console.log(url)
   
     let searchInfo = {
       "username": username,
+      "password": password
     };
   
     console.log(searchInfo);
@@ -152,27 +135,23 @@ const theme = createTheme({
     return body;
   }
 
-  const loadApiAddProfile = () => {
-    callApiAddProfile()
+  const loadApiAddLastSeenLocation = () => {
+    callApiAddLastSeenLocation()
       .then((res) => {
         console.log(res)
           var parsed = JSON.parse(res.data);
           console.log(parsed[0]);
-          setSearchAnswer(parsed);
       })
   };
 
-  const callApiAddProfile = async () => {
-    const url = serverURL + "/api/addProfile";
+  const callApiAddLastSeenLocation = async () => {
+    const url = serverURL + "/api/UpdateLastSeenLocated";
     console.log(url)
   
     let searchInfo = {
-      "username": username,
-      "email": email,
-      "password":password,
-      "firstName": firstName,
-      "lastName": lastName
-      
+      "userID": 1,
+      "latitude": lat,
+      "longitude": lng
     };
   
     console.log(searchInfo);
@@ -196,61 +175,38 @@ const theme = createTheme({
   
       <Grid style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', padding: '5vh'}} >
       <Grid style={{display: 'flex', flexDirection: 'column', flexBasis: '100%', flex: 1}}>
-        <h3 style={{letterSpacing: '0.05rem', color: '#EDECED'}}>Welcome to Bark!</h3>
+        <h3 style={{letterSpacing: '0.05rem', color: '#EDECED'}}>Good to See You Again,</h3>
        </Grid>
         <Grid style={{display: 'flex', flexDirection: 'column', flexBasis: '100%', flex: 1}}>
             <Paper align='center'  elevation={10} style={cardStyle}>
                 <Grid align='center'>
-                <h3 style={{letterSpacing: '0.05rem', color: '#29241C', marginTop: '-20px'}}>Register</h3>
+                <h3 style={{letterSpacing: '0.05rem', color: '#29241C', marginTop: '-20px'}}>Login</h3>
                 </Grid>
-                <FormControl>
-                <form autoComplete='off' onSubmit={handleSubmissionValidation}>
-                <TextField style={textStyle} label='First Name' placeholder='Enter first name' variant="outlined" fullWidth value={firstName} onChange={handleFirstName} />
-                  {
-                    firstName === '' && submissionCheck ===true ? (
-                    <div><em style={{color:'red'}}>*Please enter your username!</em></div>) : (<div></div>)
-                  }
-                <TextField style={textStyle} label='Last Name' placeholder='Enter last name' variant="outlined" fullWidth value={lastName} onChange={handleLastNameInput} />
-                  {
-                    lastName === '' && submissionCheck ===true ? (
-                    <div><em style={{color:'red'}}>*Please enter your username!</em></div>) : (<div></div>)
-                  }
-                <TextField 
-           
-                
-               style={textStyle} label='Username' placeholder='Enter username' variant="outlined" fullWidth value={username} onChange={handleUsernameInput} />
+                <FormControl style={{marginTop: '4vh'}}>
+           <form autoComplete='off' onSubmit={handleSubmissionValidation}>
+                <TextField style={textStyle} label='Username' placeholder='Enter username' variant="outlined" value={username} onChange = {handleUsernameInput} />
                   {
                     username === '' && submissionCheck ===true ? (
                     <div><em style={{color:'red'}}>*Please enter your username!</em></div>) : (<div></div>)
                   }
-                <TextField  style={textStyle} label='Email' placeholder='Enter email' variant="outlined" fullWidth value={email} onChange={handleEmailInput} />
-                  {
-                    email === '' && submissionCheck ===true ? (
-                    <div><em style={{color:'red'}}>*Please enter your email!</em></div>) : (<div></div>)
-                  }
-                
-                <TextField  style={textStyle} label='Password' placeholder='Enter password' type='password' variant="outlined" fullWidth value={password} onChange={handlePasswordInput} />
-                  {
+  
+                <TextField style={textStyle} label='Password' placeholder='Enter password' type='password' variant="outlined" value = {password} onChange={handlePasswordInput} fullWidth />
+                {
                     password === '' && submissionCheck ===true ? (
                     <div><em style={{color:'red'}}>*Please enter your password!</em></div>) : (<div></div>)
                   }
-                <TextField style={textStyle} label='Re-enter Password' placeholder='Re-enter password' type='password' variant="outlined" fullWidth value={passwordReenter} onChange={handlePasswordReenterInput} />
-                  {
-                    passwordReenter=== '' && submissionCheck ===true ? (
-                    <div><em style={{color:'red'}}>*Please re-enter your password!</em></div>) : (<div></div>)
-                  }
-                  {
-                    passwordReenter !== '' && password !=='' && submissionCheck ===true && (password !==passwordReenter) ? (
-                    <div><em style={{color:'red'}}>*Passwords do not match! Please type your password again!</em></div>) : (<div></div>)
-                  }
                 
-                <Button type='submit' variant="contained" style={buttonStyle} onClick = {handleSubmissionCheck} fullWidth><h3 style={{letterSpacing: '0.05rem', color: '#EDECED'}}>GET STARTED</h3></Button>
+                <Button type='submit' variant="contained" style={buttonStyle} fullWidth  onClick={handleSubmissionCheck} ><h3 style={{letterSpacing: '0.05rem', color: '#EDECED'}}>LOGIN</h3></Button>
+                {
+                    matchRecord == false ? (
+                    <div><em style={{color:'red'}}>*Your credentials do not match our records! Please try</em></div>) : (<div></div>)
+                  }
                 </form>
-                </FormControl> 
+             </FormControl> 
              
              <div style={{marginTop: "1vh" }} ></div>
-                     <Link href="/SignIn" style={{color: '#131411'}}>
-                        OR LOGIN
+                     <Link href="/CreateAccount" style={{color: '#131411'}}>
+                        OR CREATE AN ACCOUNT 
                 </Link>
                
             </Paper>
@@ -266,4 +222,9 @@ const theme = createTheme({
   );
 }
 
-export default CreateAccount;
+export default SignIn;
+
+
+
+
+
