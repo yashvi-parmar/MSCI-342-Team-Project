@@ -301,6 +301,25 @@ app.post('/api/getSearchResult', (req, res) => {
 	connection.end();
 });
 
+app.post('/api/getAuthorities', (req, res) => {
+
+	let connection = mysql.createConnection(config);
+	let sql = `SELECT * FROM authorities`;
+	let data = []
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		let obj = JSON.parse(string);
+		res.send({ authData: obj });
+	});
+
+	connection.end();
+});
+
 app.post('/api/getFriendsEmails', (req, res) => {
 
 	let connection = mysql.createConnection(config);
