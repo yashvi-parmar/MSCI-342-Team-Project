@@ -18,6 +18,7 @@ import {GoogleMap, LoadScript, Marker, DirectionsRenderer, Autocomplete, Traffic
 import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
+
 import { DeskOutlined } from '@mui/icons-material';
 import fakePhoneCall from "./assets/fakePhoneCall.wav"
 import '../Home/index.css'
@@ -30,8 +31,8 @@ const containerStyle = {
   display: 'flex'
 };
 
-
 const serverURL = "";
+
 
 const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 
@@ -118,6 +119,12 @@ function MapFxn() {
     console.log('infoBox: ', infoBox)
   };
 
+  const onLoadInfoAuth = infoBox => {
+
+  };
+
+  const optionsAuth = { closeBoxURL: '', enableEventPropagation: true };
+
   const options = {     
   strokeColor: '#FF0000',
   strokeOpacity: 0.8,
@@ -139,6 +146,20 @@ function MapFxn() {
     strokeOpacity: 0.8,
     strokeWeight: 2,
     fillColor: '#271f1f',
+    fillOpacity: 0.35,
+    clickable: false,
+    draggable: false,
+    editable: false,
+    visible: true,
+    radius: 10,
+    zIndex: 1, closeBoxURL: '', enableEventPropagation: true 
+  }
+
+  const options4 = {
+    strokeColor: '#000000',
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillColor: '#ADD8E6',
     fillOpacity: 0.35,
     clickable: false,
     draggable: false,
@@ -422,6 +443,84 @@ const callApiGetSavedDestinations = async() => {
   const url = serverURL + "/api/getSavedDestinations";
   console.log(url);
 
+  let info = {
+    "user": 1
+  };
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(info)
+  });
+  const body = await response.json();
+  if (response.status !== 200) throw Error(body.message);
+  console.log(response);
+  return body;
+}
+
+let [friendsEmails, setFriendsEmails] = React.useState([]);
+React.useEffect(() => {
+  getFriendsEmails();
+}, []);
+
+const getFriendsEmails = () => {
+  callAPIGetFriendsEmails()
+    .then(res => {
+      setFriendsEmails(res.friendEmailData);
+    })
+}
+
+const callAPIGetFriendsEmails = async() => {
+  const url = serverURL + "/api/getFriendsEmails";
+  console.log(url);
+
+  let userData = {
+    "userID": 2
+  }
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userData)
+  });
+  const body = await response.json();
+  if (response.status !== 200) throw Error(body.message);
+  console.log(body);
+  return body;
+}
+
+const handleSendFriendsEmail = () => {
+  const allFriendEmails = friendsEmails.map((friendsEmails) => friendsEmails.email);
+  const subject = "Made It To My Destination Safely!";
+  const body = "I love BARK!";
+  const mailtoURL = `mailto:?bcc=${encodeURIComponent(allFriendEmails)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.open(mailtoURL);
+}
+
+let [authPlaces, setAuthPlaces] = React.useState([]);
+
+React.useEffect(() => {
+  getAuthLocations();
+}, []);
+
+React.useEffect(() => {
+}, [authPlaces]);
+
+const getAuthLocations = () => {
+  callAPIGetAuthLocations()
+    .then(res => {
+      setAuthPlaces(res.authData);
+    })
+}
+
+const callAPIGetAuthLocations = async() => {
+  const url = serverURL + "/api/getAuthorities";
+  console.log(url);
+  
   const response = await fetch(url, {
     method: "POST",
     headers: {
@@ -430,7 +529,9 @@ const callApiGetSavedDestinations = async() => {
   });
   const body = await response.json();
   if (response.status !== 200) throw Error(body.message);
-  console.log(response);
+  console.log(body);
+  console.log(response.status);
+  setAuthPlaces(body.authData);
   return body;
 }
 
@@ -538,6 +639,19 @@ const callApiGetSavedDestinations = async() => {
     </InfoBox>
     ))}
 
+  {authPlaces.map(item => (
+      <InfoBox
+      onLoad={onLoadInfo}
+      options={options4}
+      position={{lat: item.lat, lng: item.lng}}
+    >
+      <div style={{ display: showed ? "none": "", backgroundColor: '#87CEFA', opacity: 1}}>
+        <p style={{ fontSize: 10, color: 'black', padding: 4  }}>
+         {item.location}
+        </p>
+      </div>
+    </InfoBox>
+    ))}
 
 {friends.map(item => (
       <InfoBox
@@ -654,6 +768,7 @@ const callApiGetSavedDestinations = async() => {
     
       <p></p>
       <Button type='submit' style={buttonStyle} variant="contained" >Dial 911</Button>
+      <Button onClick={handleSendFriendsEmail} type='submit' style={buttonStyle} variant="contained" >Reached Safety</Button>
        </Grid>
     </Grid>
     </grid>

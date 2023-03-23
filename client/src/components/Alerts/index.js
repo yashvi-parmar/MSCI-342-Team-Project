@@ -163,6 +163,7 @@ const alerts = [
 
 ]
 
+
 return (
   <Grid style={{backgroundColor: '#6D8654',fontFamily: 'Noto Sans Lepcha', padding: '10vh', color: 'white', height: '90vh', display: 'flex', flexDirection: 'row', flexBasis: '100%', flex: 1 , justifyContent: 'center'}}>
     <Paper elevation={10} style={cardStyle}> 
