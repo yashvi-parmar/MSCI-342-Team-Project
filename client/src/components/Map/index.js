@@ -121,9 +121,10 @@ function MapFxn() {
   };
 
   const onLoadInfoAuth = infoBox => {
-    handleAuthPlaces();
-    console.log('infoBox: ', infoBox)
+
   };
+
+  const optionsAuth = { closeBoxURL: '', enableEventPropagation: true };
 
   const options = {     
   strokeColor: '#FF0000',
@@ -434,45 +435,19 @@ const handleSendFriendsEmail = () => {
 
 let [authPlaces, setAuthPlaces] = React.useState([]);
 
-const authorities = []
-
-const handleAuthPlaces = () => {
-  for (let i = 0; i < authPlaces.length; i++) {
-    const authPlace = authPlaces[i];
-    const authority = {
-      id: authPlace.id,
-      lat: authPlace.lat,
-      lng: authPlace.lng,
-      address: authPlace.address,
-      location: authPlace.location
-    };
-    authorities.push(authority);
-  }
-  console.log(authorities);
-}
-
-
 React.useEffect(() => {
   getAuthLocations();
 }, []);
 
-const getAuthLocations = async () => {
-  try {
-    const res = await callAPIGetAuthLocations();
-    setAuthPlaces(res.authData);
-  } catch (error) {
-    console.log(error);
-  }
-};
+React.useEffect(() => {
+}, [authPlaces]);
 
-/*const getAuthLocations = () => {
+const getAuthLocations = () => {
   callAPIGetAuthLocations()
     .then(res => {
       setAuthPlaces(res.authData);
-      window.alert("made it here!");
-      window.alert(authPlaces[0]["location"]);
     })
-}*/
+}
 
 const callAPIGetAuthLocations = async() => {
   const url = serverURL + "/api/getAuthorities";
@@ -487,6 +462,8 @@ const callAPIGetAuthLocations = async() => {
   const body = await response.json();
   if (response.status !== 200) throw Error(body.message);
   console.log(body);
+  console.log(response.status);
+  setAuthPlaces(body.authData);
   return body;
 }
 
@@ -594,20 +571,19 @@ const callAPIGetAuthLocations = async() => {
     </InfoBox>
     ))}
 
-{authorities.map(item => (
+  {authPlaces.map(item => (
       <InfoBox
-      onLoad={onLoadInfoAuth}
+      onLoad={onLoadInfo}
       options={options4}
       position={{lat: item.lat, lng: item.lng}}
     >
-      <div style={{ display: showed ? "none": "", backgroundColor: '#B0E0E6', opacity: 1}}>
+      <div style={{ display: showed ? "none": "", backgroundColor: '#87CEFA', opacity: 1}}>
         <p style={{ fontSize: 10, color: 'black', padding: 4  }}>
          {item.location}
         </p>
       </div>
     </InfoBox>
     ))}
-
 
 {friends.map(item => (
       <InfoBox
