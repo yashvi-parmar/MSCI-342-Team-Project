@@ -18,7 +18,6 @@ import {GoogleMap, LoadScript, Marker, DirectionsRenderer, Autocomplete, Traffic
 import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
-import dogBark from "./assets/dogBark.wav"
 import { DeskOutlined } from '@mui/icons-material';
 import fakePhoneCall from "./assets/fakePhoneCall.wav"
 import '../Home/index.css'
@@ -82,7 +81,7 @@ function MapFxn() {
     );
   }, []);
 
-  const handleLoad = (map) => {
+  const handleLoad = () => {
     const directionsServiceOptions = {
       origin: origin,
       destination: destination,
@@ -163,32 +162,104 @@ function MapFxn() {
     radius: 10,
     zIndex: 1
   }
+
+  let [unsafetext,setUnsafeText]=React.useState([]);
+  let [safetext,setSafetext] = React.useState([]);
+  //let [friends,setFriends] = React.useState([]);
+
+  React.useEffect(() => {
+    //loadUserSettings();
+    loadGetAlerts();
+   },[]);
+
+   const loadGetAlerts =() => {
+    callGetAlerts()
+      .then(res => {
+        setUnsafeText(res.alertData);
+        console.log(unsafetext);
+      });
+  }
+
+  const callGetAlerts = async() => {
+    
+    //console.log('t',url)
+    const url = serverURL + "/api/getAlerts";
+    console.log(url)
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+    });
+    const body =await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
+
+  React.useEffect(() => {
+    //loadUserSettings();
+    loadGetSafeLocations();
+   },[]);
+
+  const loadGetSafeLocations =() => {
+    callGetSafeLocations()
+      .then(res => {
+        setSafetext(res.safeData);
+        console.log(safetext)
+  });
+  }
+  const callGetSafeLocations = async() => {
+    
+    //console.log('t',url)
+    const url = serverURL + "/api/getSafeLocations";
+    console.log(url)
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+    });
+    const body =await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
+
+/** 
+React.useEffect(() => {
+  //loadUserSettings();
+  loadGetFriends();
+ },[]);
+
+const loadGetFriends =() => {
+  callGetFriends()
+    .then(res => {
+      setFriends(res.friendData);
+});
+}
+const callGetFriends = async() => {
   
-const unsafelocations = [
-      {id: 1, lat: 43.472120, lng:-80.543550},
-      {id: 2, lat: 43.472118, lng:-80.563546}
-    ];
-
-const safelocations = [
-      {id: 1, lat: 43.473130, lng:-80.543550},
-      {id: 2, lat: 43.483112, lng:-80.533546}
-    ];
-
-const safetext = [
-    {id: 1, lat: 43.473130, lng:-80.543550, text: "Center for help"},
-    {id: 2, lat: 43.483112, lng:-80.533546, text: "Center for help"}
-];
-
-const unsafetext = [
-  {id: 1, lat: 43.472120, lng:-80.543550, text: "Avoid due to a broken streetlight"}, 
-
-  {id: 2, lat: 43.472118, lng:-80.563546, text: "Avoid due to flooding"}, 
-
-]
+  //console.log('t',url)
+  const url = serverURL + "/api/GetFriends";
+  console.log(url)
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      //authorization: `Bearer ${this.state.token}`
+    },
+  });
+  const body =await response.json();
+  if (response.status !== 200) throw Error(body.message);
+  return body;
+}
+*/
 
 const friends = [
   {id: 1, lat: 43.472120, lng: -80.553550, friendName: "Friend 1"}
 ]
+
 const [showed, setShowed] = useState(false);
 const [showedF, setShowedF] = useState(false);
 const [showedT, setShowedT] = useState(false);
@@ -267,7 +338,6 @@ const [destinationForm, setDestinationForm] = useState('');
   const [openFakeCall, setOpenFakeCall]=React.useState(false);
   const [showPhonePlay, setShowPhonePlay] = React.useState(false);
   const [showPhonePause, setShowPhonePause] = React.useState(false);
-  const [counter, setCounter]=React.useState(0);
 
   const handleClickOpenPhoneCall = () => {
     setOpenFakeCall(true);
@@ -295,9 +365,6 @@ const [destinationForm, setDestinationForm] = useState('');
     }
   }
 
-  const playSound =() => {
-    new Audio(dogBark).play();
-  }
 
 
 const loadApiAddSavedDestination = () => {
@@ -341,6 +408,7 @@ React.useEffect(() => {
 React.useEffect(() => {
   console.log(savedDestinations);
 }, [savedDestinations]);
+
 
 
 const getSavedDestinations = () => {
@@ -450,7 +518,7 @@ const callApiGetSavedDestinations = async() => {
     >
       <div style={{ display: showed ? "none": "", backgroundColor: '#EFCA43', opacity: 1, padding: 4 }}>
         <div style={{ fontSize: 10, fontColor: '#29241C', fontFamily: 'Noto Sans Lepcha'}}>
-         {item.text}
+         {item.alert}
         </div>
       </div>
     </InfoBox>
@@ -464,7 +532,7 @@ const callApiGetSavedDestinations = async() => {
     >
       <div style={{ display: showed ? "none": "", backgroundColor: '#6D8654', opacity: 1}}>
         <p style={{ fontSize: 10, color: 'white', padding: 4  }}>
-         {item.text}
+         {item.description}
         </p>
       </div>
     </InfoBox>
@@ -618,7 +686,7 @@ const AddEmergencyContactForm = () => {
   
   
   
- const handleSubmissionCheck = (event) =>{
+ const handleSubmissionCheck = () =>{
     setSubmissionCheck(true);
   }
   const handleSubmissionValidation = (event) => {

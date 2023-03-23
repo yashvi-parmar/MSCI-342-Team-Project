@@ -72,6 +72,25 @@ app.post('/api/getAlerts', (req,res) => {
 	connection.end();
 });
 
+app.post('/api/getSafeLocations', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+
+	let sql = 'SELECT * FROM SafeLocations'
+	console.log(sql);
+	let data = []
+
+	connection.query(sql, data, (error,data) => {
+		if (error) {
+			return res.json({ status : "ERROR", error});
+		}
+		let string = JSON.stringify(data);
+		let obj = JSON.parse(string);
+		res.send({ safeData: obj });
+	});
+	connection.end();
+});
+
 app.get('/api/getUser', (req,res) => {
 
 	let connection = mysql.createConnection(config);
@@ -188,12 +207,12 @@ app.post('/api/UpdateLastSeenLocated', (req, res) => {
 
 	let connection = mysql.createConnection(config);
 
-	userID = req.body.userID,
+	username = req.body.username,
 	latitude = req.body.latitude,
 	longitude = req.body.longitude
 
-	let sql = "UPDATE `Profile` SET longitude='?' AND latitude = '?' WHERE userID = '?' VALUES (?,?,?)";
-	let data=[longitude,latitude,userID];
+	let sql = "UPDATE `Profiles` SET longitude='" + longitude + "' ,latitude = '" + latitude + "' WHERE userName = '" + username + "' AND userID > 0";
+	let data=[longitude,latitude,username];
 	console.log(sql);
 	console.log(data);       
 
@@ -212,23 +231,20 @@ app.post('/api/UpdateLastSeenLocated', (req, res) => {
 
 	username = req.body.username
 
-	let sql = "SELECT * FROM Alerts WHERE userName ='?' VALUES (?)"
+	let sql = "SELECT * FROM Profiles WHERE userName = '" + username + "' ";
 	let data = [username]
 	console.log(sql);
 	console.log(data);
 
-	connection.query(sql, data, (error,data) => {
+	connection.query(sql, data, (error, results, fields) => {
 		if (error) {
-			return res.json({ status : "ERROR", error});
+			return console.error(error.message);
 		}
 		let string = JSON.stringify(data);
-		if(string==""){
-			return res.send(false)
-		}else {
-			return res.send(true)
-		}
-	});
-	connection.end();
+		res.send({data:string})
+		console.log(data);
+	 });
+	 connection.end();
 });
 
 app.post('/api/SearchUser', (req, res) => {
@@ -257,9 +273,9 @@ app.post('/api/SearchUser', (req, res) => {
 
 	let connection = mysql.createConnection(config);
 
-	userID = req.body.userID;
+	userID = 1;
 	  
-	let sql = "SELECT CONCAT(firstName,' ',lastName) AS FullName, longitude, latitude FROM Profiles INNER JOIN Friends ON Friends.FriendUserID=Profiles.userID WHERE Friends.userID='?' VALUES(?)";
+	let sql = "SELECT CONCAT(firstName,' ',lastName) AS FullName, longitude, latitude FROM Profiles INNER JOIN Friends ON Friends.FriendUserID=Profiles.userID WHERE Friends.userID='" + userID + "'";
 	let data=[userID];
 	console.log(sql);
 	console.log(data);       
@@ -269,7 +285,8 @@ app.post('/api/SearchUser', (req, res) => {
 			return console.error(error.message);
 		}
 		let string = JSON.stringify(data);
-		res.send({data:string})
+		let obj = JSON.parse(string);
+		res.send({ friendData: obj });
 	 });
 	 connection.end();
  });

@@ -87,13 +87,11 @@ function SignIn() {
       if(searchAnswer != ""){
         setSubmissionValidation(true);
         loadApiAddLastSeenLocation();
-        setSubmissionCheck(false);
         handleChange("/");
       }else{
         {
           setMatchRecord(false);
           setSubmissionCheck(false);
-
         }
       }
       setUsername('');
@@ -149,7 +147,7 @@ function SignIn() {
     console.log(url)
   
     let searchInfo = {
-      "userID": 1,
+      "username" : username,
       "latitude": lat,
       "longitude": lng
     };
@@ -223,6 +221,21 @@ function SignIn() {
 }
 
 export default SignIn;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
