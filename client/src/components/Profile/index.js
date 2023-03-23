@@ -41,7 +41,7 @@ function Profile() {
             style={cardStyle}
           >
             <Grid> 
-            <h1 style={{color:'white', fontFamily: 'Oswald'}}>YOUR PROFILE</h1>
+            <h1 style={{color:'white', fontFamily: 'Oswald', marginTop: '5vh'}}>YOUR PROFILE</h1>
             
             <LetterAvatars/>
             </Grid>

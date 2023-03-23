@@ -45,7 +45,7 @@ function Map() {
     
     <div className="Map">
       <Grid>
-            <Paper style={{backgroundColor: '#6D8654',padding: '4vh'}}>
+            <Paper style={{backgroundColor: '#6D8654',padding: '4vh',  marginTop: '3vh'}}>
                 <Grid align='center'>
                 </Grid>
                      <MapFxn/> 
@@ -165,15 +165,7 @@ function MapFxn() {
     zIndex: 1
   }
   
-const unsafelocations = [
-      {id: 1, lat: 43.472120, lng:-80.543550},
-      {id: 2, lat: 43.472118, lng:-80.563546}
-    ];
 
-const safelocations = [
-      {id: 1, lat: 43.473130, lng:-80.543550},
-      {id: 2, lat: 43.483112, lng:-80.533546}
-    ];
 
 const safetext = [
     {id: 1, lat: 43.473130, lng:-80.543550, text: "Center for help"},
@@ -188,7 +180,8 @@ const unsafetext = [
 ]
 
 const friends = [
-  {id: 1, lat: 43.472120, lng: -80.553550, friendName: "Friend 1"}
+  {id: 1, lat: 43.472120, lng: -80.553550, friendName: "Margo"}, 
+  {id: 1, lat: 43.473130, lng:-80.546550, friendName: "Robbie"}
 ]
 const [showed, setShowed] = useState(false);
 const [showedF, setShowedF] = useState(false);
@@ -417,7 +410,7 @@ const handleSendFriendsEmail = () => {
 
     <grid>
 
-<Grid >
+<Grid style={{marginTop:'6vh'}} >
   <Grid align='center'>
 
   </Grid>      
