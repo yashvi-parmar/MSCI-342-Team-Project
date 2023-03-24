@@ -187,7 +187,7 @@ function MapFxn() {
 
   let [unsafetext,setUnsafeText]=React.useState([]);
   let [safetext,setSafetext] = React.useState([]);
-  //let [friends,setFriends] = React.useState([]);
+  let [friends,setFriends] = React.useState([]);
 
   React.useEffect(() => {
     //loadUserSettings();
@@ -249,7 +249,7 @@ function MapFxn() {
     return body;
   }
 
-/** 
+ 
 React.useEffect(() => {
   //loadUserSettings();
   loadGetFriends();
@@ -277,13 +277,13 @@ const callGetFriends = async() => {
   if (response.status !== 200) throw Error(body.message);
   return body;
 }
-*/
 
+/** 
 const friends = [
   {id: 1, lat: 43.472120, lng: -80.553550, friendName: "Margo"}, 
   {id: 1, lat: 43.473130, lng:-80.546550, friendName: "Robbie"}
 ]
-
+*/
 const [showed, setShowed] = useState(false);
 const [showedF, setShowedF] = useState(false);
 const [showedT, setShowedT] = useState(false);
@@ -660,11 +660,11 @@ const callAPIGetAuthLocations = async() => {
       <InfoBox
       onLoad={onLoadInfo}
       options={options3}
-      position={{lat: item.lat, lng: item.lng}}
+      position={{lat: item.latitude, lng: item.longitude}}
     >
       <div style={{ display: showedF ? "none": "", fontColor: '#FFFFFF', backgroundColor: '#29241C', opacity: 0.85 }}>
         <p style={{ fontSize: 10, color: '#FFFFFF', padding: 4 }}>
-         {item.friendName}
+         {item.FullName}
         </p>
       </div>
     </InfoBox>
