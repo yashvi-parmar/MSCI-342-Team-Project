@@ -7,7 +7,7 @@ import BarkButton from '../BarkButton';
 import Share from '../Share';
 import Dog from './dog.png';
 import Dog2 from './dog2.png';
-
+import { TwitterTimelineEmbed, TwitterShareButton, TwitterFollowButton, TwitterHashtagButton, TwitterMentionButton, TwitterTweetEmbed, TwitterMomentShare, TwitterDMButton, TwitterVideoEmbed, TwitterOnAirButton } from 'react-twitter-embed';
 import Typography from "@material-ui/core/Typography";
 import {TextField, Button} from '@material-ui/core'
 import './index.css'
@@ -273,10 +273,7 @@ const handleSendFriendsEmail = () => {
 }
 const alerts = [
   {id: 1, lat: 43.472120, lng:-80.543550, address: 'University of Waterloo', timestamp: "2023-01-10", alert: "avoid area around geese", name: 'B'},
-  {id: 1, lat: 43.472120, lng:-80.543550, address: 'University of Waterloo', timestamp: "2023-01-10", alert: "avoid area around geese", name: 'B'},
-  {id: 1, lat: 43.472120, lng:-80.543550, address: 'University of Waterloo', timestamp: "2023-01-10", alert: "avoid area around geese", name: 'B'},
   {id: 1, lat: 43.472120, lng:-80.543550, address: 'University of Waterloo', timestamp: "2023-01-10", alert: "avoid area around geese", name: 'B'}
-
 ]
 
 
@@ -414,7 +411,11 @@ console.log(data)
         ))}
       
       </List>
-      
+      <TwitterTimelineEmbed
+  sourceType="profile"
+  screenName="WRPSToday"
+  options={{height: 200}}
+/>
       </Grid>
       
     
