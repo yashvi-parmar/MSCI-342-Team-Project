@@ -44,7 +44,7 @@ function Map() {
     
     <div className="Map">
       <Grid>
-            <Paper style={{backgroundColor: '#6D8654',padding: '4vh'}}>
+            <Paper style={{backgroundColor: '#6D8654',padding: '4vh',  marginTop: '3vh'}}>
                 <Grid align='center'>
                 </Grid>
                      <MapFxn/> 
@@ -184,9 +184,10 @@ function MapFxn() {
     zIndex: 1
   }
 
+
   let [unsafetext,setUnsafeText]=React.useState([]);
   let [safetext,setSafetext] = React.useState([]);
-  //let [friends,setFriends] = React.useState([]);
+  let [friends,setFriends] = React.useState([]);
 
   React.useEffect(() => {
     //loadUserSettings();
@@ -218,6 +219,7 @@ function MapFxn() {
     return body;
   }
 
+
   React.useEffect(() => {
     //loadUserSettings();
     loadGetSafeLocations();
@@ -247,7 +249,7 @@ function MapFxn() {
     return body;
   }
 
-/** 
+ 
 React.useEffect(() => {
   //loadUserSettings();
   loadGetFriends();
@@ -275,12 +277,13 @@ const callGetFriends = async() => {
   if (response.status !== 200) throw Error(body.message);
   return body;
 }
-*/
 
+/** 
 const friends = [
-  {id: 1, lat: 43.472120, lng: -80.553550, friendName: "Friend 1"}
+  {id: 1, lat: 43.472120, lng: -80.553550, friendName: "Margo"}, 
+  {id: 1, lat: 43.473130, lng:-80.546550, friendName: "Robbie"}
 ]
-
+*/
 const [showed, setShowed] = useState(false);
 const [showedF, setShowedF] = useState(false);
 const [showedT, setShowedT] = useState(false);
@@ -539,7 +542,7 @@ const callAPIGetAuthLocations = async() => {
 
     <grid>
 
-<Grid >
+<Grid style={{marginTop:'6vh'}} >
   <Grid align='center'>
 
   </Grid>      
@@ -657,11 +660,11 @@ const callAPIGetAuthLocations = async() => {
       <InfoBox
       onLoad={onLoadInfo}
       options={options3}
-      position={{lat: item.lat, lng: item.lng}}
+      position={{lat: item.latitude, lng: item.longitude}}
     >
       <div style={{ display: showedF ? "none": "", fontColor: '#FFFFFF', backgroundColor: '#29241C', opacity: 0.85 }}>
         <p style={{ fontSize: 10, color: '#FFFFFF', padding: 4 }}>
-         {item.friendName}
+         {item.FullName}
         </p>
       </div>
     </InfoBox>

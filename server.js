@@ -12,24 +12,10 @@ const port = process.env.PORT || 5000;
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
-const recipes = [
-	{id: 1, lat: 43.472120, lng:-80.543550, text: "Avoid due to a broken streetlight"}, 
-  
-	{id: 2, lat: 43.472118, lng:-80.563546, text: "Avoid due to flooding"}, 
-  
-  ];
-
-console.log(recipes)
 //app.use(express.static(path.join(__dirname, "client/build")));
 app.use(express.static(path.join(__dirname, "client/public")));
 
-app.post('/api/loadAlerts', (req, res) => {
-	console.log(recipes)
-	let string = JSON.stringify(recipes);
-	console.log(recipes)
-	console.log(string.text());
-	res.send({ express: string });
-});
+
 app.post('/api/loadUserSettings', (req, res) => {
 
 	let connection = mysql.createConnection(config);
@@ -230,7 +216,7 @@ app.post('/api/UpdateLastSeenLocated', (req, res) => {
 
 	username = req.body.username
 
-	let sql = "SELECT * FROM Profiles WHERE userName = '" + username + "' ";
+	let sql = "SELECT * FROM Profiles WHERE userName = ?";
 	let data = [username]
 	console.log(sql);
 	console.log(data);
@@ -239,7 +225,7 @@ app.post('/api/UpdateLastSeenLocated', (req, res) => {
 		if (error) {
 			return console.error(error.message);
 		}
-		let string = JSON.stringify(data);
+		let string = JSON.stringify(results);
 		res.send({data:string})
 		console.log(data);
 	 });
@@ -262,7 +248,7 @@ app.post('/api/SearchUser', (req, res) => {
 		if (error) {
 			return console.error(error.message);
 		}
-		let string = JSON.stringify(data);
+		let string = JSON.stringify(results);
 		res.send({data:string})
 	 });
 	 connection.end();
@@ -274,7 +260,7 @@ app.post('/api/SearchUser', (req, res) => {
 
 	userID = 1;
 	  
-	let sql = "SELECT CONCAT(firstName,' ',lastName) AS FullName, longitude, latitude FROM Profiles INNER JOIN Friends ON Friends.FriendUserID=Profiles.userID WHERE Friends.userID='" + userID + "'";
+	let sql = "SELECT CONCAT(firstName,' ',lastName) AS FullName, longitude, latitude FROM Profiles INNER JOIN Friends ON Friends.FriendUserID=Profiles.userID WHERE Friends.userID=?";
 	let data=[userID];
 	console.log(sql);
 	console.log(data);       
@@ -283,18 +269,15 @@ app.post('/api/SearchUser', (req, res) => {
 		if (error) {
 			return console.error(error.message);
 		}
-		let string = JSON.stringify(data);
+		let string = JSON.stringify(results);
+		console.log(results);
 		let obj = JSON.parse(string);
 		res.send({ friendData: obj });
 	 });
 	 connection.end();
  });
 
- app.post('/api/loadAlerts', (req, res) => {
-	let string = JSON.stringify(recipes);
-	console.log(string);
-	res.send({ express: string });
-});
+
 
 app.post('/api/getSearchResult', (req, res) => {
 
@@ -359,6 +342,32 @@ app.post('/api/getFriendsEmails', (req, res) => {
 
 	connection.end();
 });
+
+app.post('/api/getProfiles', (req, res) => {
+
+	let connection = mysql.createConnection(config);
+
+	userID = req.body.userID;
+	  
+	let query = "SELECT * FROM Profiles WHERE userID= ?";
+	let data=[userID];
+	console.log(query);
+	console.log(data);       
+ 
+	connection.query(query, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+		let string = JSON.stringify(results);
+		console.log(string);
+		let obj = JSON.parse(string);
+		res.send({ string });
+	 });
+	 connection.end();
+ });
+
+
+
 
 
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
