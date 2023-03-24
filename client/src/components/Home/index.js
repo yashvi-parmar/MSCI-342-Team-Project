@@ -6,6 +6,8 @@ import NavbarTop from '../NavBarTop';
 import BarkButton from '../BarkButton';
 import Share from '../Share';
 import Dog from './dog.png';
+import Dog2 from './dog2.png';
+
 import Typography from "@material-ui/core/Typography";
 import {TextField, Button} from '@material-ui/core'
 import './index.css'
@@ -41,7 +43,7 @@ const serverURL = ""; //enable for deployed mode; Change PORT to the port number
 //copy the number only and paste it in the serverURL in place of PORT, e.g.: const serverURL = "http://ov-research-4.uwaterloo.ca:3000";
 
 
-  const buttonStyle={margin:'8px 0', marginTop: '-2vh',width: '30vh', backgroundColor: '#29241C',  marginRight: '10px', marginBottom: '15px', color: 'white', fontFamily: 'Oswald', letterSpacing: '0.05rem'} 
+  const buttonStyle={margin:'8px 0', marginTop: '-2vh',width: '30vh', height: '6vh', backgroundColor: '#29241C',  marginRight: '10px', marginBottom: '2vh', color: 'white', fontFamily: 'Oswald', letterSpacing: '0.05rem'} 
 
   const textStyle={marginBottom: '8px'}
   const fetch = require("node-fetch");
@@ -270,7 +272,10 @@ const handleSendFriendsEmail = () => {
   window.open(mailtoURL);
 }
 const alerts = [
-  {id: 1, lat: 43.472120, lng:-80.543550, address: 'University of Waterloo', timestamp: "2023-01-10", alert: "avoid area around geese", name: 'YP'}
+  {id: 1, lat: 43.472120, lng:-80.543550, address: 'University of Waterloo', timestamp: "2023-01-10", alert: "avoid area around geese", name: 'B'},
+  {id: 1, lat: 43.472120, lng:-80.543550, address: 'University of Waterloo', timestamp: "2023-01-10", alert: "avoid area around geese", name: 'B'},
+  {id: 1, lat: 43.472120, lng:-80.543550, address: 'University of Waterloo', timestamp: "2023-01-10", alert: "avoid area around geese", name: 'B'},
+  {id: 1, lat: 43.472120, lng:-80.543550, address: 'University of Waterloo', timestamp: "2023-01-10", alert: "avoid area around geese", name: 'B'}
 
 ]
 
@@ -278,7 +283,7 @@ const alerts = [
 const weather1 =((data.currentConditions));
 
 const t = (weather1)
-console.log(weather1)
+console.log(data)
 
 
   return (
@@ -290,10 +295,12 @@ console.log(weather1)
         
 
      
-      <Grid  style={{backgroundColor: '#6D8654', padding: '10vh', color: 'white', height: '90vh',display: 'flex', flexDirection: 'column', flexBasis: '100%', flex: 1 }}> 
+      <Grid  style={{backgroundColor: '#6D8654', padding: '10vh', color: 'white', display: 'flex', 
+      flexDirection: 'column', flexBasis: '100%', flex: 1}}> 
       <Grid >
       
-      <h1 style={{justifyContent: 'center', alignContent: 'center', fontFamily: 'Oswald', letterSpacing: '0.05rem', fontSize:  '5vh'}}>Welcome {names}! </h1>
+      <h1 style={{justifyContent: 'center', alignContent: 'center', fontFamily: 'Oswald', 
+      letterSpacing: '0.05rem', fontSize:  '5vh', marginTop: '-1vh'}}>Welcome {names}! </h1>
 
       </Grid>
       
@@ -369,13 +376,16 @@ console.log(weather1)
       <Button type='submit' style={buttonStyle} variant="contained" >Dial 911</Button>
       <p></p>
       <Button onClick={handleSendFriendsEmail} type='submit' style={buttonStyle} variant="contained" >Reached Safety</Button>
+      <p></p>
+      <img style={{height: '30vh', marginTop: '-15vh'}} src={Dog2} alt="Dog" />
         </Grid>
-        <Grid style={{backgroundColor: 'white', padding: '2vh', color: '#29241C',  marginRight:'2vh'}}> 
+        <Grid style={{ color: '#29241C',  fontFamily: 'Oswald', fontSize:  '3vh', display: 'flex', flexDirection: 'column', columnGap: '3vh', justifyContent:'center', alignItems: 'center' }}> 
+        <Grid style={{backgroundColor: 'white', padding: '2vh', color: '#29241C',  marginRight:'2vh', height: '100%'}}> 
         <h1 style={{justifyContent: 'center', alignContent: 'center', fontFamily: 'Oswald', fontSize:  '3vh', marginTop: '-1vh'}}>Your Alerts</h1>
         <List >
     {alerts.map(item => (
       <List>
-      <ListItem alignItems="flex-start" style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: '#29241C', color: 'white'}}>
+      <ListItem alignItems="flex-start" style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: '#29241C', color: 'white', width: '45vh'}}>
         <ListItemAvatar >
           <Avatar style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: 'white', color: '#29241C'}}>{item.name}</Avatar>
         </ListItemAvatar>
@@ -388,6 +398,7 @@ console.log(weather1)
                 component="span"
                 variant="body2"
                 color="white"
+                
               >
                 
               </Typography>
@@ -405,14 +416,25 @@ console.log(weather1)
       </List>
       
       </Grid>
+      
+    
+      
+  
+      </Grid>
 
-      <Grid style={{backgroundColor: 'white', padding: '2vh', color: '#29241C', fontFamily: 'Noto Sans Lepcha', fontSize:  '2vh'}}> 
-        <h1 style={{justifyContent: 'center', alignContent: 'center', fontFamily: 'Oswald', fontSize:  '3vh',  marginTop: '-1vh'}}>Weather </h1>
-        <p> Temperature: {weather1 != undefined ? JSON.stringify(weather1.temp): 'Loading..'}°C </p>
-        <p> Feels Like: {weather1 != undefined ? JSON.stringify(weather1.feelslike): 'Loading..'}°C </p>
-        <p> Weather Conditions: {weather1 != undefined ? JSON.stringify(weather1.conditions): 'Loading..'} </p>
-        <p> Sunrise: {weather1 != undefined ? JSON.stringify(weather1.sunrise): 'Loading..'} </p>
-        <p> Sunset: {weather1 != undefined ? JSON.stringify(weather1.sunset): 'Loading..'} </p>
+      <Grid style={{ color: '#29241C',  fontFamily: 'Oswald', fontSize:  '3vh', display: 'flex', flexDirection: 'column', columnGap: '3vh', justifyContent:'center' }}> 
+        <Grid align="center" style={{backgroundColor: 'white', padding: '2vh', alignItems: 'center', justifyContent: 'center', marginBottom: '2vh'}}>
+          {weather1 != undefined ? JSON.stringify(weather1.temp)+'°C': 'Loading..'} 
+          <p style={{fontFamily:'Noto Sans Lepcha', fontSize: '1vh'}}>Temperature</p></Grid>
+        <Grid align="center" style={{backgroundColor: 'white', padding: '1vh', alignItems: 'center', justifyContent: 'center', marginBottom: '2vh',}}
+        > {weather1 != undefined ? JSON.stringify(weather1.feelslike)+'°C': 'Loading..'} <p style={{fontFamily:'Noto Sans Lepcha', fontSize: '1vh'}}>Feels Like Temperature</p></Grid>
+        <Grid align="center" style={{backgroundColor: 'white', padding: '2vh', alignItems: 'center', justifyContent: 'center',  marginBottom: '2vh'}}>
+           {weather1 != undefined ? (JSON.stringify(weather1.conditions)).replace(/['"]+/g, ''): 'Loading..'} 
+           <p style={{fontFamily:'Noto Sans Lepcha', fontSize: '1vh'}}>Weather Conditions</p></Grid>
+           <Grid align="center" style={{backgroundColor: 'white', padding: '2vh', alignItems: 'center', justifyContent: 'center',  marginBottom: '2vh'}}>
+              {weather1 != undefined ? (JSON.stringify(weather1.sunrise)).replace(/['"]+/g, ''): 'Loading..'} <p style={{fontFamily:'Noto Sans Lepcha', fontSize: '1vh'}}>Sunrise</p></Grid>
+              <Grid align="center" style={{backgroundColor: 'white', padding: '2vh', alignItems: 'center', justifyContent: 'center',  
+              marginBottom: '2vh'}}>{weather1 != undefined ? (JSON.stringify(weather1.sunset)).replace(/['"]+/g, ''): 'Loading..'}<p style={{fontFamily:'Noto Sans Lepcha', fontSize: '1vh'}}>Sunset</p></Grid>
         
       </Grid>
 
