@@ -216,7 +216,7 @@ app.post('/api/UpdateLastSeenLocated', (req, res) => {
 
 	username = req.body.username
 
-	let sql = "SELECT * FROM Profiles WHERE userName = '" + username + "' ";
+	let sql = "SELECT * FROM Profiles WHERE userName = ?";
 	let data = [username]
 	console.log(sql);
 	console.log(data);
@@ -225,7 +225,7 @@ app.post('/api/UpdateLastSeenLocated', (req, res) => {
 		if (error) {
 			return console.error(error.message);
 		}
-		let string = JSON.stringify(data);
+		let string = JSON.stringify(results);
 		res.send({data:string})
 		console.log(data);
 	 });

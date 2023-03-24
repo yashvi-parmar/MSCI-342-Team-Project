@@ -103,6 +103,8 @@ function SignIn() {
             {
               setMatchRecord(false);
               setSubmissionCheck(false);
+              setUsername('');
+              setPassword('');
             }
           }
       })
