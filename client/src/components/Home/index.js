@@ -41,7 +41,7 @@ const serverURL = ""; //enable for deployed mode; Change PORT to the port number
 
 
 
-  const buttonStyle={margin:'8px 0', marginTop: '-2vh',width: '30vh', height: '6vh', backgroundColor: '#29241C',  marginRight: '10px', marginBottom: '2vh', color: 'white', fontFamily: 'Oswald', letterSpacing: '0.05rem'} 
+  const buttonStyle={margin:'8px 0', marginTop: '-2vh', width: '30vh', height: '6vh', backgroundColor: '#29241C',  marginRight: '10px', marginBottom: '2vh', color: 'white', fontFamily: 'Oswald', letterSpacing: '0.05rem'} 
 
   const textStyle={marginBottom: '8px'}
   const fetch = require("node-fetch");
@@ -98,13 +98,13 @@ const AddEmergencyContactForm = () => {
                     <div><em style={{color:'red'}}>*Please enter your emergency contact's name!</em></div>) : (<div></div>)
                   }
   
-                <TextField style={textStyle} label='Phonenumber' placeholder='Enter phone number' variant="outlined" value = {phoneNumber} onChange={handlePhoneNumberInput} fullWidth />
+                <TextField style={textStyle} label='Phone Number' placeholder='Enter phone number' variant="outlined" value = {phoneNumber} onChange={handlePhoneNumberInput} fullWidth />
                 {
                     phoneNumber === '' && submissionCheck ===true ? (
                     <div><em style={{color:'red'}}>*Please enter your emergency contact's phone number!</em></div>) : (<div></div>)
                   }
                 
-                <Button type='submit' variant="contained" style={buttonStyle} fullWidth  onClick={handleSubmissionCheck} >ADD EMERGENCY CONTACT</Button>
+                <Button type='submit' variant="contained"  fullWidth  onClick={handleSubmissionCheck} >ADD EMERGENCY CONTACT</Button>
                 </form>
              </FormControl> 
         </Grid>
@@ -310,6 +310,11 @@ const handleSendFriendsEmail = () => {
   const mailtoURL = `mailto:?bcc=${encodeURIComponent(allFriendEmails)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   window.open(mailtoURL);
 }
+
+const handlePhoneCall = () => {
+  window.location.href = 'tel:+14169390369';
+}
+
 const alerts = [
   {id: 1, lat: 43.472120, lng:-80.543550, address: 'University of Waterloo', timestamp: "2023-01-10", alert: "avoid area around geese", name: 'B'},
   {id: 1, lat: 43.472120, lng:-80.543550, address: 'University of Waterloo', timestamp: "2023-01-10", alert: "avoid area around geese", name: 'B'}
@@ -331,11 +336,11 @@ console.log(data)
         
 
      
-      <Grid  style={{backgroundColor: '#6D8654', padding: '10vh', color: 'white', display: 'flex', 
+      <Grid  style={{backgroundColor: '#6D8654', height: '100%', padding: '10vh', color: 'white', display: 'flex', 
       flexDirection: 'column', flexBasis: '100%', flex: 1}}> 
       <Grid >
       
-      <h1 style={{justifyContent: 'center', alignContent: 'center', fontFamily: 'Oswald', 
+      <h1 align="center" style={{justifyContent: 'center', alignContent: 'center', fontFamily: 'Oswald', 
       letterSpacing: '0.05rem', fontSize:  '5vh', marginTop: '-1vh'}}>Welcome {names}! </h1>
 
       </Grid>
@@ -393,15 +398,11 @@ console.log(data)
         <DialogTitle>Fake Phone Call</DialogTitle>
         <DialogContent>
         {showPhonePlay && (
-            <Button type='submit' style={buttonStyle} variant="contained" onClick = {playPhoneCall} >Play Audio</Button>
+            <Button type='submit' variant="contained" onClick = {playPhoneCall} >Play Audio</Button>
           )}
            {showPhonePause && (
-            <Button type='submit' style={buttonStyle} variant="contained" onClick = {stopPhoneCall} >Stop Audio</Button>
+            <Button type='submit' variant="contained" onClick = {stopPhoneCall} >Stop Audio</Button>
           )}
-        
-          <DialogContentText>
-            Transcript of Phone Call:
-          </DialogContentText>
 
         </DialogContent>
         <DialogActions>
@@ -409,7 +410,7 @@ console.log(data)
         </DialogActions>
       </Dialog>
       <p></p>
-      <Button type='submit' style={buttonStyle} variant="contained" >Dial 911</Button>
+      <Button type='submit' style={buttonStyle} variant="contained" onClick={handlePhoneCall}>Dial 911</Button>
       <p></p>
       <Button onClick={handleSendFriendsEmail} type='submit' style={buttonStyle} variant="contained" >Reached Safety</Button>
       <p></p>
@@ -421,7 +422,7 @@ console.log(data)
         <List >
     {alertData.map(item => (
       <List>
-      <ListItem alignItems="flex-start" style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: '#29241C', color: 'white', width: '45vh'}}>
+      <ListItem alignItems="center" style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: '#29241C', color: 'white', width: '45vh'}}>
         <ListItemAvatar >
           <Avatar style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: 'white', color: '#29241C'}}>{item.username.charAt(0).toUpperCase()}</Avatar>
         </ListItemAvatar>
@@ -453,7 +454,7 @@ console.log(data)
       <TwitterTimelineEmbed
   sourceType="profile"
   screenName="WRPSToday"
-  options={{height: 200}}
+  options={{height: 300}}
 />
       </Grid>
       
