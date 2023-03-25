@@ -40,6 +40,14 @@ const serverURL = "";
 const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 
 function Map() {
+
+  const userNameGlobal = useSelector((state) => state.user.userNameGlobal);
+
+  useEffect(() => {
+    console.log('userNameGlobal in MapComponent:', store.getState().user.userNameGlobal);
+  }, [userNameGlobal]);
+
+
   return (
     <grid style={{backgroundColor: '#6D8654', fontFamily: 'Noto Sans Lepcha'}}>
       <NavbarTop></NavbarTop>
@@ -61,8 +69,6 @@ function Map() {
 export default Map;
 
 function MapFxn() {
-
-  const userNameGlobal = useSelector((state) => state.user.userNameGlobal);
 
   const [directions, setDirections] = useState(null);
   const [origin, setOrigin] = useState('');
@@ -88,7 +94,6 @@ function MapFxn() {
   }, []);
 
   const handleLoad = () => {
-    console.log("hello, " + userNameGlobal);
     const directionsServiceOptions = {
       origin: origin,
       destination: destination,

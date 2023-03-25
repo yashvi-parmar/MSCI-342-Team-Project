@@ -95,8 +95,6 @@ const dispatch = useDispatch();
     }
   };
 
-  
-
   const loadApiSearchUser = () => {
     callApiSearchUser()
       .then((res) => {
@@ -107,6 +105,7 @@ const dispatch = useDispatch();
             setSubmissionValidation(true);
             loadApiAddLastSeenLocation();
             dispatch(setUsernameGlobal(username));
+            console.log("userNameGlobal in store:", store.getState().user.userNameGlobal);
             handleChange("/");
             setUsername('');
             setPassword('');

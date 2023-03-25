@@ -33,6 +33,9 @@ import {GoogleMap, LoadScript, Marker, DirectionsRenderer, Autocomplete, Traffic
 import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
+import { useSelector } from 'react-redux';
+import store from '../../store';
+
 //Dev mode
 //const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046"; //enable for dev mode
 //Deployment mode instructions
@@ -127,6 +130,12 @@ const Home = () => {
   const[isLoading, setIsLoading]=useState(true);
  
   const [data, setData] = useState([]);
+
+  const userNameGlobal = useSelector((state) => state.user.userNameGlobal);
+
+  useEffect(() => {
+    console.log('userNameGlobal in HomeComponent:', store.getState().user.userNameGlobal);
+  }, [userNameGlobal]);
 
   useEffect(() => {
     const fetchData = async () => {
