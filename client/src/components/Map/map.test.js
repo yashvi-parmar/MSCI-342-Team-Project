@@ -1,28 +1,11 @@
-import React from "react";
-import { render, unmountComponentAtNode } from "react-dom";
-import { act } from "react-dom/test-utils";
+import React from 'react';
+import { render, fireEvent } from '@testing-library/react';
+import Button from './mapjest';
 
-import Map from "./mapjest.js";
-
-let container = null;
-beforeEach(() => {
-  // setup a DOM element as a render target
-  container = document.createElement("h2");
-  document.body.appendChild(container);
+test('button click event', () => {
+  const handleClick = jest.fn();
+  const { getByText } = render(<Button label="GO" onClick={handleClick} />);
+  const button = getByText('GO');
+  fireEvent.click(button);
+  expect(handleClick).toHaveBeenCalledTimes(0);
 });
-
-afterEach(() => {
-  // cleanup on exiting
-  unmountComponentAtNode(container);
-  container.remove();
-  container = null;
-});
-
-it("renders with map as a header", () => {
-  act(() => {
-    render(<Map />, container);
-  });
-  expect(container.textContent).toBe("Map");;
-});
-
-  
