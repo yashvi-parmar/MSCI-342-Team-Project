@@ -104,11 +104,12 @@ app.post('/api/addAlert', (req, res) => {
 	lat = req.body.lat,
 	lng = req.body.lng,
 	alertMessage = req.body.alertMessage, 
-	user = req.body.userID
+	user = req.body.username,
+	address = req.body.address
 	
 	  
-	let sql = "INSERT INTO `Alerts` (lat, lng, alert, user) VALUES (?,?,?,?)";
-	let data=[lat, lng, alertMessage, user];
+	let sql = "INSERT INTO `Alerts` (lat, lng, alert, username,address) VALUES (?,?,?,?,?)";
+	let data=[lat, lng, alertMessage, user,address];
 	console.log(sql);
 	console.log(data);       
  
@@ -258,10 +259,10 @@ app.post('/api/SearchUser', (req, res) => {
 
 	let connection = mysql.createConnection(config);
 
-	userID = 1;
+	username = req.body.username;
 	  
-	let sql = "SELECT CONCAT(firstName,' ',lastName) AS FullName, longitude, latitude FROM Profiles INNER JOIN Friends ON Friends.FriendUserID=Profiles.userID WHERE Friends.userID=?";
-	let data=[userID];
+	let sql = "SELECT CONCAT(Profiles.firstName,' ',Profiles.lastName) AS FullName, Profiles.longitude, Profiles.latitude, Profiles.userName, Profiles.email FROM Profiles INNER JOIN Friends ON Friends.FriendUsername=Profiles.userName WHERE Friends.username=?";
+	let data=[username];
 	console.log(sql);
 	console.log(data);       
  
@@ -324,8 +325,8 @@ app.post('/api/getFriendsEmails', (req, res) => {
 
 	let connection = mysql.createConnection(config);
 
-	userID = req.body.userID
-	let sql = "SELECT p.email FROM Friends f INNER JOIN Profiles p ON f.friendUserID = p.userID WHERE f.userID = " + userID;
+	username = req.body.username
+	let sql = "SELECT p.email FROM Friends f INNER JOIN Profiles p ON f.friendUsername = p.userName WHERE f.username = " + username;
 
 	let data = [];
 	console.log(data);
@@ -366,9 +367,51 @@ app.post('/api/getProfiles', (req, res) => {
 	 connection.end();
  });
 
+ app.post('/api/getYourAlerts', (req, res) => {
 
+	let connection = mysql.createConnection(config);
 
+	username = req.body.username
+	
+	let sql =  "SELECT * FROM Alerts ORDER BY timestamp DESC LIMIT 2 WHERE username= ?";
+	let data=[username];
 
+	console.log(sql);
+	console.log(data);       
+ 
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+		let string = JSON.stringify(results);
+		console.log(string);
+		let obj = JSON.parse(string);
+		res.send({ string });
+	 });
+	 connection.end();
+ });
+
+ app.post('/api/addFriend', (req, res) => {
+
+	let connection = mysql.createConnection(config);
+
+	username = req.body.username,
+	friendUsername = req.body.friendUsername
+	
+	let sql = "INSERT INTO `Friends` (username,friendUsername) VALUES (?,?)";
+	let data=[username,friendUsername];
+
+	console.log(sql);
+	console.log(data);       
+ 
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+		res.send({message: "Account successfully added"});
+	 });
+	 connection.end();
+ });
 
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
 //app.listen(port, '172.31.31.77'); //for the deployed version, specify the IP address of the server

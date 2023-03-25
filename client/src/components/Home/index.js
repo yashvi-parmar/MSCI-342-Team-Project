@@ -36,14 +36,9 @@ import Select from '@mui/material/Select';
 import { useSelector } from 'react-redux';
 import store from '../../store';
 
-//Dev mode
-//const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046"; //enable for dev mode
-//Deployment mode instructions
+
 const serverURL = ""; //enable for deployed mode; Change PORT to the port number given to you;
-//To find your port number: 
-//ssh to ov-research-4.uwaterloo.ca and run the following command: 
-//env | grep "PORT"
-//copy the number only and paste it in the serverURL in place of PORT, e.g.: const serverURL = "http://ov-research-4.uwaterloo.ca:3000";
+
 
 
   const buttonStyle={margin:'8px 0', marginTop: '-2vh', width: '30vh', height: '6vh', backgroundColor: '#29241C',  marginRight: '10px', marginBottom: '2vh', color: 'white', fontFamily: 'Oswald', letterSpacing: '0.05rem'} 
@@ -132,6 +127,41 @@ const Home = () => {
   const [data, setData] = useState([]);
 
   const userNameGlobal = useSelector((state) => state.user.userNameGlobal);
+  const [alertData,setAlertData] = React.useState([]);
+
+  React.useEffect(() => {
+    //loadUserSettings();
+    loadGetYourAlerts();
+   },[]);
+  
+  const loadGetYourAlerts =() => {
+    callGetYourAlerts()
+      .then(res => {
+        setAlertData(res.string);
+        console.log("data: " + alertData);
+  });
+  }
+  const callGetYourAlerts = async() => {
+    const url = serverURL + "/api/getYourAlerts";
+    console.log(url)
+    let AlertInfo = {
+      "username": store.getState().user.userNameGlobal,
+    };
+  
+    console.log(AlertInfo);
+  
+    console.log(AlertInfo);
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(AlertInfo)
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
 
   useEffect(() => {
     console.log('userNameGlobal in HomeComponent:', store.getState().user.userNameGlobal);
@@ -257,7 +287,7 @@ const callAPIGetFriendsEmails = async() => {
   console.log(url);
 
   let userData = {
-    "userID": 2
+    "username": store.getState().user.userNameGlobal
   }
 
   const response = await fetch(url, {

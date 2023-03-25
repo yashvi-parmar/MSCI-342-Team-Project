@@ -17,7 +17,8 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import '../Home/index.css'
-//const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
+import { useSelector } from 'react-redux';
+import store from '../../store';
 const serverURL = "";
 
 
@@ -34,13 +35,6 @@ const opacityValue = 0.95;
 const buttonStyle={ backgroundColor: '#29241C', color: 'white', fontFamily: 'Oswald'}
 
 
- //enable for dev mode
- //enable for dev mode
-//Deployment mode instructions
-//To find your port number:
-//ssh to ov-research-4.uwaterloo.ca and run the following command:
-//env | grep "PORT"
-//copy the number only and paste it in the serverURL in place of PORT, e.g.: const serverURL = "http://ov-research-4.uwaterloo.ca:3000";
  
 const theme = createTheme({
  palette: {
@@ -63,6 +57,12 @@ const MainGridContainer = styled(Grid)(({ theme }) => ({
 
 const Alerts = (props) => {
  
+  const userNameGlobal = useSelector((state) => state.user.userNameGlobal);
+
+  React.useEffect(() => {
+    console.log('userNameGlobal in MapComponent:', store.getState().user.userNameGlobal);
+  }, [userNameGlobal]);
+
 
  const [alertLocation, setAlertLocation] = React.useState('');
  const [alertMessage, setAlertMessage] = React.useState('');
@@ -87,6 +87,7 @@ const handlePlaceSelect = (place) => {
   setLng(place.geometry.location.lng());
   console.log(lat);
   console.log(lng);
+  console.log(destination);
 };
 
 
@@ -109,7 +110,8 @@ const handleSubmissionValidation = (event) => {
     let data = {
       alertLocation: alertLocation,
       alertMessage: alertMessage,
-      userID: 1,
+      username: userNameGlobal,
+      address: destination
     }
     setSubmissionData([destination,alertMessage])
     setAlertData(data);
@@ -137,7 +139,9 @@ const loadApiAddAlert = () => {
     "lat": lat,
     "lng" : lng,
     "alertMessage": alertMessage,
-    "userID": userID
+    "username": store.getState().user.userNameGlobal,
+    "address" : destination
+
   };
 
   console.log(AlertInfo);
