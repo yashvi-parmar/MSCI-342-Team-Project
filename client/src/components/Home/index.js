@@ -100,13 +100,13 @@ const AddEmergencyContactForm = () => {
                     <div><em style={{color:'red'}}>*Please enter your emergency contact's name!</em></div>) : (<div></div>)
                   }
   
-                <TextField style={textStyle} label='Phonenumber' placeholder='Enter phone number' variant="outlined" value = {phoneNumber} onChange={handlePhoneNumberInput} fullWidth />
+                <TextField style={textStyle} label='Phone Number' placeholder='Enter phone number' variant="outlined" value = {phoneNumber} onChange={handlePhoneNumberInput} fullWidth />
                 {
                     phoneNumber === '' && submissionCheck ===true ? (
                     <div><em style={{color:'red'}}>*Please enter your emergency contact's phone number!</em></div>) : (<div></div>)
                   }
                 
-                <Button type='submit' variant="contained" style={buttonStyle} fullWidth  onClick={handleSubmissionCheck} >ADD EMERGENCY CONTACT</Button>
+                <Button type='submit' variant="contained"  fullWidth  onClick={handleSubmissionCheck} >ADD EMERGENCY CONTACT</Button>
                 </form>
              </FormControl> 
         </Grid>
@@ -296,7 +296,7 @@ console.log(data)
       flexDirection: 'column', flexBasis: '100%', flex: 1}}> 
       <Grid >
       
-      <h1 style={{justifyContent: 'center', alignContent: 'center', fontFamily: 'Oswald', 
+      <h1 align="center" style={{justifyContent: 'center', alignContent: 'center', fontFamily: 'Oswald', 
       letterSpacing: '0.05rem', fontSize:  '5vh', marginTop: '-1vh'}}>Welcome {names}! </h1>
 
       </Grid>
@@ -382,9 +382,10 @@ console.log(data)
         <List >
     {alerts.map(item => (
       <List>
-      <ListItem alignItems="flex-start" style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: '#29241C', color: 'white', width: '45vh'}}>
+      <ListItem alignItems="center" style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: '#29241C', color: 'white', width: '45vh'}}>
         <ListItemAvatar >
-          <Avatar style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: 'white', color: '#29241C'}}>{item.name}</Avatar>
+
+          <Avatar style={{fontFamily: 'Oswald', backgroundColor: '#EBD6C1', color: '#B08968'}}>{item.name}</Avatar>
         </ListItemAvatar>
         <ListItemText
           primary={item.address}
@@ -414,7 +415,7 @@ console.log(data)
       <TwitterTimelineEmbed
   sourceType="profile"
   screenName="WRPSToday"
-  options={{height: 200}}
+  options={{height: 300}}
 />
       </Grid>
       
