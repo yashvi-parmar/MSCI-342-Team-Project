@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-
 import {Avatar, TextField, Button, Link } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { FormControl, FormLabel, RadioGroup, FormControlLabel } from '@material-ui/core';
@@ -11,6 +10,11 @@ import { BrowserRouter,Switch,Route} from 'react-router-dom';
 import Navbar from '../NavBar';
 import { useHistory } from 'react-router-dom';
 import {createTheme, ThemeProvider, styled} from "@material-ui/core/styles";
+import { Provider } from 'react-redux';
+import store from '../../store/index';
+import { setUsernameGlobal } from '../../actions/user';
+import { useSelector, useDispatch } from 'react-redux';
+
 const cardStyle={padding :90, height:'95%',width:280,  color: '#29241C', backgroundColor: '#EDECED'}
 const buttonStyle={margin:'8px 0', backgroundColor: '#6D8654', color: '#29241C', marginTop: '5vh', borderRadius: 35, height: '50px'}
 const textStyle={marginBottom: '2vh',  color: 'black', width: '280px'}
@@ -29,6 +33,7 @@ const theme = createTheme({
     },
   },
  });
+ 
  
 
 function SignIn() {
@@ -67,6 +72,9 @@ function SignIn() {
      },
    );
  }, []);
+
+const userNameGlobal = useSelector((state) => state.user.userNameGlobal);
+const dispatch = useDispatch();
   
   
  const history = useHistory();
@@ -84,22 +92,10 @@ function SignIn() {
     event.preventDefault();
     if(password !== '' && username !==''){
       loadApiSearchUser();
-      if(searchAnswer != ""){
-        setSubmissionValidation(true);
-        loadApiAddLastSeenLocation();
-        handleChange("/");
-      }else{
-        {
-          setMatchRecord(false);
-          setSubmissionCheck(false);
-        }
-      }
-      setUsername('');
-      setPassword('');
-      setSearchAnswer('');
-
     }
   };
+
+  
 
   const loadApiSearchUser = () => {
     callApiSearchUser()
@@ -107,9 +103,33 @@ function SignIn() {
         console.log(res)
           var parsed = JSON.parse(res.data);
           console.log(parsed[0]);
-          setSearchAnswer(parsed);
+          if(parsed != ""){
+            setSubmissionValidation(true);
+            loadApiAddLastSeenLocation();
+            dispatch(setUsernameGlobal(username));
+            handleChange("/");
+            setUsername('');
+            setPassword('');
+          }else{
+            {
+              setMatchRecord(false);
+              setSubmissionCheck(false);
+            }
+          }
       })
   };
+
+  const [localUserName, setLocalUserName] = useState('');
+
+  useEffect(() => {
+    setLocalUserName(userNameGlobal);
+  }, [userNameGlobal]);
+  
+  useEffect(() => {
+    console.log("hello there! " + localUserName);
+  }, [localUserName]);
+
+
 
   const callApiSearchUser = async () => {
     const url = serverURL + "/api/SearchUser";
@@ -166,11 +186,9 @@ function SignIn() {
   }
 
   return (
+    <Provider store={store}>
     <Grid style={{backgroundColor: '#6D8654', height: '100vh', color: '#29241C'}}>
-     <ThemeProvider theme={theme}>
-       
-    
-  
+     <ThemeProvider theme={theme}>  
       <Grid style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', padding: '5vh'}} >
       <Grid style={{display: 'flex', flexDirection: 'column', flexBasis: '100%', flex: 1}}>
         <h3 style={{letterSpacing: '0.05rem', color: '#EDECED'}}>Good to See You Again,</h3>
@@ -217,6 +235,7 @@ function SignIn() {
    </ThemeProvider>
   
     </Grid>
+    </Provider>
   );
 }
 

@@ -18,10 +18,12 @@ import {GoogleMap, LoadScript, Marker, DirectionsRenderer, Autocomplete, Traffic
 import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
-
 import { DeskOutlined } from '@mui/icons-material';
 import fakePhoneCall from "./assets/fakePhoneCall.wav"
 import '../Home/index.css'
+import { useSelector } from 'react-redux';
+import store from '../../store';
+
 const buttonStyle={margin:'8px 0', backgroundColor: '#29241C',  marginRight: '10px', marginBottom: '15px', color: 'white', fontFamily: 'Oswald', letterSpacing: '0.05rem'} 
 
 const textStyle={marginBottom: '8px'}
@@ -34,17 +36,17 @@ const containerStyle = {
 const serverURL = "";
 
 
+
 const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 
 function Map() {
-
   return (
     <grid style={{backgroundColor: '#6D8654', fontFamily: 'Noto Sans Lepcha'}}>
       <NavbarTop></NavbarTop>
     
     <div className="Map">
       <Grid>
-            <Paper style={{backgroundColor: '#6D8654',padding: '4vh'}}>
+            <Paper style={{backgroundColor: '#6D8654',padding: '4vh',  marginTop: '3vh'}}>
                 <Grid align='center'>
                 </Grid>
                      <MapFxn/> 
@@ -59,6 +61,9 @@ function Map() {
 export default Map;
 
 function MapFxn() {
+
+  const userNameGlobal = useSelector((state) => state.user.userNameGlobal);
+
   const [directions, setDirections] = useState(null);
   const [origin, setOrigin] = useState('');
   const [destination, setDestination] = useState('');
@@ -83,6 +88,7 @@ function MapFxn() {
   }, []);
 
   const handleLoad = () => {
+    console.log("hello, " + userNameGlobal);
     const directionsServiceOptions = {
       origin: origin,
       destination: destination,
@@ -112,6 +118,7 @@ function MapFxn() {
   };
 
   const onLoad = trafficLayer => {
+    //console.log("hello, " + userNameGlobal);
     console.log('trafficLayer: ', trafficLayer)
   }
 
@@ -184,9 +191,10 @@ function MapFxn() {
     zIndex: 1
   }
 
+
   let [unsafetext,setUnsafeText]=React.useState([]);
   let [safetext,setSafetext] = React.useState([]);
-  //let [friends,setFriends] = React.useState([]);
+  let [friends,setFriends] = React.useState([]);
 
   React.useEffect(() => {
     //loadUserSettings();
@@ -218,6 +226,7 @@ function MapFxn() {
     return body;
   }
 
+
   React.useEffect(() => {
     //loadUserSettings();
     loadGetSafeLocations();
@@ -247,7 +256,7 @@ function MapFxn() {
     return body;
   }
 
-/** 
+ 
 React.useEffect(() => {
   //loadUserSettings();
   loadGetFriends();
@@ -275,12 +284,13 @@ const callGetFriends = async() => {
   if (response.status !== 200) throw Error(body.message);
   return body;
 }
-*/
 
+/** 
 const friends = [
-  {id: 1, lat: 43.472120, lng: -80.553550, friendName: "Friend 1"}
+  {id: 1, lat: 43.472120, lng: -80.553550, friendName: "Margo"}, 
+  {id: 1, lat: 43.473130, lng:-80.546550, friendName: "Robbie"}
 ]
-
+*/
 const [showed, setShowed] = useState(false);
 const [showedF, setShowedF] = useState(false);
 const [showedT, setShowedT] = useState(false);
@@ -539,7 +549,7 @@ const callAPIGetAuthLocations = async() => {
 
     <grid>
 
-<Grid >
+<Grid style={{marginTop:'6vh'}} >
   <Grid align='center'>
 
   </Grid>      
@@ -657,11 +667,11 @@ const callAPIGetAuthLocations = async() => {
       <InfoBox
       onLoad={onLoadInfo}
       options={options3}
-      position={{lat: item.lat, lng: item.lng}}
+      position={{lat: item.latitude, lng: item.longitude}}
     >
       <div style={{ display: showedF ? "none": "", fontColor: '#FFFFFF', backgroundColor: '#29241C', opacity: 0.85 }}>
         <p style={{ fontSize: 10, color: '#FFFFFF', padding: 4 }}>
-         {item.friendName}
+         {item.FullName}
         </p>
       </div>
     </InfoBox>

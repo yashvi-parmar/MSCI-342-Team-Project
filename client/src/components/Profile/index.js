@@ -7,7 +7,7 @@ import NavbarTop from '../NavBarTop';
 import BarkButton from '../BarkButton';
 import '../Home/index.css'
 import Paper from "@material-ui/core/Paper";
-//const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
+const serverURL = "";
 const cardStyle={padding :'4vh', height: '100%', fontFamily: 'Noto Sans Lepcha', color: '#29241C', backgroundColor: '#6D8654', display: 'flex', flex:1, flexDirection: 'row'}
 function LetterAvatars() {
   const first = 'Vedangi';
@@ -32,6 +32,48 @@ function LetterAvatars() {
   }
 
 function Profile() {
+
+  let[profile,setProfile]=React.useState({});
+
+  React.useEffect(() => {
+    loadApiGetProfiles();
+  },[]);
+  
+  
+  
+  const loadApiGetProfiles = () => {
+    callApiGetProfiles()
+      .then(res => {
+        //console.log("callApiGetProfiles: ", res.string);
+        var parsed = JSON.parse(res.string);
+        console.log("callApiGetProfiles: ", parsed[0]);
+        setProfile(parsed[0]);
+        console.log("profile" + profile.firstName);
+        console.log("userID:" + profile.userID)
+      })
+  }
+  
+  const callApiGetProfiles = async() => {
+    const url = serverURL + "/api/getProfiles";
+    console.log(url);
+  
+    let info = {
+      "userID": 1
+    };
+  
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(info)
+    });
+    const body = await response.json();
+    console.log("received: ", body);
+    if (response.status !== 200) throw Error(body.message);
+    console.log(response);
+    return body;
+  }
     return (
         <div> 
           
@@ -41,9 +83,9 @@ function Profile() {
             style={cardStyle}
           >
             <Grid> 
-            <h1 style={{color:'white', fontFamily: 'Oswald'}}>YOUR PROFILE</h1>
+            <h1 style={{color:'white', fontFamily: 'Oswald', marginTop: '5vh'}}>YOUR PROFILE</h1>
             
-            <LetterAvatars/>
+            <LetterAvatars />
             </Grid>
             <Grid style={{marginLeft: '5vh'}}> 
             <ProfileCont></ProfileCont>
