@@ -19,8 +19,8 @@ const ShowFriends = () => {
   const lastLetters = lastNames.map((last) => last[0]);
 
   return (
-    <Grid container spacing={2} direction="column">
-      {firstNames.map((fri, index) => (
+    <Grid container spacing={2} direction="column" >
+      {friends.map((fri, index) => (
         <Grid xs={12} sm={12} item key={fri} style={{marginRight: '5vh'}}>
           <Card>
             <CardContent style={{ display: 'flex', alignItems: 'center' }}>

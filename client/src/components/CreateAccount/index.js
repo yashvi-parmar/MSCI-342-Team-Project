@@ -39,7 +39,7 @@ const theme = createTheme({
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [passwordReenter, setPasswordReenter]=React.useState('');
-    const [phoneNumber, setPhoneNumber] = React.useState('');
+    const [usernameExists, setUsernameExists] = React.useState(false);
     const [submissionCheck, setSubmissionCheck]=React.useState(false);
     const [searchAnswer,setSearchAnswer] = React.useState('');
     const [submissionValidation,setSubmissionValidation] = React.useState(false);
@@ -108,16 +108,6 @@ const theme = createTheme({
     event.preventDefault();
     if(password !== '' && username !=='' && email !== '' && passwordReenter !== '' && (password===passwordReenter)){
       loadApiCheckUser();
-      if(searchAnswer === ''){
-        loadApiAddProfile();
-        setUsername('');
-        setPassword('');
-        setEmail('');
-        setPasswordReenter('');
-        setSubmissionValidation(true);
-        setSubmissionCheck(false);
-        handleChange("/")
-      }
     }
   };
 
@@ -127,12 +117,25 @@ const theme = createTheme({
         console.log(res)
           var parsed = JSON.parse(res.data);
           console.log(parsed[0]);
-          setSearchAnswer(parsed);
+          if(parsed == ""){
+            loadApiAddProfile();
+            setPasswordReenter('');
+            setSubmissionValidation(true);
+            setSubmissionCheck(false);
+            handleChange("/")
+          }else if (parsed != ""){
+              setSubmissionCheck(false);
+              setUsername('');
+              setPassword('');
+              setPasswordReenter('');
+              setUsernameExists(true);
+              console.log("parsed: " + parsed);
+          }
       })
   };
 
   const callApiCheckUser = async () => {
-    const url = serverURL + "/api/CheckUser";
+    const url = serverURL + "/api/checkAccount";
     console.log(url)
   
     let searchInfo = {
@@ -158,7 +161,6 @@ const theme = createTheme({
         console.log(res)
           var parsed = JSON.parse(res.data);
           console.log(parsed[0]);
-          setSearchAnswer(parsed);
       })
   };
 
@@ -205,7 +207,7 @@ const theme = createTheme({
                 </Grid>
                 <FormControl>
                 <form autoComplete='off' onSubmit={handleSubmissionValidation}>
-                <TextField style={textStyle} label='First Name' placeholder='Enter first name' variant="outlined" fullWidth value={firstName} onChange={handleFirstName} />
+                <TextField style={textStyle} label='First Name' placeholder='Enter first name' variant="outlined" fullWidth value={firstName} onChange={handleFirstNameInput} />
                   {
                     firstName === '' && submissionCheck ===true ? (
                     <div><em style={{color:'red'}}>*Please enter your username!</em></div>) : (<div></div>)
@@ -243,6 +245,10 @@ const theme = createTheme({
                     passwordReenter !== '' && password !=='' && submissionCheck ===true && (password !==passwordReenter) ? (
                     <div><em style={{color:'red'}}>*Passwords do not match! Please type your password again!</em></div>) : (<div></div>)
                   }
+                                    {
+                    usernameExists === true ?  (
+                    <div><em style={{color:'red'}}>*Username is taken, please try a different username!</em></div>) : (<div></div>)
+                  }
                 
                 <Button type='submit' variant="contained" style={buttonStyle} onClick = {handleSubmissionCheck} fullWidth><h3 style={{letterSpacing: '0.05rem', color: '#EDECED'}}>GET STARTED</h3></Button>
                 </form>
@@ -267,3 +273,8 @@ const theme = createTheme({
 }
 
 export default CreateAccount;
+
+
+
+
+

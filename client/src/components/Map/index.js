@@ -18,7 +18,6 @@ import {GoogleMap, LoadScript, Marker, DirectionsRenderer, Autocomplete, Traffic
 import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
-import dogBark from "./assets/dogBark.wav"
 
 import { DeskOutlined } from '@mui/icons-material';
 import fakePhoneCall from "./assets/fakePhoneCall.wav"
@@ -45,7 +44,7 @@ function Map() {
     
     <div className="Map">
       <Grid>
-            <Paper style={{backgroundColor: '#6D8654',padding: '4vh'}}>
+            <Paper style={{backgroundColor: '#6D8654',padding: '4vh',  marginTop: '3vh'}}>
                 <Grid align='center'>
                 </Grid>
                      <MapFxn/> 
@@ -83,7 +82,7 @@ function MapFxn() {
     );
   }, []);
 
-  const handleLoad = (map) => {
+  const handleLoad = () => {
     const directionsServiceOptions = {
       origin: origin,
       destination: destination,
@@ -120,6 +119,12 @@ function MapFxn() {
     console.log('infoBox: ', infoBox)
   };
 
+  const onLoadInfoAuth = infoBox => {
+
+  };
+
+  const optionsAuth = { closeBoxURL: '', enableEventPropagation: true };
+
   const options = {     
   strokeColor: '#FF0000',
   strokeOpacity: 0.8,
@@ -150,6 +155,20 @@ function MapFxn() {
     zIndex: 1, closeBoxURL: '', enableEventPropagation: true 
   }
 
+  const options4 = {
+    strokeColor: '#000000',
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillColor: '#ADD8E6',
+    fillOpacity: 0.35,
+    clickable: false,
+    draggable: false,
+    editable: false,
+    visible: true,
+    radius: 10,
+    zIndex: 1, closeBoxURL: '', enableEventPropagation: true 
+  }
+
   const options2 = {
     strokeColor: '#00ff44',
     strokeOpacity: 0.8,
@@ -164,32 +183,107 @@ function MapFxn() {
     radius: 10,
     zIndex: 1
   }
+
+
+  let [unsafetext,setUnsafeText]=React.useState([]);
+  let [safetext,setSafetext] = React.useState([]);
+  let [friends,setFriends] = React.useState([]);
+
+  React.useEffect(() => {
+    //loadUserSettings();
+    loadGetAlerts();
+   },[]);
+
+   const loadGetAlerts =() => {
+    callGetAlerts()
+      .then(res => {
+        setUnsafeText(res.alertData);
+        console.log(unsafetext);
+      });
+  }
+
+  const callGetAlerts = async() => {
+    
+    //console.log('t',url)
+    const url = serverURL + "/api/getAlerts";
+    console.log(url)
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+    });
+    const body =await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
+
+
+  React.useEffect(() => {
+    //loadUserSettings();
+    loadGetSafeLocations();
+   },[]);
+
+  const loadGetSafeLocations =() => {
+    callGetSafeLocations()
+      .then(res => {
+        setSafetext(res.safeData);
+        console.log(safetext)
+  });
+  }
+  const callGetSafeLocations = async() => {
+    
+    //console.log('t',url)
+    const url = serverURL + "/api/getSafeLocations";
+    console.log(url)
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+    });
+    const body =await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
+
+ 
+React.useEffect(() => {
+  //loadUserSettings();
+  loadGetFriends();
+ },[]);
+
+const loadGetFriends =() => {
+  callGetFriends()
+    .then(res => {
+      setFriends(res.friendData);
+});
+}
+const callGetFriends = async() => {
   
-const unsafelocations = [
-      {id: 1, lat: 43.472120, lng:-80.543550},
-      {id: 2, lat: 43.472118, lng:-80.563546}
-    ];
+  //console.log('t',url)
+  const url = serverURL + "/api/GetFriends";
+  console.log(url)
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      //authorization: `Bearer ${this.state.token}`
+    },
+  });
+  const body =await response.json();
+  if (response.status !== 200) throw Error(body.message);
+  return body;
+}
 
-const safelocations = [
-      {id: 1, lat: 43.473130, lng:-80.543550},
-      {id: 2, lat: 43.483112, lng:-80.533546}
-    ];
-
-const safetext = [
-    {id: 1, lat: 43.473130, lng:-80.543550, text: "Center for help"},
-    {id: 2, lat: 43.483112, lng:-80.533546, text: "Center for help"}
-];
-
-const unsafetext = [
-  {id: 1, lat: 43.472120, lng:-80.543550, text: "Avoid due to a broken streetlight"}, 
-
-  {id: 2, lat: 43.472118, lng:-80.563546, text: "Avoid due to flooding"}, 
-
-]
-
+/** 
 const friends = [
-  {id: 1, lat: 43.472120, lng: -80.553550, friendName: "Friend 1"}
+  {id: 1, lat: 43.472120, lng: -80.553550, friendName: "Margo"}, 
+  {id: 1, lat: 43.473130, lng:-80.546550, friendName: "Robbie"}
 ]
+*/
 const [showed, setShowed] = useState(false);
 const [showedF, setShowedF] = useState(false);
 const [showedT, setShowedT] = useState(false);
@@ -268,7 +362,6 @@ const [destinationForm, setDestinationForm] = useState('');
   const [openFakeCall, setOpenFakeCall]=React.useState(false);
   const [showPhonePlay, setShowPhonePlay] = React.useState(false);
   const [showPhonePause, setShowPhonePause] = React.useState(false);
-  const [counter, setCounter]=React.useState(0);
 
   const handleClickOpenPhoneCall = () => {
     setOpenFakeCall(true);
@@ -296,9 +389,6 @@ const [destinationForm, setDestinationForm] = useState('');
     }
   }
 
-  const playSound =() => {
-    new Audio(dogBark).play();
-  }
 
 
 const loadApiAddSavedDestination = () => {
@@ -342,6 +432,7 @@ React.useEffect(() => {
 React.useEffect(() => {
   console.log(savedDestinations);
 }, [savedDestinations]);
+
 
 
 const getSavedDestinations = () => {
@@ -413,11 +504,45 @@ const handleSendFriendsEmail = () => {
   window.open(mailtoURL);
 }
 
+let [authPlaces, setAuthPlaces] = React.useState([]);
+
+React.useEffect(() => {
+  getAuthLocations();
+}, []);
+
+React.useEffect(() => {
+}, [authPlaces]);
+
+const getAuthLocations = () => {
+  callAPIGetAuthLocations()
+    .then(res => {
+      setAuthPlaces(res.authData);
+    })
+}
+
+const callAPIGetAuthLocations = async() => {
+  const url = serverURL + "/api/getAuthorities";
+  console.log(url);
+  
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const body = await response.json();
+  if (response.status !== 200) throw Error(body.message);
+  console.log(body);
+  console.log(response.status);
+  setAuthPlaces(body.authData);
+  return body;
+}
+
   return (
 
     <grid>
 
-<Grid >
+<Grid style={{marginTop:'6vh'}} >
   <Grid align='center'>
 
   </Grid>      
@@ -497,7 +622,7 @@ const handleSendFriendsEmail = () => {
     >
       <div style={{ display: showed ? "none": "", backgroundColor: '#EFCA43', opacity: 1, padding: 4 }}>
         <div style={{ fontSize: 10, fontColor: '#29241C', fontFamily: 'Noto Sans Lepcha'}}>
-         {item.text}
+         {item.alert}
         </div>
       </div>
     </InfoBox>
@@ -511,22 +636,35 @@ const handleSendFriendsEmail = () => {
     >
       <div style={{ display: showed ? "none": "", backgroundColor: '#6D8654', opacity: 1}}>
         <p style={{ fontSize: 10, color: 'white', padding: 4  }}>
-         {item.text}
+         {item.description}
         </p>
       </div>
     </InfoBox>
     ))}
 
+  {authPlaces.map(item => (
+      <InfoBox
+      onLoad={onLoadInfo}
+      options={options4}
+      position={{lat: item.lat, lng: item.lng}}
+    >
+      <div style={{ display: showed ? "none": "", backgroundColor: '#87CEFA', opacity: 1}}>
+        <p style={{ fontSize: 10, color: 'black', padding: 4  }}>
+         {item.location}
+        </p>
+      </div>
+    </InfoBox>
+    ))}
 
 {friends.map(item => (
       <InfoBox
       onLoad={onLoadInfo}
       options={options3}
-      position={{lat: item.lat, lng: item.lng}}
+      position={{lat: item.latitude, lng: item.longitude}}
     >
       <div style={{ display: showedF ? "none": "", fontColor: '#FFFFFF', backgroundColor: '#29241C', opacity: 0.85 }}>
         <p style={{ fontSize: 10, color: '#FFFFFF', padding: 4 }}>
-         {item.friendName}
+         {item.FullName}
         </p>
       </div>
     </InfoBox>
@@ -632,8 +770,8 @@ const handleSendFriendsEmail = () => {
       <Grid container={2} display='flex'> 
     
       <p></p>
-      <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px',  marginBottom: '15px'}} variant="contained" >Dial 911</Button>
-      <Button onClick={handleSendFriendsEmail} type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px',  marginBottom: '15px'}} variant="contained" >Reached Safety</Button>
+      <Button type='submit' style={buttonStyle} variant="contained" >Dial 911</Button>
+      <Button onClick={handleSendFriendsEmail} type='submit' style={buttonStyle} variant="contained" >Reached Safety</Button>
        </Grid>
     </Grid>
     </grid>
@@ -666,7 +804,7 @@ const AddEmergencyContactForm = () => {
   
   
   
- const handleSubmissionCheck = (event) =>{
+ const handleSubmissionCheck = () =>{
     setSubmissionCheck(true);
   }
   const handleSubmissionValidation = (event) => {

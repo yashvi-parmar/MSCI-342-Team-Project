@@ -84,22 +84,6 @@ function SignIn() {
     event.preventDefault();
     if(password !== '' && username !==''){
       loadApiSearchUser();
-      if(searchAnswer != ""){
-        setSubmissionValidation(true);
-        loadApiAddLastSeenLocation();
-        setSubmissionCheck(false);
-        handleChange("/");
-      }else{
-        {
-          setMatchRecord(false);
-          setSubmissionCheck(false);
-
-        }
-      }
-      setUsername('');
-      setPassword('');
-      setSearchAnswer('');
-
     }
   };
 
@@ -109,7 +93,20 @@ function SignIn() {
         console.log(res)
           var parsed = JSON.parse(res.data);
           console.log(parsed[0]);
-          setSearchAnswer(parsed);
+          if(parsed != ""){
+            setSubmissionValidation(true);
+            loadApiAddLastSeenLocation();
+            handleChange("/");
+            setUsername('');
+            setPassword('');
+          }else{
+            {
+              setMatchRecord(false);
+              setSubmissionCheck(false);
+              setUsername('');
+              setPassword('');
+            }
+          }
       })
   };
 
@@ -149,7 +146,7 @@ function SignIn() {
     console.log(url)
   
     let searchInfo = {
-      "userID": 1,
+      "username" : username,
       "latitude": lat,
       "longitude": lng
     };
@@ -223,6 +220,21 @@ function SignIn() {
 }
 
 export default SignIn;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
