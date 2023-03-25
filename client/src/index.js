@@ -7,8 +7,6 @@ import store from './store';
 
 import * as serviceWorker from "./serviceWorker";
 
-let userNameGlobal = '';
-
 ReactDOM.render(
   <Provider store={store}>
     <App />
