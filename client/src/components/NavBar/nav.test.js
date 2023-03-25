@@ -20,5 +20,5 @@ it("renders", () => {
   act(() => {
     render(<Navbar />, container);
   });
-  expect(container.textContent).toBe("Home");;
+  expect(container.textContent).toBe("Map");
 });
