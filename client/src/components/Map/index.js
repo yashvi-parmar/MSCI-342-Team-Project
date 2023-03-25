@@ -18,10 +18,12 @@ import {GoogleMap, LoadScript, Marker, DirectionsRenderer, Autocomplete, Traffic
 import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
-
 import { DeskOutlined } from '@mui/icons-material';
 import fakePhoneCall from "./assets/fakePhoneCall.wav"
 import '../Home/index.css'
+import { useSelector } from 'react-redux';
+import store from '../../store';
+
 const buttonStyle={margin:'8px 0', backgroundColor: '#29241C',  marginRight: '10px', marginBottom: '15px', color: 'white', fontFamily: 'Oswald', letterSpacing: '0.05rem'} 
 
 const textStyle={marginBottom: '8px'}
@@ -34,10 +36,10 @@ const containerStyle = {
 const serverURL = "";
 
 
+
 const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 
 function Map() {
-
   return (
     <grid style={{backgroundColor: '#6D8654', fontFamily: 'Noto Sans Lepcha'}}>
       <NavbarTop></NavbarTop>
@@ -59,6 +61,9 @@ function Map() {
 export default Map;
 
 function MapFxn() {
+
+  const userNameGlobal = useSelector((state) => state.user.userNameGlobal);
+
   const [directions, setDirections] = useState(null);
   const [origin, setOrigin] = useState('');
   const [destination, setDestination] = useState('');
@@ -83,6 +88,7 @@ function MapFxn() {
   }, []);
 
   const handleLoad = () => {
+    console.log("hello, " + userNameGlobal);
     const directionsServiceOptions = {
       origin: origin,
       destination: destination,
@@ -112,6 +118,7 @@ function MapFxn() {
   };
 
   const onLoad = trafficLayer => {
+    //console.log("hello, " + userNameGlobal);
     console.log('trafficLayer: ', trafficLayer)
   }
 
