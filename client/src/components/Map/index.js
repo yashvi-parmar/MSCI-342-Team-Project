@@ -492,7 +492,7 @@ const callAPIGetFriendsEmails = async() => {
   console.log(url);
 
   let userData = {
-    "userID": 2
+    "username": store.getState().user.userNameGlobal
   }
 
   const response = await fetch(url, {

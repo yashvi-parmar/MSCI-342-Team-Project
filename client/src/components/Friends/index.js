@@ -7,10 +7,14 @@ import {Avatar, Link } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import '../Home/index.css'
+import { useSelector } from 'react-redux';
+import store from '../../store';
+import { useColorScheme } from '@mui/material';
 const serverURL = ""; //enable for dev mode
 // const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:PORT";
 
-const ShowFriends = () => {
+const ShowFriends = (props) => {
+  console.log(props.friends);
   //replace with actual api calls
   const firstNames = ['Vedangi', 'Yashvi', 'Anna', 'Bhairavi']; 
   const lastNames = ['Patel', 'Parmar', 'Thalayasingam', 'Fyfe']
@@ -58,7 +62,7 @@ const SearchFriends = () => {
   const [searchResult, setSearchResult] = React.useState ([]);
   const [firstName, setFirstName] = React.useState ('');
   const [lastName, setLastName] = React.useState ('');
-
+  const [samePersonCheck,setSamePersonCheck] = React.useState (false);
   
   const runButton = event => {
     event.preventDefault();
@@ -76,6 +80,41 @@ const SearchFriends = () => {
     }
   }
 
+  const handleSubmission = (users) => {
+      loadApiAddFriend(users);
+  }
+
+  const loadApiAddFriend = (users) => {
+    callApiAddFriend(users)
+      .then((res) => {
+        console.log(res.message);
+      })
+  };
+  
+  
+  
+   const callApiAddFriend= async (users) => {
+    const url = serverURL + '/api/addFriend';
+  
+    let FriendInfo = { 
+      "username": store.getState().user.userNameGlobal,
+      "friendUsername" : users.userName
+    };
+  
+    console.log(FriendInfo);
+  
+    console.log(FriendInfo);
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(FriendInfo)
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
   const loadSearchResult = () => {
     callApiLoadSearchResult()
       .then(res => {
@@ -127,9 +166,9 @@ const SearchFriends = () => {
                       <h3> {users.firstName} {users.lastName} </h3>
                     </div>
                     <div>
-                      <Button variant='contained' style={{margin: '45px', width: '100px', color: 'white', backgroundColor: '#29241C' }}>
+                      <Button onClick={handleSubmission(users)} variant='contained' style={{margin: '45px', width: '100px', color: 'white', backgroundColor: '#29241C' }}>
                         Add
-                      </Button>
+                      </Button>                     
                     </div>
                   </CardContent>
                 </Card>
@@ -155,6 +194,42 @@ const SearchFriends = () => {
 
 
 function Friends() {
+  let [friends,setFriends]=React.useState([]);
+  
+  React.useEffect(() => {
+    //loadUserSettings();
+    loadGetFriends();
+   },[]);
+
+   const loadGetFriends =() => {
+    callGetFriends()
+      .then(res => {
+        setFriends(res.friendData);
+        console.log(friends);
+      });
+  }
+
+  const callGetFriends = async() => {
+    const url = serverURL + "/api/GetFriends";
+    console.log(url);
+  
+    let userData = {
+      "username": store.getState().user.userNameGlobal
+    }
+  
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData)
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    console.log(body);
+    return body;
+  }
+
     return (
         <Grid style={{backgroundColor: '#6D8654', height: '100%', fontFamily: 'Noto Sans Lepcha'}}> 
           <NavbarTop></NavbarTop>
@@ -168,7 +243,7 @@ function Friends() {
           >
             <Grid item xs={6}>
               <h1 style={{color: 'white', fontFamily: 'Oswald'}}>FRIENDS</h1>
-              <ShowFriends></ShowFriends>
+              <ShowFriends friends={friends}/>
             </Grid>
             <Grid item xs={6}>
               <h1 style={{color: 'white', fontFamily: 'Oswald'}}>FIND MY FRIENDS</h1>

@@ -19,7 +19,6 @@ import Avatar from '@mui/material/Avatar';
 import '../Home/index.css'
 import { useSelector } from 'react-redux';
 import store from '../../store';
-//const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
 const serverURL = "";
 
 
@@ -36,13 +35,6 @@ const opacityValue = 0.95;
 const buttonStyle={ backgroundColor: '#29241C', color: 'white', fontFamily: 'Oswald'}
 
 
- //enable for dev mode
- //enable for dev mode
-//Deployment mode instructions
-//To find your port number:
-//ssh to ov-research-4.uwaterloo.ca and run the following command:
-//env | grep "PORT"
-//copy the number only and paste it in the serverURL in place of PORT, e.g.: const serverURL = "http://ov-research-4.uwaterloo.ca:3000";
  
 const theme = createTheme({
  palette: {
