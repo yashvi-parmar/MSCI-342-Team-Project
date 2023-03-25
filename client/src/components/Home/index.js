@@ -43,7 +43,7 @@ const serverURL = ""; //enable for deployed mode; Change PORT to the port number
 //copy the number only and paste it in the serverURL in place of PORT, e.g.: const serverURL = "http://ov-research-4.uwaterloo.ca:3000";
 
 
-  const buttonStyle={margin:'8px 0', marginTop: '-2vh',width: '30vh', height: '6vh', backgroundColor: '#29241C',  marginRight: '10px', marginBottom: '2vh', color: 'white', fontFamily: 'Oswald', letterSpacing: '0.05rem'} 
+  const buttonStyle={margin:'8px 0', marginTop: '-2vh', width: '30vh', height: '6vh', backgroundColor: '#29241C',  marginRight: '10px', marginBottom: '2vh', color: 'white', fontFamily: 'Oswald', letterSpacing: '0.05rem'} 
 
   const textStyle={marginBottom: '8px'}
   const fetch = require("node-fetch");
@@ -271,6 +271,11 @@ const handleSendFriendsEmail = () => {
   const mailtoURL = `mailto:?bcc=${encodeURIComponent(allFriendEmails)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   window.open(mailtoURL);
 }
+
+const handlePhoneCall = () => {
+  window.location.href = 'tel:+14169390369';
+}
+
 const alerts = [
   {id: 1, lat: 43.472120, lng:-80.543550, address: 'University of Waterloo', timestamp: "2023-01-10", alert: "avoid area around geese", name: 'B'},
   {id: 1, lat: 43.472120, lng:-80.543550, address: 'University of Waterloo', timestamp: "2023-01-10", alert: "avoid area around geese", name: 'B'}
@@ -292,7 +297,7 @@ console.log(data)
         
 
      
-      <Grid  style={{backgroundColor: '#6D8654', padding: '10vh', color: 'white', display: 'flex', 
+      <Grid  style={{backgroundColor: '#6D8654', height: '100%', padding: '10vh', color: 'white', display: 'flex', 
       flexDirection: 'column', flexBasis: '100%', flex: 1}}> 
       <Grid >
       
@@ -354,15 +359,11 @@ console.log(data)
         <DialogTitle>Fake Phone Call</DialogTitle>
         <DialogContent>
         {showPhonePlay && (
-            <Button type='submit' style={buttonStyle} variant="contained" onClick = {playPhoneCall} >Play Audio</Button>
+            <Button type='submit' variant="contained" onClick = {playPhoneCall} >Play Audio</Button>
           )}
            {showPhonePause && (
-            <Button type='submit' style={buttonStyle} variant="contained" onClick = {stopPhoneCall} >Stop Audio</Button>
+            <Button type='submit' variant="contained" onClick = {stopPhoneCall} >Stop Audio</Button>
           )}
-        
-          <DialogContentText>
-            Transcript of Phone Call:
-          </DialogContentText>
 
         </DialogContent>
         <DialogActions>
@@ -370,7 +371,7 @@ console.log(data)
         </DialogActions>
       </Dialog>
       <p></p>
-      <Button type='submit' style={buttonStyle} variant="contained" >Dial 911</Button>
+      <Button type='submit' style={buttonStyle} variant="contained" onClick={handlePhoneCall}>Dial 911</Button>
       <p></p>
       <Button onClick={handleSendFriendsEmail} type='submit' style={buttonStyle} variant="contained" >Reached Safety</Button>
       <p></p>
