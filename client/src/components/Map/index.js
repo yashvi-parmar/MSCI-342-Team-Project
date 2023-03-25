@@ -275,15 +275,20 @@ const loadGetFriends =() => {
 }
 const callGetFriends = async() => {
   
-  //console.log('t',url)
   const url = serverURL + "/api/GetFriends";
-  console.log(url)
+  let FriendInfo = { 
+    "username": store.getState().user.userNameGlobal,
+  };
+
+  console.log(FriendInfo);
+
+  console.log(FriendInfo);
   const response = await fetch(url, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
-      //authorization: `Bearer ${this.state.token}`
+      "Content-Type": "application/json"
     },
+    body: JSON.stringify(FriendInfo)
   });
   const body =await response.json();
   if (response.status !== 200) throw Error(body.message);
