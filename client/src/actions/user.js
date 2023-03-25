@@ -6,3 +6,5 @@ export function setUsernameGlobal(userNameGlobal) {
     payload: userNameGlobal
   };
 }
+
+//this is a comment!
