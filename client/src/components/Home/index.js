@@ -132,6 +132,41 @@ const Home = () => {
   const [data, setData] = useState([]);
 
   const userNameGlobal = useSelector((state) => state.user.userNameGlobal);
+  const [alertData,setAlertData] = React.useState([]);
+
+  React.useEffect(() => {
+    //loadUserSettings();
+    loadGetYourAlerts();
+   },[]);
+  
+  const loadGetYourAlerts =() => {
+    callGetYourAlerts()
+      .then(res => {
+        setAlertData(res.string);
+        console.log(alertData);
+  });
+  }
+  const callGetYourAlerts = async() => {
+    const url = serverURL + "/api/getYourAlerts";
+    console.log(url)
+    let AlertInfo = {
+      "username": store.getState().user.userNameGlobal,
+    };
+  
+    console.log(AlertInfo);
+  
+    console.log(AlertInfo);
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(AlertInfo)
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
 
   useEffect(() => {
     console.log('userNameGlobal in HomeComponent:', store.getState().user.userNameGlobal);
