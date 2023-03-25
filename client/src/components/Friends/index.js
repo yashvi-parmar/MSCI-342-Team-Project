@@ -11,10 +11,12 @@ const serverURL = ""; //enable for dev mode
 // const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:PORT";
 
 const ShowFriends = () => {
-  //replace with friends and friends locations
-  const friends = ['Vedangi', 'Yashvi', 'Anna', 'Bhairavi']; 
+  //replace with actual api calls
+  const firstNames = ['Vedangi', 'Yashvi', 'Anna', 'Bhairavi']; 
+  const lastNames = ['Patel', 'Parmar', 'Thalayasingam', 'Fyfe']
   const locations = ['vedangis location', 'yashvis location', 'annas location', 'bhairavis location'];
-  const firstLetters = friends.map((fri) => fri[0]);
+  const firstLetters = firstNames.map((first) => first[0]);
+  const lastLetters = lastNames.map((last) => last[0]);
 
   return (
     <Grid container spacing={2} direction="column" >
@@ -22,9 +24,9 @@ const ShowFriends = () => {
         <Grid xs={12} sm={12} item key={fri} style={{marginRight: '5vh'}}>
           <Card>
             <CardContent style={{ display: 'flex', alignItems: 'center' }}>
-            <Avatar style={{backgroundColor: '#EBD6C1', color: '#B08968', width: '10vh', height: '10vh', fontSize: '5vh', marginRight: '5vh', marginLeft: '3vh'}}>{firstLetters[index]}</Avatar> 
+            <Avatar style={{backgroundColor: '#EBD6C1', color: '#B08968', width: '10vh', height: '10vh', fontSize: '4vh', marginRight: '5vh', marginLeft: '3vh'}}>{firstLetters[index]}{lastLetters[index]}</Avatar> 
             <div>
-              <h3> {fri} </h3>
+              <h3>{fri} {lastNames[index]} </h3>
               <h4>{locations[index]}</h4>
             </div>
             </CardContent>

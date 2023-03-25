@@ -114,6 +114,8 @@ const dispatch = useDispatch();
             {
               setMatchRecord(false);
               setSubmissionCheck(false);
+              setUsername('');
+              setPassword('');
             }
           }
       })

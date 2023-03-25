@@ -76,7 +76,6 @@ function Profile() {
   }
     return (
         <div> 
-          
           <BarkButton></BarkButton>
           <NavbarTop></NavbarTop>
           <Paper
