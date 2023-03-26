@@ -135,7 +135,7 @@ let [unsafetext,setUnsafeText]=React.useState([]);
 React.useEffect(() => {
   //loadUserSettings();
   loadGetAlerts();
- },[]);
+ },[AlertData]);
 
  const loadGetAlerts =() => {
   callGetAlerts()
@@ -189,14 +189,6 @@ const callGetAlerts = async() => {
   if (response.status !== 200) throw Error(body.message);
   return body;
 }
-
-
-const alerts = [
-  {id: 1, lat: 43.472120, lng:-80.543550, address: 'University of Waterloo', timestamp: "2023-01-10", alert: "avoid area around geese", name: 'YP'}, 
-
-  {id: 1, lat: 43.472120, lng:-80.643550,address: 'University of Waterloo', timestamp: "2023-02-10", alert: "avoid area around ml ", name: 'LS'}, 
-
-]
 
 
 return (
@@ -275,7 +267,7 @@ return (
    <Paper elevation={10} style={cardStyle}> 
     <ThemeProvider theme={theme}> 
     <h1 style={{color: '#29241C', fontFamily: 'Oswald'}}>Alerts</h1>
-    <p style={{fontSize: 10, marginTop: '-1vh'}}>Only displays latest 5 messages in your area. Please see map for more alerts.</p>
+    <p style={{fontSize: 10, marginTop: '-1vh'}}>Only displays latest 4 messages in your area. Please see map for more alerts.</p>
  
     <List sx={{ width: '100%', maxWidth: 460, bgcolor: 'background.paper' }}>
     {unsafetext.map(item => (
