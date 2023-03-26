@@ -203,19 +203,19 @@ const dispatch = useDispatch();
                 </Grid>
                 <FormControl style={{marginTop: '4vh'}}>
            <form autoComplete='off' onSubmit={handleSubmissionValidation}>
-                <TextField style={textStyle} label='Username' placeholder='Enter username' variant="outlined" value={username} onChange = {handleUsernameInput} />
+                <TextField id = "username" style={textStyle} label='Username' placeholder='Enter username' variant="outlined" value={username} onChange = {handleUsernameInput} />
                   {
                     username === '' && submissionCheck ===true ? (
                     <div><em style={{color:'red'}}>*Please enter your username!</em></div>) : (<div></div>)
                   }
   
-                <TextField style={textStyle} label='Password' placeholder='Enter password' type='password' variant="outlined" value = {password} onChange={handlePasswordInput} fullWidth />
+                <TextField id = "password" style={textStyle} label='Password' placeholder='Enter password' type='password' variant="outlined" value = {password} onChange={handlePasswordInput} fullWidth />
                 {
                     password === '' && submissionCheck ===true ? (
                     <div><em style={{color:'red'}}>*Please enter your password!</em></div>) : (<div></div>)
                   }
                 
-                <Button type='submit' variant="contained" style={buttonStyle} fullWidth  onClick={handleSubmissionCheck} ><h3 style={{letterSpacing: '0.05rem', color: '#EDECED'}}>LOGIN</h3></Button>
+                <Button id = "LOGIN" type='submit' variant="contained" style={buttonStyle} fullWidth  onClick={handleSubmissionCheck} ><h3 style={{letterSpacing: '0.05rem', color: '#EDECED'}}>LOGIN</h3></Button>
                 {
                     matchRecord == false ? (
                     <div><em style={{color:'red'}}>*Your credentials do not match our records! Please try</em></div>) : (<div></div>)

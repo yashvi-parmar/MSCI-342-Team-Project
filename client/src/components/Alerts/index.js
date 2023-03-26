@@ -224,9 +224,9 @@ return (
              <br></br>
              <br></br>
              <TextField 
-              
+              id = "alertMessage"
               multiline 
-              label=' Alert Message' 
+              label='Alert Message' 
               helperText="Enter description of danger" 
               variant="outlined" 
               style={{ width: '400px'}} 
