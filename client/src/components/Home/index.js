@@ -81,10 +81,41 @@ const AddEmergencyContactForm = () => {
       setPhoneNumber('');
       setSubmissionValidation(true);
       setSubmissionCheck(false);
+      loadApiAddEmergencyContact();
     }
   };
 
- 
+  const loadApiAddEmergencyContact = () => {
+    callApiAddEmergencyContact()
+      .then((res) => {
+        console.log(res.message);
+      })
+  };
+  
+   const callApiAddEmergencyContact= async () => {
+    const url = serverURL + '/api/addEmergencyContacts';
+  
+    let FriendInfo = { 
+      "username": store.getState().user.userNameGlobal,
+      "contactName" : name,
+      "contactPhoneNumber" : phoneNumber
+      
+    };
+  
+    console.log(FriendInfo);
+  
+    console.log(FriendInfo);
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(FriendInfo)
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
   
 
   return (
@@ -103,8 +134,8 @@ const AddEmergencyContactForm = () => {
                     phoneNumber === '' && submissionCheck ===true ? (
                     <div><em style={{color:'red'}}>*Please enter your emergency contact's phone number!</em></div>) : (<div></div>)
                   }
-                
-                <Button type='submit' variant="contained"  fullWidth  onClick={handleSubmissionCheck} >ADD EMERGENCY CONTACT</Button>
+                <br></br>
+                <Button type='submit' variant="contained" style={buttonStyle} fullWidth  onClick={handleSubmissionCheck} >ADD EMERGENCY CONTACT</Button>
                 </form>
              </FormControl> 
         </Grid>
@@ -229,11 +260,6 @@ const handleChangeEmergencyOptions = (event) => {
   setShowEmergencyContact(event.target.value === "View emergency contacts");
 };
 
-const emergencyContacts = [
-  {name: "Joanna Hayburt", phoneNumber: "647-724-3423"}, 
-  {name: "Pam Albert", phoneNumber: "647-711-3111"}, 
-]
-
 const [openFakeCall, setOpenFakeCall]=React.useState(false);
 const [showPhonePlay, setShowPhonePlay] = React.useState(false);
 const [showPhonePause, setShowPhonePause] = React.useState(false);
@@ -305,14 +331,47 @@ const handleSendFriendsEmail = () => {
   window.open(mailtoURL);
 }
 
+
+const [emergencyContacts, setEmergencyContacts] = React.useState([]);
+
+
+React.useEffect(() => {
+  loadGetEmergencyContacts();
+ },[showEmergencyContact]);
+
+const loadGetEmergencyContacts =() => {
+  callGetEmergencyContacts()
+    .then(res => {
+      setEmergencyContacts(res.obj);
+      console.log("friends:" + emergencyContacts)
+});
+}
+const callGetEmergencyContacts = async() => {
+  const url = serverURL + "/api/getEmergencyContacts";
+  console.log(url)
+  let contactInfo = {
+    "username": store.getState().user.userNameGlobal,
+  };
+
+  console.log(contactInfo);
+
+  console.log(contactInfo);
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(contactInfo)
+  });
+  const body = await response.json();
+  if (response.status !== 200) throw Error(body.message);
+  return body;
+}
+
 const handlePhoneCall = () => {
   window.location.href = 'tel:+14169390369';
 }
 
-const alerts = [
-  {id: 1, lat: 43.472120, lng:-80.543550, address: 'University of Waterloo', timestamp: "2023-01-10", alert: "avoid area around geese", name: 'B'},
-  {id: 1, lat: 43.472120, lng:-80.543550, address: 'University of Waterloo', timestamp: "2023-01-10", alert: "avoid area around geese", name: 'B'}
-]
 
 
 const weather1 =((data.currentConditions));
@@ -373,9 +432,9 @@ console.log(data)
           {showEmergencyContact && 
             emergencyContacts.map(data => {
               return (
-                <div key={data.id}>
-                  <li>Name: {data.name}</li>
-                  <li>Phone Number: {data.phoneNumber}</li>
+                <div key={data.entryID}>
+                  <li>Name: {data.contactName}</li>
+                  <li>Phone Number: {data.contactPhoneNumber}</li>
                   <br/>
                 </div>
               );
