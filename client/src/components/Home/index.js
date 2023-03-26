@@ -282,7 +282,7 @@ const handleSendFriendsEmail = () => {
 }
 
 const handlePhoneCall = () => {
-  window.location.href = 'tel:+14169390369';
+  window.location.href = 'tel:+16475515213';
 }
 
 const alerts = [
