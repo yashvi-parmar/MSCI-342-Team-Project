@@ -41,7 +41,7 @@ const serverURL = ""; //enable for deployed mode; Change PORT to the port number
 
 
 
-  const buttonStyle={margin:'8px 0', marginTop: '-2vh',width: '30vh', height: '6vh', backgroundColor: '#29241C',  marginRight: '10px', marginBottom: '2vh', color: 'white', fontFamily: 'Oswald', letterSpacing: '0.05rem'} 
+  const buttonStyle={margin:'8px 0', marginTop: '-2vh', width: '30vh', height: '6vh', backgroundColor: '#29241C',  marginRight: '10px', marginBottom: '2vh', color: 'white', fontFamily: 'Oswald', letterSpacing: '0.05rem'} 
 
   const textStyle={marginBottom: '8px'}
   const fetch = require("node-fetch");
@@ -129,13 +129,13 @@ const AddEmergencyContactForm = () => {
                     <div><em style={{color:'red'}}>*Please enter your emergency contact's name!</em></div>) : (<div></div>)
                   }
   
-                <TextField style={textStyle} label='Phonenumber' placeholder='Enter phone number' variant="outlined" value = {phoneNumber} onChange={handlePhoneNumberInput} fullWidth />
+                <TextField style={textStyle} label='Phone Number' placeholder='Enter phone number' variant="outlined" value = {phoneNumber} onChange={handlePhoneNumberInput} fullWidth />
                 {
                     phoneNumber === '' && submissionCheck ===true ? (
                     <div><em style={{color:'red'}}>*Please enter your emergency contact's phone number!</em></div>) : (<div></div>)
                   }
                 <br></br>
-                <Button type='submit' variant="contained" style={buttonStyle} fullWidth  onClick={handleSubmissionCheck} >ADD EMERGENCY CONTACT</Button>
+                <Button type='submit' variant="contained"  fullWidth  onClick={handleSubmissionCheck} >ADD EMERGENCY CONTACT</Button>
                 </form>
              </FormControl> 
         </Grid>
@@ -149,19 +149,14 @@ const Home = () => {
   const REACT_APP_ICON_URL = 'https://openweathermap.org/img/w'
   const [lat, setLat] = useState([]);
   const [long, setLong] = useState([]);
-
-
   const [name, setName] = React.useState('');
   const [open, setOpen] = React.useState(false);
   const[isLoading, setIsLoading]=useState(true);
- 
   const [data, setData] = useState([]);
-
   const userNameGlobal = useSelector((state) => state.user.userNameGlobal);
   const [alertData,setAlertData] = React.useState([]);
 
   React.useEffect(() => {
-    //loadUserSettings();
     loadGetYourAlerts();
    },[]);
   
@@ -246,8 +241,7 @@ const directionsCallback = (response) => {
   }
 };
 
-
-const names = 'User'
+const names = userNameGlobal
 const [emergencyContactsOption,setEmergencyContactsOption]=React.useState("");
 const [showTextField, setShowTextField] = useState(false);
 const [showEmergencyContact,setShowEmergencyContact]= useState(false);
@@ -337,6 +331,11 @@ const handleSendFriendsEmail = () => {
   window.open(mailtoURL);
 }
 
+
+const handlePhoneCall = () => {
+  window.location.href = 'tel:+14169390369';
+}
+
 const [emergencyContacts, setEmergencyContacts] = React.useState([]);
 
 
@@ -389,11 +388,11 @@ console.log(data)
         
 
      
-      <Grid  style={{backgroundColor: '#6D8654', padding: '10vh', color: 'white', display: 'flex', 
+      <Grid  style={{backgroundColor: '#6D8654', height: '100%', padding: '10vh', color: 'white', display: 'flex', 
       flexDirection: 'column', flexBasis: '100%', flex: 1}}> 
       <Grid >
       
-      <h1 style={{justifyContent: 'center', alignContent: 'center', fontFamily: 'Oswald', 
+      <h1 align="center" style={{justifyContent: 'center', alignContent: 'center', fontFamily: 'Oswald', 
       letterSpacing: '0.05rem', fontSize:  '5vh', marginTop: '-1vh'}}>Welcome {names}! </h1>
 
       </Grid>
@@ -451,15 +450,11 @@ console.log(data)
         <DialogTitle>Fake Phone Call</DialogTitle>
         <DialogContent>
         {showPhonePlay && (
-            <Button type='submit' style={buttonStyle} variant="contained" onClick = {playPhoneCall} >Play Audio</Button>
+            <Button type='submit' variant="contained" onClick = {playPhoneCall} >Play Audio</Button>
           )}
            {showPhonePause && (
-            <Button type='submit' style={buttonStyle} variant="contained" onClick = {stopPhoneCall} >Stop Audio</Button>
+            <Button type='submit' variant="contained" onClick = {stopPhoneCall} >Stop Audio</Button>
           )}
-        
-          <DialogContentText>
-            Transcript of Phone Call:
-          </DialogContentText>
 
         </DialogContent>
         <DialogActions>
@@ -467,7 +462,7 @@ console.log(data)
         </DialogActions>
       </Dialog>
       <p></p>
-      <Button type='submit' style={buttonStyle} variant="contained" >Dial 911</Button>
+      <Button type='submit' style={buttonStyle} variant="contained" onClick={handlePhoneCall}>Dial 911</Button>
       <p></p>
       <Button onClick={handleSendFriendsEmail} type='submit' style={buttonStyle} variant="contained" >Reached Safety</Button>
       <p></p>
@@ -479,7 +474,7 @@ console.log(data)
         <List >
     {alertData.map(item => (
       <List>
-      <ListItem alignItems="flex-start" style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: '#29241C', color: 'white', width: '45vh'}}>
+      <ListItem alignItems="center" style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: '#29241C', color: 'white', width: '45vh'}}>
         <ListItemAvatar >
           <Avatar style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: 'white', color: '#29241C'}}>{item.username.charAt(0).toUpperCase()}</Avatar>
         </ListItemAvatar>
@@ -511,7 +506,7 @@ console.log(data)
       <TwitterTimelineEmbed
   sourceType="profile"
   screenName="WRPSToday"
-  options={{height: 200}}
+  options={{height: 300}}
 />
       </Grid>
       

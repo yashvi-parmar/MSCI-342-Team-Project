@@ -10,8 +10,7 @@ import Paper from "@material-ui/core/Paper";
 import { useSelector } from 'react-redux';
 import store from '../../store';
 const serverURL = "";
-const cardStyle={padding :'4vh', height: '100%', fontFamily: 'Noto Sans Lepcha', color: '#29241C', backgroundColor: '#6D8654', display: 'flex', flex:1, flexDirection: 'row'}
-
+const cardStyle={padding :'2vh', height: '100%', fontFamily: 'Noto Sans Lepcha', color: '#29241C', backgroundColor: '#6D8654', display: 'flex', flex:1, flexDirection: 'row'}
 function LetterAvatars({profile}) {
     return (
       <div>

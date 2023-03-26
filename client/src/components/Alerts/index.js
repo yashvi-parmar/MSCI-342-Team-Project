@@ -192,7 +192,7 @@ const callGetAlerts = async() => {
 
 
 return (
-  <Grid style={{backgroundColor: '#6D8654',fontFamily: 'Noto Sans Lepcha', padding: '10vh', color: 'white', height: '90vh', display: 'flex', flexDirection: 'row', flexBasis: '100%', flex: 1 , justifyContent: 'center'}}>
+  <Grid style={{backgroundColor: '#6D8654',fontFamily: 'Noto Sans Lepcha', padding: '10vh', color: 'white', height: '100vh', display: 'flex', flexDirection: 'row', flexBasis: '100%', flex: 1 , justifyContent: 'center'}}>
     <Paper elevation={10} style={cardStyle}> 
     <ThemeProvider theme={theme}> 
     <h1 style={{color: '#29241C', fontFamily: 'Oswald'}}>Submit a Warning</h1>

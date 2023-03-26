@@ -2,7 +2,7 @@ import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 
-import SignIn from "./signtest.js";
+import Home from "./hometest.js";
 
 let container = null;
 beforeEach(() => {
@@ -15,10 +15,10 @@ afterEach(() => {
   container.remove();
   container = null;
 });
-
+const name = 'User';
 it("renders", () => {
   act(() => {
-    render(<SignIn />, container);
+    render(<Home />, container);
   });
-  expect(container.textContent).toBe("Login");;
+  expect(container.textContent).toBe(` Welcome ${name}! `);
 });
