@@ -7,33 +7,41 @@ import NavbarTop from '../NavBarTop';
 import BarkButton from '../BarkButton';
 import '../Home/index.css'
 import Paper from "@material-ui/core/Paper";
+import { useSelector } from 'react-redux';
+import store from '../../store';
 const serverURL = "";
 const cardStyle={padding :'4vh', height: '100%', fontFamily: 'Noto Sans Lepcha', color: '#29241C', backgroundColor: '#6D8654', display: 'flex', flex:1, flexDirection: 'row'}
-function LetterAvatars() {
-  const first = 'Vedangi';
-  const last = 'Patel'
+
+function LetterAvatars({profile}) {
     return (
       <div>
-        <Avatar style={{fontFamily: 'Oswald', backgroundColor: '#EBD6C1', color: '#B08968', width: '35vh', height: '35vh', fontSize: '20vh'}}>{first[0]}{last[0]}</Avatar>
+        {profile.map(data => (
+          <div key={data.userID}>
+            <Avatar style={{fontFamily: 'Oswald', backgroundColor: '#EBD6C1', color: '#B08968', width: '35vh', height: '35vh', fontSize: '20vh'}}>{data.userName.charAt(0).toUpperCase()}</Avatar>
+          </div>
+        ))}
       </div>
     );
   }
 
-  function ProfileCont() {
-    return(
+  function ProfileCont({profile}) {
+    return (
       <Grid style={{color: 'white', marginLeft: '0vh', marginTop: '15vh'}}>
-        <h3>Name: Vedangi Patel</h3> 
-        <h3>Username: _ve_</h3> 
-        <h3>Email: vedangipatel@gmail.com</h3> 
-        <h3>Phone Number: 0123456789</h3> 
-        <h3>Current Location: insert current location</h3> 
+        {profile.map(data => (
+          <div key={data.userID}>
+            <h3>Name: {data.firstName} {data.lastName}</h3>
+            <h3>Username: {data.userName}</h3>
+            <h3>Email: {data.email}</h3>
+            <br/>
+          </div>
+        ))}
       </Grid>
-    )
+    );
   }
 
 function Profile() {
 
-  let[profile,setProfile]=React.useState({});
+  let[profile,setProfile]=React.useState([]);
 
   React.useEffect(() => {
     loadApiGetProfiles();
@@ -44,12 +52,8 @@ function Profile() {
   const loadApiGetProfiles = () => {
     callApiGetProfiles()
       .then(res => {
-        //console.log("callApiGetProfiles: ", res.string);
-        var parsed = JSON.parse(res.string);
-        console.log("callApiGetProfiles: ", parsed[0]);
-        setProfile(parsed[0]);
-        console.log("profile" + profile.firstName);
-        console.log("userID:" + profile.userID)
+        setProfile(res.obj);
+        console.log(profile);
       })
   }
   
@@ -58,7 +62,7 @@ function Profile() {
     console.log(url);
   
     let info = {
-      "userID": 1
+      "username": store.getState().user.userNameGlobal
     };
   
     const response = await fetch(url, {
@@ -84,10 +88,10 @@ function Profile() {
             <Grid> 
             <h1 style={{color:'white', fontFamily: 'Oswald', marginTop: '5vh'}}>YOUR PROFILE</h1>
             
-            <LetterAvatars />
+            <LetterAvatars profile={profile}/>
             </Grid>
             <Grid style={{marginLeft: '5vh'}}> 
-            <ProfileCont></ProfileCont>
+            <ProfileCont profile={profile}/>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}  >
           <Link href="/SignIn" style={{color: 'white'}}>
                       LOGOUT

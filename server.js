@@ -348,10 +348,10 @@ app.post('/api/getProfiles', (req, res) => {
 
 	let connection = mysql.createConnection(config);
 
-	userID = req.body.userID;
+	username = req.body.username;
 	  
-	let query = "SELECT * FROM Profiles WHERE userID= ?";
-	let data=[userID];
+	let query = "SELECT * FROM Profiles WHERE userName= ?";
+	let data=[username];
 	console.log(query);
 	console.log(data);       
  
@@ -362,7 +362,7 @@ app.post('/api/getProfiles', (req, res) => {
 		let string = JSON.stringify(results);
 		console.log(string);
 		let obj = JSON.parse(string);
-		res.send({ string });
+		res.send({ obj });
 	 });
 	 connection.end();
  });
