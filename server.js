@@ -373,7 +373,7 @@ app.post('/api/getProfiles', (req, res) => {
 
 	username = req.body.username
 	
-	let sql =  "SELECT * FROM Alerts ORDER BY timestamp DESC LIMIT 2 WHERE username= ?";
+	let sql =  "SELECT * FROM Alerts WHERE username = ? ORDER BY timestamp DESC LIMIT 2";
 	let data=[username];
 
 	console.log(sql);
@@ -386,7 +386,7 @@ app.post('/api/getProfiles', (req, res) => {
 		let string = JSON.stringify(results);
 		console.log(string);
 		let obj = JSON.parse(string);
-		res.send({ string });
+		res.send({ obj });
 	 });
 	 connection.end();
  });
@@ -413,5 +413,25 @@ app.post('/api/getProfiles', (req, res) => {
 	 connection.end();
  });
 
-app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
+ app.post('/api/getTop5Alerts', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+
+	let sql = 'SELECT * FROM Alerts ORDER BY timestamp DESC LIMIT 5'
+	console.log(sql);
+	let data = []
+
+	connection.query(sql, data, (error,data) => {
+		if (error) {
+			return res.json({ status : "ERROR", error});
+		}
+		let string = JSON.stringify(data);
+		let obj = JSON.parse(string);
+		res.send({ alertData: obj });
+	});
+	connection.end();
+});
+
+app.listen(port, () => console.log(`Listening on port ${port}`)); 
+//for the dev version
 //app.listen(port, '172.31.31.77'); //for the deployed version, specify the IP address of the server

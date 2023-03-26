@@ -130,6 +130,37 @@ const loadApiAddAlert = () => {
     })
 };
 
+let [unsafetext,setUnsafeText]=React.useState([]);
+
+React.useEffect(() => {
+  //loadUserSettings();
+  loadGetAlerts();
+ },[]);
+
+ const loadGetAlerts =() => {
+  callGetAlerts()
+    .then(res => {
+      setUnsafeText(res.alertData);
+      console.log(unsafetext);
+    });
+}
+
+const callGetAlerts = async() => {
+  
+  //console.log('t',url)
+  const url = serverURL + "/api/getTop5Alerts";
+  console.log(url)
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      //authorization: `Bearer ${this.state.token}`
+    },
+  });
+  const body =await response.json();
+  if (response.status !== 200) throw Error(body.message);
+  return body;
+}
 
 
  const callApiAddAlert= async () => {
@@ -205,7 +236,8 @@ return (
               multiline 
               label=' Alert Message' 
               helperText="Enter description of danger" 
-              variant="outlined"  
+              variant="outlined" 
+              style={{ width: '400px'}} 
               minRows={5} 
               value={alertMessage} 
               onChange = {handleAlertInput} 
@@ -244,13 +276,12 @@ return (
     <ThemeProvider theme={theme}> 
     <h1 style={{color: '#29241C', fontFamily: 'Oswald'}}>Alerts</h1>
     <p style={{fontSize: 10, marginTop: '-1vh'}}>Only displays latest 5 messages in your area. Please see map for more alerts.</p>
- 
-    <List sx={{ width: '100%', maxWidth: 460}}>
-    {alerts.map(item => (
+    <List sx={{ width: '100%', maxWidth: 460, bgcolor: 'background.paper' }}>
+    {unsafetext.map(item => (
       <List>
       <ListItem alignItems="flex-start" style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: '#29241C', color: 'white'}}>
         <ListItemAvatar >
-          <Avatar style={{fontFamily: 'Oswald', backgroundColor: '#EBD6C1', color: '#B08968'}}>{item.name}</Avatar>
+          <Avatar style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: 'white', color: '#29241C'}}>{item.username.charAt(0).toUpperCase()}</Avatar>
         </ListItemAvatar>
         <ListItemText
           primary={item.address}

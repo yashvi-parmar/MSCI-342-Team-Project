@@ -132,7 +132,7 @@ const Home = () => {
   const loadGetYourAlerts =() => {
     callGetYourAlerts()
       .then(res => {
-        setAlertData(res.string);
+        setAlertData(res.obj);
         console.log("data: " + alertData);
   });
   }
@@ -414,12 +414,11 @@ console.log(data)
         <Grid style={{backgroundColor: 'white', padding: '2vh', color: '#29241C',  marginRight:'2vh', height: '100%'}}> 
         <h1 style={{justifyContent: 'center', alignContent: 'center', fontFamily: 'Oswald', fontSize:  '3vh', marginTop: '-1vh'}}>Your Alerts</h1>
         <List >
-    {alerts.map(item => (
+    {alertData.map(item => (
       <List>
       <ListItem alignItems="center" style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: '#29241C', color: 'white', width: '45vh'}}>
         <ListItemAvatar >
-
-          <Avatar style={{fontFamily: 'Oswald', backgroundColor: '#EBD6C1', color: '#B08968'}}>{item.name}</Avatar>
+          <Avatar style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: 'white', color: '#29241C'}}>{item.username.charAt(0).toUpperCase()}</Avatar>
         </ListItemAvatar>
         <ListItemText
           primary={item.address}
