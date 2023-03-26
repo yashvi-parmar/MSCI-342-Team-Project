@@ -135,7 +135,7 @@ const AddEmergencyContactForm = () => {
                     <div><em style={{color:'red'}}>*Please enter your emergency contact's phone number!</em></div>) : (<div></div>)
                   }
                 <br></br>
-                <Button type='submit' variant="contained"  fullWidth  onClick={handleSubmissionCheck} >ADD EMERGENCY CONTACT</Button>
+                <Button type='submit' variant="contained" style={buttonStyle} fullWidth  onClick={handleSubmissionCheck} >ADD EMERGENCY CONTACT</Button>
                 </form>
              </FormControl> 
         </Grid>
@@ -332,10 +332,6 @@ const handleSendFriendsEmail = () => {
 }
 
 
-const handlePhoneCall = () => {
-  window.location.href = 'tel:+14169390369';
-}
-
 const [emergencyContacts, setEmergencyContacts] = React.useState([]);
 
 
@@ -371,6 +367,11 @@ const callGetEmergencyContacts = async() => {
   if (response.status !== 200) throw Error(body.message);
   return body;
 }
+
+const handlePhoneCall = () => {
+  window.location.href = 'tel:+14169390369';
+}
+
 
 
 const weather1 =((data.currentConditions));
