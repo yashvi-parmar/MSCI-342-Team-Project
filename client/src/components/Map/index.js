@@ -359,7 +359,7 @@ const callApiAddSavedDestination = async () => {
   
   let AddressInfo = {
     "address": destination,
-    "user": 1,
+    "userName":  store.getState().user.userNameGlobal
   };
 
   console.log(AddressInfo);
@@ -401,7 +401,7 @@ const callApiGetSavedDestinations = async() => {
   console.log(url);
 
   let info = {
-    "user": 1
+    "userName": store.getState().user.userNameGlobal
   };
 
   const response = await fetch(url, {
@@ -518,7 +518,7 @@ const callAPIGetAuthLocations = async() => {
     />
     </Autocomplete>
     <p></p>
-    <Button type='submit' variant="contained" style={buttonStyle}>Go</Button>
+    <Button type='submit' id = "Go" variant="contained" style={buttonStyle}>Go</Button>
     <Button type='submit' style={buttonStyle} variant="contained" onClick={reloadPage} >Reset Map</Button>
   </form>
   </FormControl>
