@@ -261,35 +261,23 @@ const handleChangeEmergencyOptions = (event) => {
 };
 
 const [openFakeCall, setOpenFakeCall]=React.useState(false);
-const [showPhonePlay, setShowPhonePlay] = React.useState(false);
-const [showPhonePause, setShowPhonePause] = React.useState(false);
-const [counter, setCounter]=React.useState(0);
 
 const handleClickOpenPhoneCall = () => {
   setOpenFakeCall(true);
-  setShowPhonePlay(true);
 };
 
 const handleClosePhoneCall = () => {
   setOpenFakeCall(false);
 };
 
-let audio = null;
+let audio = new Audio(fakePhoneCall);
 
 const playPhoneCall = () => {
-  audio = new Audio(fakePhoneCall);
   audio.play();
-  setShowPhonePlay(false);
-  setShowPhonePause(true);
+
 }
 
-const stopPhoneCall = () => {
-  if (audio !== null) {
-    audio.pause();
-    setShowPhonePlay(true);
-    setShowPhonePause(false);
-  }
-}
+
 let [friendsEmails, setFriendsEmails] = React.useState([]);
 React.useEffect(() => {
   getFriendsEmails();
@@ -450,13 +438,7 @@ console.log(data)
       <Dialog open={openFakeCall} onClose={handleClosePhoneCall}>
         <DialogTitle>Fake Phone Call</DialogTitle>
         <DialogContent>
-        {showPhonePlay && (
             <Button type='submit' variant="contained" onClick = {playPhoneCall} >Play Audio</Button>
-          )}
-           {showPhonePause && (
-            <Button type='submit' variant="contained" onClick = {stopPhoneCall} >Stop Audio</Button>
-          )}
-
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClosePhoneCall}>Cancel</Button>
