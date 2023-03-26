@@ -2,7 +2,7 @@ import { createReducer } from '@reduxjs/toolkit';
 import { SET_USERNAME_GLOBAL } from '../actions/user';
 
 const initialState = {
-  userNameGlobal: localStorage.getItem('userNameGlobal') || 'eheh'
+  userNameGlobal: localStorage.getItem('userNameGlobal') || 'user'
 };
 
 const userReducer = createReducer(initialState, (builder) => {

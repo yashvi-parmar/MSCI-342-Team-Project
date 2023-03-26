@@ -130,7 +130,9 @@ const dispatch = useDispatch();
     console.log("hello there! " + localUserName);
   }, [localUserName]);
 
-
+  useEffect(() => {
+    dispatch(setUsernameGlobal(''));
+  },[]);
 
   const callApiSearchUser = async () => {
     const url = serverURL + "/api/SearchUser";

@@ -11,6 +11,10 @@ import { BrowserRouter,Switch,Route} from 'react-router-dom';
 import Navbar from '../NavBar';
 import { useHistory } from 'react-router-dom';
 import {createTheme, ThemeProvider, styled} from "@material-ui/core/styles";
+import { Provider } from 'react-redux';
+import store from '../../store/index';
+import { setUsernameGlobal } from '../../actions/user';
+import { useSelector, useDispatch } from 'react-redux';
 const cardStyle={padding :90, height:'95%',width:280,  color: '#29241C', backgroundColor: '#EDECED'}
 const buttonStyle={margin:'8px 0', backgroundColor: '#6D8654', color: '#29241C', marginTop: '5vh', borderRadius: 35, height: '50px'}
 const textStyle={marginBottom: '2vh',  color: 'black', width: '280px'}
@@ -111,6 +115,8 @@ const theme = createTheme({
     }
   };
 
+  const dispatch = useDispatch();
+
   const loadApiCheckUser = () => {
     callApiCheckUser()
       .then((res) => {
@@ -119,6 +125,8 @@ const theme = createTheme({
           console.log(parsed[0]);
           if(parsed == ""){
             loadApiAddProfile();
+            dispatch(setUsernameGlobal(username));
+            console.log("userNameGlobal in store:", store.getState().user.userNameGlobal);
             setPasswordReenter('');
             setSubmissionValidation(true);
             setSubmissionCheck(false);

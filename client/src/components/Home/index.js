@@ -36,14 +36,9 @@ import Select from '@mui/material/Select';
 import { useSelector } from 'react-redux';
 import store from '../../store';
 
-//Dev mode
-//const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046"; //enable for dev mode
-//Deployment mode instructions
+
 const serverURL = ""; //enable for deployed mode; Change PORT to the port number given to you;
-//To find your port number: 
-//ssh to ov-research-4.uwaterloo.ca and run the following command: 
-//env | grep "PORT"
-//copy the number only and paste it in the serverURL in place of PORT, e.g.: const serverURL = "http://ov-research-4.uwaterloo.ca:3000";
+
 
 
   const buttonStyle={margin:'8px 0', marginTop: '-2vh', width: '30vh', height: '6vh', backgroundColor: '#29241C',  marginRight: '10px', marginBottom: '2vh', color: 'white', fontFamily: 'Oswald', letterSpacing: '0.05rem'} 
@@ -86,10 +81,41 @@ const AddEmergencyContactForm = () => {
       setPhoneNumber('');
       setSubmissionValidation(true);
       setSubmissionCheck(false);
+      loadApiAddEmergencyContact();
     }
   };
 
- 
+  const loadApiAddEmergencyContact = () => {
+    callApiAddEmergencyContact()
+      .then((res) => {
+        console.log(res.message);
+      })
+  };
+  
+   const callApiAddEmergencyContact= async () => {
+    const url = serverURL + '/api/addEmergencyContacts';
+  
+    let FriendInfo = { 
+      "username": store.getState().user.userNameGlobal,
+      "contactName" : name,
+      "contactPhoneNumber" : phoneNumber
+      
+    };
+  
+    console.log(FriendInfo);
+  
+    console.log(FriendInfo);
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(FriendInfo)
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
   
 
   return (
@@ -108,8 +134,8 @@ const AddEmergencyContactForm = () => {
                     phoneNumber === '' && submissionCheck ===true ? (
                     <div><em style={{color:'red'}}>*Please enter your emergency contact's phone number!</em></div>) : (<div></div>)
                   }
-                
-                <Button type='submit' variant="contained"  fullWidth  onClick={handleSubmissionCheck} >ADD EMERGENCY CONTACT</Button>
+                <br></br>
+                <Button type='submit' variant="contained" style={buttonStyle} fullWidth  onClick={handleSubmissionCheck} >ADD EMERGENCY CONTACT</Button>
                 </form>
              </FormControl> 
         </Grid>
@@ -123,15 +149,45 @@ const Home = () => {
   const REACT_APP_ICON_URL = 'https://openweathermap.org/img/w'
   const [lat, setLat] = useState([]);
   const [long, setLong] = useState([]);
-
-
   const [name, setName] = React.useState('');
   const [open, setOpen] = React.useState(false);
   const[isLoading, setIsLoading]=useState(true);
- 
   const [data, setData] = useState([]);
-
   const userNameGlobal = useSelector((state) => state.user.userNameGlobal);
+  const [alertData,setAlertData] = React.useState([]);
+
+  React.useEffect(() => {
+    loadGetYourAlerts();
+   },[]);
+  
+  const loadGetYourAlerts =() => {
+    callGetYourAlerts()
+      .then(res => {
+        setAlertData(res.obj);
+        console.log("data: " + alertData);
+  });
+  }
+  const callGetYourAlerts = async() => {
+    const url = serverURL + "/api/getYourAlerts";
+    console.log(url)
+    let AlertInfo = {
+      "username": store.getState().user.userNameGlobal,
+    };
+  
+    console.log(AlertInfo);
+  
+    console.log(AlertInfo);
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(AlertInfo)
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
 
   useEffect(() => {
     console.log('userNameGlobal in HomeComponent:', store.getState().user.userNameGlobal);
@@ -185,8 +241,7 @@ const directionsCallback = (response) => {
   }
 };
 
-
-const names = 'User'
+const names = userNameGlobal
 const [emergencyContactsOption,setEmergencyContactsOption]=React.useState("");
 const [showTextField, setShowTextField] = useState(false);
 const [showEmergencyContact,setShowEmergencyContact]= useState(false);
@@ -205,41 +260,24 @@ const handleChangeEmergencyOptions = (event) => {
   setShowEmergencyContact(event.target.value === "View emergency contacts");
 };
 
-const emergencyContacts = [
-  {name: "Joanna Hayburt", phoneNumber: "647-724-3423"}, 
-  {name: "Pam Albert", phoneNumber: "647-711-3111"}, 
-]
-
 const [openFakeCall, setOpenFakeCall]=React.useState(false);
-const [showPhonePlay, setShowPhonePlay] = React.useState(false);
-const [showPhonePause, setShowPhonePause] = React.useState(false);
-const [counter, setCounter]=React.useState(0);
 
 const handleClickOpenPhoneCall = () => {
   setOpenFakeCall(true);
-  setShowPhonePlay(true);
 };
 
 const handleClosePhoneCall = () => {
   setOpenFakeCall(false);
 };
 
-let audio = null;
+let audio = new Audio(fakePhoneCall);
 
 const playPhoneCall = () => {
-  audio = new Audio(fakePhoneCall);
   audio.play();
-  setShowPhonePlay(false);
-  setShowPhonePause(true);
+
 }
 
-const stopPhoneCall = () => {
-  if (audio !== null) {
-    audio.pause();
-    setShowPhonePlay(true);
-    setShowPhonePause(false);
-  }
-}
+
 let [friendsEmails, setFriendsEmails] = React.useState([]);
 React.useEffect(() => {
   getFriendsEmails();
@@ -257,7 +295,7 @@ const callAPIGetFriendsEmails = async() => {
   console.log(url);
 
   let userData = {
-    "userID": 2
+    "username": store.getState().user.userNameGlobal
   }
 
   const response = await fetch(url, {
@@ -281,14 +319,47 @@ const handleSendFriendsEmail = () => {
   window.open(mailtoURL);
 }
 
+
+const [emergencyContacts, setEmergencyContacts] = React.useState([]);
+
+
+React.useEffect(() => {
+  loadGetEmergencyContacts();
+ },[showEmergencyContact]);
+
+const loadGetEmergencyContacts =() => {
+  callGetEmergencyContacts()
+    .then(res => {
+      setEmergencyContacts(res.obj);
+      console.log("friends:" + emergencyContacts)
+});
+}
+const callGetEmergencyContacts = async() => {
+  const url = serverURL + "/api/getEmergencyContacts";
+  console.log(url)
+  let contactInfo = {
+    "username": store.getState().user.userNameGlobal,
+  };
+
+  console.log(contactInfo);
+
+  console.log(contactInfo);
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(contactInfo)
+  });
+  const body = await response.json();
+  if (response.status !== 200) throw Error(body.message);
+  return body;
+}
+
 const handlePhoneCall = () => {
   window.location.href = 'tel:+16475515213';
 }
 
-const alerts = [
-  {id: 1, lat: 43.472120, lng:-80.543550, address: 'University of Waterloo', timestamp: "2023-01-10", alert: "avoid area around geese", name: 'B'},
-  {id: 1, lat: 43.472120, lng:-80.543550, address: 'University of Waterloo', timestamp: "2023-01-10", alert: "avoid area around geese", name: 'B'}
-]
 
 
 const weather1 =((data.currentConditions));
@@ -349,9 +420,9 @@ console.log(data)
           {showEmergencyContact && 
             emergencyContacts.map(data => {
               return (
-                <div key={data.id}>
-                  <li>Name: {data.name}</li>
-                  <li>Phone Number: {data.phoneNumber}</li>
+                <div key={data.entryID}>
+                  <li>Name: {data.contactName}</li>
+                  <li>Phone Number: {data.contactPhoneNumber}</li>
                   <br/>
                 </div>
               );
@@ -367,13 +438,7 @@ console.log(data)
       <Dialog open={openFakeCall} onClose={handleClosePhoneCall}>
         <DialogTitle>Fake Phone Call</DialogTitle>
         <DialogContent>
-        {showPhonePlay && (
             <Button type='submit' variant="contained" onClick = {playPhoneCall} >Play Audio</Button>
-          )}
-           {showPhonePause && (
-            <Button type='submit' variant="contained" onClick = {stopPhoneCall} >Stop Audio</Button>
-          )}
-
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClosePhoneCall}>Cancel</Button>
@@ -390,12 +455,11 @@ console.log(data)
         <Grid style={{backgroundColor: 'white', padding: '2vh', color: '#29241C',  marginRight:'2vh', height: '100%'}}> 
         <h1 style={{justifyContent: 'center', alignContent: 'center', fontFamily: 'Oswald', fontSize:  '3vh', marginTop: '-1vh'}}>Your Alerts</h1>
         <List >
-    {alerts.map(item => (
+    {alertData.map(item => (
       <List>
       <ListItem alignItems="center" style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: '#29241C', color: 'white', width: '45vh'}}>
         <ListItemAvatar >
-
-          <Avatar style={{fontFamily: 'Oswald', backgroundColor: '#EBD6C1', color: '#B08968'}}>{item.name}</Avatar>
+          <Avatar style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: 'white', color: '#29241C'}}>{item.username.charAt(0).toUpperCase()}</Avatar>
         </ListItemAvatar>
         <ListItemText
           primary={item.address}

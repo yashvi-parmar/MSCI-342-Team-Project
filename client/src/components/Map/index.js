@@ -84,13 +84,19 @@ function MapFxn() {
   const [lng, setLng] = useState(null);
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
+    const watchId = navigator.geolocation.watchPosition(
       (position) => {
         setLat(position.coords.latitude);
         setLng(position.coords.longitude);
         setOrigin(`${position.coords.latitude}, ${position.coords.longitude}`);
       },
+      (error) => {
+        console.log(error);
+      },
+      { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
     );
+
+    return () => navigator.geolocation.clearWatch(watchId);
   }, []);
 
   const handleLoad = () => {
@@ -231,9 +237,7 @@ function MapFxn() {
     return body;
   }
 
-
   React.useEffect(() => {
-    //loadUserSettings();
     loadGetSafeLocations();
    },[]);
 
@@ -246,14 +250,12 @@ function MapFxn() {
   }
   const callGetSafeLocations = async() => {
     
-    //console.log('t',url)
     const url = serverURL + "/api/getSafeLocations";
     console.log(url)
     const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        //authorization: `Bearer ${this.state.token}`
       },
     });
     const body =await response.json();
@@ -275,27 +277,26 @@ const loadGetFriends =() => {
 }
 const callGetFriends = async() => {
   
-  //console.log('t',url)
   const url = serverURL + "/api/GetFriends";
-  console.log(url)
+  let FriendInfo = { 
+    "username": store.getState().user.userNameGlobal,
+  };
+
+  console.log(FriendInfo);
+
+  console.log(FriendInfo);
   const response = await fetch(url, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
-      //authorization: `Bearer ${this.state.token}`
+      "Content-Type": "application/json"
     },
+    body: JSON.stringify(FriendInfo)
   });
   const body =await response.json();
   if (response.status !== 200) throw Error(body.message);
   return body;
 }
 
-/** 
-const friends = [
-  {id: 1, lat: 43.472120, lng: -80.553550, friendName: "Margo"}, 
-  {id: 1, lat: 43.473130, lng:-80.546550, friendName: "Robbie"}
-]
-*/
 const [showed, setShowed] = useState(false);
 const [showedF, setShowedF] = useState(false);
 const [showedT, setShowedT] = useState(false);
@@ -346,63 +347,6 @@ const handleCloseSubmit = () => {
 
 const [destinationForm, setDestinationForm] = useState('');
 
-  const [open, setOpen] = React.useState(false);
-  const [emergencyContactsOption,setEmergencyContactsOption]=React.useState("");
-  const [showTextField, setShowTextField] = useState(false);
-  const [showEmergencyContact,setShowEmergencyContact]= useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleChangeEmergencyOptions = (event) => {
-    setEmergencyContactsOption(event.target.value);
-    setShowTextField(event.target.value === "Add emergency contacts");
-    setShowEmergencyContact(event.target.value === "View emergency contacts");
-  };
-
-  const emergencyContacts = [
-    {name: "Joanna Hayburt", phoneNumber: "647-724-3423"}, 
-    {name: "Pam Albert", phoneNumber: "647-711-3111"}, 
-  ]
-
-
-  const [openFakeCall, setOpenFakeCall]=React.useState(false);
-  const [showPhonePlay, setShowPhonePlay] = React.useState(false);
-  const [showPhonePause, setShowPhonePause] = React.useState(false);
-
-  const handleClickOpenPhoneCall = () => {
-    setOpenFakeCall(true);
-    setShowPhonePlay(true);
-  };
-
-  const handleClosePhoneCall = () => {
-    setOpenFakeCall(false);
-  };
-
-  let audio = null;
-
-  const playPhoneCall = () => {
-    audio = new Audio(fakePhoneCall);
-    audio.play();
-    setShowPhonePlay(false);
-    setShowPhonePause(true);
-  }
-  
-  const stopPhoneCall = () => {
-    if (audio !== null) {
-      audio.pause();
-      setShowPhonePlay(true);
-      setShowPhonePause(false);
-    }
-  }
-
-
-
 const loadApiAddSavedDestination = () => {
   callApiAddSavedDestination()
     .then((res) => {
@@ -444,8 +388,6 @@ React.useEffect(() => {
 React.useEffect(() => {
   console.log(savedDestinations);
 }, [savedDestinations]);
-
-
 
 const getSavedDestinations = () => {
   callApiGetSavedDestinations()
@@ -492,7 +434,7 @@ const callAPIGetFriendsEmails = async() => {
   console.log(url);
 
   let userData = {
-    "userID": 2
+    "username": store.getState().user.userNameGlobal
   }
 
   const response = await fetch(url, {
@@ -506,14 +448,6 @@ const callAPIGetFriendsEmails = async() => {
   if (response.status !== 200) throw Error(body.message);
   console.log(body);
   return body;
-}
-
-const handleSendFriendsEmail = () => {
-  const allFriendEmails = friendsEmails.map((friendsEmails) => friendsEmails.email);
-  const subject = "Made It To My Destination Safely!";
-  const body = "I love BARK!";
-  const mailtoURL = `mailto:?bcc=${encodeURIComponent(allFriendEmails)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  window.open(mailtoURL);
 }
 
 let [authPlaces, setAuthPlaces] = React.useState([]);
@@ -575,9 +509,12 @@ const callAPIGetAuthLocations = async() => {
       id="destination"
       type="text"
       placeholder="Destination"
-      style={{ width: '400px', backgroundColor: 'white'}}
+      style={{ width: '400px', backgroundColor: 'white', padding: '10px', borderRadius: '5px' }}
       value={destination}
       onChange={(e) => setDestination(e.target.value)}
+      InputProps={{
+        style: { borderBottom: '2px solid #29241C' }
+      }}
     />
     </Autocomplete>
     <p></p>
@@ -622,7 +559,13 @@ const callAPIGetAuthLocations = async() => {
   <GoogleMap
     mapContainerStyle={containerStyle}
     center={{lat: lat, lng: lng}}
-    zoom={16}
+    bounds={
+      {
+        nw: { lat: lat + 0.001, lng: lng - 0.001 },
+        se: { lat: lat - 0.001, lng: lng + 0.001 },
+      }
+    }
+    zoom={17}
   >
 
 
@@ -699,14 +642,9 @@ const callAPIGetAuthLocations = async() => {
         <Marker  position={{lat: lat, lng: lng}}></Marker>
         {directions !== null && <DirectionsRenderer directions={directions} provideRouteAlternatives ={true} />}
       </GoogleMap>
-      
-                
-            
-      
-   
-    </LoadScript> 
+
+ </LoadScript> 
     <Grid style={{paddingTop: '1vh', display: 'flex'}}> 
-    
         <h5 style={{marginLeft: '0px', marginTop: '10px', color: 'white'}} onClick={()=> setShowed(!showed)}>{showed ? 'Show' : 'Hide' } Marked Locations</h5> 
         <Switch {...label} color="success" style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowed(!showed)}>{showed ? 'Show' : 'Hide' }</Switch>
         <p></p>
@@ -715,141 +653,9 @@ const callAPIGetAuthLocations = async() => {
         <p></p>
         <h5 style={{marginLeft: '0px', marginTop: '10px', color: 'white'}} onClick={()=> setShowedT(!showedT)}>{showedT ? 'Show' : 'Hide' } Traffic</h5>
         <Switch {...label} color="success" style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowedT(!showedT)}>{showedT ? 'Show' : 'Hide' } Traffic</Switch>
-      </Grid>
-     
+      </Grid>   
       <p></p>
-      <Grid container={2} display='flex'> 
-      <Button type='submit' style={buttonStyle} variant="contained" onClick={handleClickOpen}>Emergency Contacts</Button>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Emergency Contacts</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            What would you like to do?
-          </DialogContentText>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={emergencyContactsOption}
-            label="Emergency Contact"
-            autoWidth
-            onChange={handleChangeEmergencyOptions}
-          >
-            <MenuItem value={"View emergency contacts"}> View emergency contacts </MenuItem>
-            <br></br>
-            <MenuItem value={"Add emergency contacts"}> Add emergency contacts </MenuItem>
-          </Select>
-          {showTextField && (
-            <AddEmergencyContactForm/>
-          )}
-          {showEmergencyContact && 
-            emergencyContacts.map(data => {
-              return (
-                <div key={data.id}>
-                  <li>Name: {data.name}</li>
-                  <li>Phone Number: {data.phoneNumber}</li>
-                  <br/>
-                </div>
-              );
-            })
-          }
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-        </DialogActions>
-      </Dialog>
-      <p></p>
-      <Button type='submit' style={buttonStyle} variant="contained" onClick = {handleClickOpenPhoneCall} >Fake Phone Call</Button>
-      <Dialog open={openFakeCall} onClose={handleClosePhoneCall}>
-        <DialogTitle>Fake Phone Call</DialogTitle>
-        <DialogContent>
-        {showPhonePlay && (
-            <Button type='submit' style={buttonStyle} variant="contained" onClick = {playPhoneCall} >Play Audio</Button>
-          )}
-           {showPhonePause && (
-            <Button type='submit' style={buttonStyle} variant="contained" onClick = {stopPhoneCall} >Stop Audio</Button>
-          )}
-        
-          <DialogContentText>
-            Transcript of Phone Call:
-          </DialogContentText>
-
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClosePhoneCall}>Cancel</Button>
-        </DialogActions>
-      </Dialog>
-      </Grid> 
-      <Grid container={2} display='flex'> 
-    
-      <p></p>
-      <Button type='submit' style={buttonStyle} variant="contained" >Dial 911</Button>
-      <Button onClick={handleSendFriendsEmail} type='submit' style={buttonStyle} variant="contained" >Reached Safety</Button>
-       </Grid>
     </Grid>
     </grid>
-
-  );
-
-}
-
-const AddEmergencyContactForm = () => {
-  const [name, setName] = React.useState('');
-  const [phoneNumber, setPhoneNumber] = React.useState('');
-  const [submissionCheck, setSubmissionCheck]=React.useState(false)
-  const [submissionValidation,setSubmissionValidation] = React.useState(false);
-
-  const handlePhoneNumber = (phoneNumber) => {
-    setPhoneNumber(phoneNumber);
-  };
-
-  const handlePhoneNumberInput = (event) => {
-    handlePhoneNumber(event.target.value)
- }
- 
-  const handleName = (name) => {
-   setName(name);
- };
-
- const handleNameInput = (event) => {
-    handleName(event.target.value)
- }
-  
-  
-  
- const handleSubmissionCheck = () =>{
-    setSubmissionCheck(true);
-  }
-  const handleSubmissionValidation = (event) => {
-    event.preventDefault();
-    if(phoneNumber !== '' && name !==''){
-      setName('');
-      setPhoneNumber('');
-      setSubmissionValidation(true);
-      setSubmissionCheck(false);
-    }
-  };
-
-
-  return (
-      <Grid>
-                <FormControl>
-           <form autoComplete='off' onSubmit={handleSubmissionValidation}>
-              <br></br>
-                <TextField style={textStyle} label='Name' placeholder='Enter name' variant="outlined" value={name} onChange = {handleNameInput} />
-                  {
-                    name === '' && submissionCheck ===true ? (
-                    <div><em style={{color:'red'}}>*Please enter your emergency contact's name!</em></div>) : (<div></div>)
-                  }
-  
-                <TextField style={textStyle} label='Phonenumber' placeholder='Enter phone number' variant="outlined" value = {phoneNumber} onChange={handlePhoneNumberInput} fullWidth />
-                {
-                    phoneNumber === '' && submissionCheck ===true ? (
-                    <div><em style={{color:'red'}}>*Please enter your emergency contact's phone number!</em></div>) : (<div></div>)
-                  }
-                
-                <Button type='submit' variant="contained" style={buttonStyle} fullWidth  onClick={handleSubmissionCheck} >ADD EMERGENCY CONTACT</Button>
-                </form>
-             </FormControl> 
-        </Grid>
   );
 }

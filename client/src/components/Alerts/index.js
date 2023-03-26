@@ -17,7 +17,8 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import '../Home/index.css'
-//const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
+import { useSelector } from 'react-redux';
+import store from '../../store';
 const serverURL = "";
 
 
@@ -34,13 +35,6 @@ const opacityValue = 0.95;
 const buttonStyle={ backgroundColor: '#29241C', color: 'white', fontFamily: 'Oswald'}
 
 
- //enable for dev mode
- //enable for dev mode
-//Deployment mode instructions
-//To find your port number:
-//ssh to ov-research-4.uwaterloo.ca and run the following command:
-//env | grep "PORT"
-//copy the number only and paste it in the serverURL in place of PORT, e.g.: const serverURL = "http://ov-research-4.uwaterloo.ca:3000";
  
 const theme = createTheme({
  palette: {
@@ -63,6 +57,12 @@ const MainGridContainer = styled(Grid)(({ theme }) => ({
 
 const Alerts = (props) => {
  
+  const userNameGlobal = useSelector((state) => state.user.userNameGlobal);
+
+  React.useEffect(() => {
+    console.log('userNameGlobal in MapComponent:', store.getState().user.userNameGlobal);
+  }, [userNameGlobal]);
+
 
  const [alertLocation, setAlertLocation] = React.useState('');
  const [alertMessage, setAlertMessage] = React.useState('');
@@ -87,6 +87,7 @@ const handlePlaceSelect = (place) => {
   setLng(place.geometry.location.lng());
   console.log(lat);
   console.log(lng);
+  console.log(destination);
 };
 
 
@@ -109,7 +110,8 @@ const handleSubmissionValidation = (event) => {
     let data = {
       alertLocation: alertLocation,
       alertMessage: alertMessage,
-      userID: 1,
+      username: userNameGlobal,
+      address: destination
     }
     setSubmissionData([destination,alertMessage])
     setAlertData(data);
@@ -128,6 +130,37 @@ const loadApiAddAlert = () => {
     })
 };
 
+let [unsafetext,setUnsafeText]=React.useState([]);
+
+React.useEffect(() => {
+  //loadUserSettings();
+  loadGetAlerts();
+ },[AlertData]);
+
+ const loadGetAlerts =() => {
+  callGetAlerts()
+    .then(res => {
+      setUnsafeText(res.alertData);
+      console.log(unsafetext);
+    });
+}
+
+const callGetAlerts = async() => {
+  
+  //console.log('t',url)
+  const url = serverURL + "/api/getTop5Alerts";
+  console.log(url)
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      //authorization: `Bearer ${this.state.token}`
+    },
+  });
+  const body =await response.json();
+  if (response.status !== 200) throw Error(body.message);
+  return body;
+}
 
 
  const callApiAddAlert= async () => {
@@ -137,7 +170,9 @@ const loadApiAddAlert = () => {
     "lat": lat,
     "lng" : lng,
     "alertMessage": alertMessage,
-    "userID": userID
+    "username": store.getState().user.userNameGlobal,
+    "address" : destination
+
   };
 
   console.log(AlertInfo);
@@ -154,14 +189,6 @@ const loadApiAddAlert = () => {
   if (response.status !== 200) throw Error(body.message);
   return body;
 }
-
-
-const alerts = [
-  {id: 1, lat: 43.472120, lng:-80.543550, address: 'University of Waterloo', timestamp: "2023-01-10", alert: "avoid area around geese", name: 'YP'}, 
-
-  {id: 1, lat: 43.472120, lng:-80.643550,address: 'University of Waterloo', timestamp: "2023-02-10", alert: "avoid area around ml ", name: 'LS'}, 
-
-]
 
 
 return (
@@ -201,7 +228,8 @@ return (
               multiline 
               label=' Alert Message' 
               helperText="Enter description of danger" 
-              variant="outlined"  
+              variant="outlined" 
+              style={{ width: '400px'}} 
               minRows={5} 
               value={alertMessage} 
               onChange = {handleAlertInput} 
@@ -239,14 +267,14 @@ return (
    <Paper elevation={10} style={cardStyle}> 
     <ThemeProvider theme={theme}> 
     <h1 style={{color: '#29241C', fontFamily: 'Oswald'}}>Alerts</h1>
-    <p style={{fontSize: 10, marginTop: '-1vh'}}>Only displays latest 5 messages in your area. Please see map for more alerts.</p>
+    <p style={{fontSize: 10, marginTop: '-1vh'}}>Only displays latest 4 messages in your area. Please see map for more alerts.</p>
  
-    <List sx={{ width: '100%', maxWidth: 460}}>
-    {alerts.map(item => (
+    <List sx={{ width: '100%', maxWidth: 460, bgcolor: 'background.paper' }}>
+    {unsafetext.map(item => (
       <List>
       <ListItem alignItems="flex-start" style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: '#29241C', color: 'white'}}>
         <ListItemAvatar >
-          <Avatar style={{fontFamily: 'Oswald', backgroundColor: '#EBD6C1', color: '#B08968'}}>{item.name}</Avatar>
+          <Avatar style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: 'white', color: '#29241C'}}>{item.username.charAt(0).toUpperCase()}</Avatar>
         </ListItemAvatar>
         <ListItemText
           primary={item.address}
