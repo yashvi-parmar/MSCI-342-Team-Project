@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-describe('Smoke Test', () => {
-  it('can view the home page', () => {
-    cy.visit('/');
-    cy.contains('Welcome!');
-  });
-});
-=======
-
 describe('Smoke Test', () => {
   it('can view the home page', () => {
     cy.visit('/');
@@ -20,5 +11,3 @@ describe('Node-React app', () => {
   })
 
 })
-
->>>>>>> 4e3bb1a432a42209c50881791fcf5d83555804cd

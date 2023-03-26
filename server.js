@@ -152,10 +152,10 @@ app.post('/api/addAlert', (req, res) => {
 	let connection = mysql.createConnection(config);
 
 	address = req.body.address
-	user = req.body.user
+	userName = req.body.userName
 	  
-	let sql = "INSERT INTO savedDestinations (address, user) VALUES (?,?)"
-	let data=[address, user];
+	let sql = "INSERT INTO savedDestinations (address, userName) VALUES (?,?)"
+	let data=[address, userName];
 	console.log(sql);
 	console.log(data);       
  
@@ -172,9 +172,9 @@ app.post('/api/addAlert', (req, res) => {
 
 	let connection = mysql.createConnection(config);
 
-	user = req.body.user
+	userName = req.body.userName
 
-	let sql = "SELECT * FROM savedDestinations WHERE user = " + user
+	let sql = "SELECT * FROM savedDestinations WHERE username = '" + userName +"'"
 	console.log(sql);
 	let data = []
 
@@ -217,7 +217,7 @@ app.post('/api/UpdateLastSeenLocated', (req, res) => {
 
 	username = req.body.username
 
-	let sql = "SELECT * FROM Profiles WHERE userName = ?";
+	let sql = "SELECT * FROM Profiles WHERE userName = '"+username+"'";
 	let data = [username]
 	console.log(sql);
 	console.log(data);
@@ -326,7 +326,7 @@ app.post('/api/getFriendsEmails', (req, res) => {
 	let connection = mysql.createConnection(config);
 
 	username = req.body.username
-	let sql = "SELECT p.email FROM Friends f INNER JOIN Profiles p ON f.friendUsername = p.userName WHERE f.username = " + username;
+	let sql = "SELECT p.email FROM Friends f INNER JOIN Profiles p ON f.friendUsername = p.userName WHERE f.username = '" + username + "'";
 
 	let data = [];
 	console.log(data);
@@ -348,10 +348,10 @@ app.post('/api/getProfiles', (req, res) => {
 
 	let connection = mysql.createConnection(config);
 
-	userID = req.body.userID;
+	username = req.body.username;
 	  
-	let query = "SELECT * FROM Profiles WHERE userID= ?";
-	let data=[userID];
+	let query = "SELECT * FROM Profiles WHERE userName= ?";
+	let data=[username];
 	console.log(query);
 	console.log(data);       
  
@@ -362,7 +362,7 @@ app.post('/api/getProfiles', (req, res) => {
 		let string = JSON.stringify(results);
 		console.log(string);
 		let obj = JSON.parse(string);
-		res.send({ string });
+		res.send({ obj });
 	 });
 	 connection.end();
  });
@@ -417,7 +417,7 @@ app.post('/api/getProfiles', (req, res) => {
 
 	let connection = mysql.createConnection(config);
 
-	let sql = 'SELECT * FROM Alerts ORDER BY timestamp DESC LIMIT 5'
+	let sql = 'SELECT * FROM Alerts ORDER BY timestamp DESC LIMIT 4'
 	console.log(sql);
 	let data = []
 
@@ -431,6 +431,52 @@ app.post('/api/getProfiles', (req, res) => {
 	});
 	connection.end();
 });
+
+app.post('/api/getEmergencyContacts', (req, res) => {
+
+	let connection = mysql.createConnection(config);
+
+	username = req.body.username;
+	  
+	let query = "SELECT * FROM Emergency_Contacts WHERE username = ?";
+	let data=[username];
+	console.log(query);
+	console.log(data);       
+ 
+	connection.query(query, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+		let string = JSON.stringify(results);
+		console.log(string);
+		let obj = JSON.parse(string);
+		res.send({ obj });
+	 });
+	 connection.end();
+ });
+
+ app.post('/api/addEmergencyContacts', (req, res) => {
+
+	let connection = mysql.createConnection(config);
+
+	username = req.body.username,
+	contactName= req.body.contactName,
+	contactPhoneNumber = req.body.contactPhoneNumber
+	
+	let sql = "INSERT INTO `Emergency_Contacts` (username,contactName,contactPhoneNumber) VALUES (?,?,?)";
+	let data=[username,contactName,contactPhoneNumber];
+
+	console.log(sql);
+	console.log(data);       
+ 
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+		res.send({message: "Account successfully added"});
+	 });
+	 connection.end();
+ });
 
 app.listen(port, () => console.log(`Listening on port ${port}`)); 
 //for the dev version
