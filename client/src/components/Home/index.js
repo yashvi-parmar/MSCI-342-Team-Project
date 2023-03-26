@@ -118,19 +118,14 @@ const Home = () => {
   const REACT_APP_ICON_URL = 'https://openweathermap.org/img/w'
   const [lat, setLat] = useState([]);
   const [long, setLong] = useState([]);
-
-
   const [name, setName] = React.useState('');
   const [open, setOpen] = React.useState(false);
   const[isLoading, setIsLoading]=useState(true);
- 
   const [data, setData] = useState([]);
-
   const userNameGlobal = useSelector((state) => state.user.userNameGlobal);
   const [alertData,setAlertData] = React.useState([]);
 
   React.useEffect(() => {
-    //loadUserSettings();
     loadGetYourAlerts();
    },[]);
   
@@ -215,8 +210,7 @@ const directionsCallback = (response) => {
   }
 };
 
-
-const names = 'User'
+const names = userNameGlobal
 const [emergencyContactsOption,setEmergencyContactsOption]=React.useState("");
 const [showTextField, setShowTextField] = useState(false);
 const [showEmergencyContact,setShowEmergencyContact]= useState(false);
