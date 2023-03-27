@@ -1,20 +1,12 @@
 import React from 'react';
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-
-import {Avatar, TextField, Button, Link } from '@material-ui/core'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import { FormControl, FormLabel, RadioGroup, FormControlLabel } from '@material-ui/core';
-import Checkbox from '@material-ui/core/Checkbox';
-
-import { BrowserRouter,Switch,Route} from 'react-router-dom';
-import Navbar from '../NavBar';
+import {TextField, Button, Link } from '@material-ui/core'
+import { FormControl } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
-import {createTheme, ThemeProvider, styled} from "@material-ui/core/styles";
-import { Provider } from 'react-redux';
-import store from '../../store/index';
+import {createTheme, ThemeProvider} from "@material-ui/core/styles";
 import { setUsernameGlobal } from '../../actions/user';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 const cardStyle={padding :90, height:'95%',width:280,  color: '#29241C', backgroundColor: '#EDECED'}
 const buttonStyle={margin:'8px 0', backgroundColor: '#6D8654', color: '#29241C', marginTop: '5vh', borderRadius: 35, height: '50px'}
 const textStyle={marginBottom: '2vh',  color: 'black', width: '280px'}
@@ -34,7 +26,6 @@ const theme = createTheme({
   },
  });
  
-
  function CreateAccount() {
 
     const [firstName, setFirstName] = React.useState('');
@@ -64,23 +55,23 @@ const theme = createTheme({
     handlePasswordReenter(event.target.value)
   }
    
-    const handleUsername = (username) => {
+  const handleUsername = (username) => {
      setUsername(username);
    };
   
-   const handleUsernameInput = (event) => {
+  const handleUsernameInput = (event) => {
       handleUsername(event.target.value)
    }
   
-   const handleEmail = (email) => {
+  const handleEmail = (email) => {
     setEmail(email);
    }
   
-   const handleEmailInput = (event) => {
+  const handleEmailInput = (event) => {
     handleEmail(event.target.value);
    }
 
-   const handleFirstName = (firstName) => {
+  const handleFirstName = (firstName) => {
     setFirstName(firstName);
   };
  
@@ -99,6 +90,7 @@ const theme = createTheme({
   const [lat, setLat] = React.useState(null);
   const [lng, setLng] = React.useState(null);
  
+  //gets the users current position
   React.useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -108,17 +100,20 @@ const theme = createTheme({
     );
   }, []);
 
-   const history = useHistory();
-   const [value, setValue] = React.useState(0);
-   const handleChange = (newValue) => {
+  const history = useHistory();
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (newValue) => {
     history.push(`${newValue}`);
     console.log(newValue)
     setValue(newValue);
   };
+
    const handleSubmissionCheck = (event) =>{
     setSubmissionCheck(true)
-    
   }
+
+  //submision validation for creating an account
   const handleSubmissionValidation = (event) => {
     event.preventDefault();
     if(password !== '' && username !=='' && email !== '' && passwordReenter !== '' && (password===passwordReenter)){
@@ -128,16 +123,14 @@ const theme = createTheme({
 
   const dispatch = useDispatch();
 
+  //checks if the user exists or not already
   const loadApiCheckUser = () => {
     callApiCheckUser()
       .then((res) => {
-        console.log(res)
           var parsed = JSON.parse(res.data);
-          console.log(parsed[0]);
           if(parsed == ""){
             loadApiAddProfile();
             dispatch(setUsernameGlobal(username));
-            console.log("userNameGlobal in store:", store.getState().user.userNameGlobal);
             setPasswordReenter('');
             setSubmissionValidation(true);
             setSubmissionCheck(false);
@@ -148,20 +141,15 @@ const theme = createTheme({
               setPassword('');
               setPasswordReenter('');
               setUsernameExists(true);
-              console.log("parsed: " + parsed);
           }
       })
   };
 
   const callApiCheckUser = async () => {
     const url = serverURL + "/api/checkAccount";
-    console.log(url)
-  
     let searchInfo = {
       "username": username,
     };
-  
-    console.log(searchInfo);
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -177,16 +165,12 @@ const theme = createTheme({
   const loadApiAddProfile = () => {
     callApiAddProfile()
       .then((res) => {
-        console.log(res)
           var parsed = JSON.parse(res.data);
-          console.log(parsed[0]);
       })
   };
 
   const callApiAddProfile = async () => {
     const url = serverURL + "/api/addProfile";
-    console.log(url)
-  
     let searchInfo = {
       "username": username,
       "email": email,
@@ -196,8 +180,6 @@ const theme = createTheme({
       "lat" : lat,
       "lng" : lng  
     };
-  
-    console.log(searchInfo);
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -213,9 +195,6 @@ const theme = createTheme({
   return (
     <Grid style={{backgroundColor: '#6D8654', height: '100vh', color: '#29241C'}}>
      <ThemeProvider theme={theme}>
-       
-    
-  
       <Grid style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', padding: '5vh'}} >
       <Grid style={{display: 'flex', flexDirection: 'column', flexBasis: '100%', flex: 1}}>
         <h3 style={{letterSpacing: '0.05rem', color: '#EDECED'}}>Welcome to Bark!</h3>
@@ -238,8 +217,6 @@ const theme = createTheme({
                     <div><em style={{color:'red'}}>*Please enter your username!</em></div>) : (<div></div>)
                   }
                 <TextField 
-           
-                
                style={textStyle} label='Username' placeholder='Enter username' variant="outlined" fullWidth value={username} onChange={handleUsernameInput} />
                   {
                     username === '' && submissionCheck ===true ? (
@@ -250,7 +227,6 @@ const theme = createTheme({
                     email === '' && submissionCheck ===true ? (
                     <div><em style={{color:'red'}}>*Please enter your email!</em></div>) : (<div></div>)
                   }
-                
                 <TextField  style={textStyle} label='Password' placeholder='Enter password' type='password' variant="outlined" fullWidth value={password} onChange={handlePasswordInput} />
                   {
                     password === '' && submissionCheck ===true ? (
@@ -273,28 +249,15 @@ const theme = createTheme({
                 <Button type='submit' variant="contained" style={buttonStyle} onClick = {handleSubmissionCheck} fullWidth><h3 style={{letterSpacing: '0.05rem', color: '#EDECED'}}>GET STARTED</h3></Button>
                 </form>
                 </FormControl> 
-             
              <div style={{marginTop: "1vh" }} ></div>
                      <Link href="/SignIn" style={{color: '#131411'}}>
                         OR LOGIN
                 </Link>
-               
             </Paper>
             </Grid>
-            
-        </Grid>
-       
-    
-  
-   </ThemeProvider>
-  
+        </Grid>  
+   </ThemeProvider> 
     </Grid>
   );
 }
-
 export default CreateAccount;
-
-
-
-
-
