@@ -490,7 +490,6 @@ function LetterAvatars({profile}) {
         </DialogActions>
       </Dialog>
       <p></p>
-      <div>
       <Button type='submit' style={buttonStyle} variant="contained" onClick={handlePhoneCall}>Dial 911</Button>
       <p></p>
       <Button onClick={handleSendFriendsEmail} type='submit' style={buttonStyle} variant="contained" >Reached Safety</Button>
