@@ -96,6 +96,17 @@ const theme = createTheme({
      handleLastName(event.target.value)
   }
 
+  const [lat, setLat] = React.useState(null);
+  const [lng, setLng] = React.useState(null);
+ 
+  React.useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLat(position.coords.latitude);
+        setLng(position.coords.longitude);
+      },
+    );
+  }, []);
 
    const history = useHistory();
    const [value, setValue] = React.useState(0);
@@ -130,7 +141,7 @@ const theme = createTheme({
             setPasswordReenter('');
             setSubmissionValidation(true);
             setSubmissionCheck(false);
-            handleChange("/")
+            handleChange("/Home")
           }else if (parsed != ""){
               setSubmissionCheck(false);
               setUsername('');
@@ -181,8 +192,9 @@ const theme = createTheme({
       "email": email,
       "password":password,
       "firstName": firstName,
-      "lastName": lastName
-      
+      "lastName": lastName,
+      "lat" : lat,
+      "lng" : lng  
     };
   
     console.log(searchInfo);
