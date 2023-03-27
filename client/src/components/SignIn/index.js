@@ -218,7 +218,7 @@ const dispatch = useDispatch();
                 <Button id = "LOGIN" type='submit' variant="contained" style={buttonStyle} fullWidth  onClick={handleSubmissionCheck} ><h3 style={{letterSpacing: '0.05rem', color: '#EDECED'}}>LOGIN</h3></Button>
                 {
                     matchRecord == false ? (
-                    <div><em style={{color:'red'}}>*Your credentials do not match our records! Please try</em></div>) : (<div></div>)
+                    <div><em style={{color:'red'}}>*Your credentials do not match our records! Please try again</em></div>) : (<div></div>)
                   }
                 </form>
              </FormControl> 

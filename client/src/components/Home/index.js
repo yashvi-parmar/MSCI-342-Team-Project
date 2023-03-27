@@ -409,10 +409,11 @@ console.log(data)
             label="Emergency Contact"
             autoWidth
             onChange={handleChangeEmergencyOptions}
+            style={{width: "30vh"}}
           >
-            <MenuItem value={"View emergency contacts"}> View emergency contacts </MenuItem>
+            <MenuItem style={{width: '30vh'}} value={"View emergency contacts"}> View emergency contacts </MenuItem>
             <br></br>
-            <MenuItem value={"Add emergency contacts"}> Add emergency contacts </MenuItem>
+            <MenuItem style={{width: '30vh'}} value={"Add emergency contacts"}> Add emergency contacts </MenuItem>
           </Select>
           {showTextField && (
             <AddEmergencyContactForm/>
