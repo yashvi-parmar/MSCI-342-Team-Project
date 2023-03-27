@@ -9,20 +9,23 @@ import Button from '@material-ui/core/Button';
 import '../Home/index.css'
 import { useSelector } from 'react-redux';
 import store from '../../store';
-import { useColorScheme } from '@mui/material';
+
 const serverURL = ""; //enable for dev mode
 // const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:PORT";
 
+//function that displays the column of friends
 const ShowFriends = (props) => {
-  console.log("THIS IS FRIENDS:" + props.friends);
+  //fri holds a list of the users friends
   const fri = props.friends;
-  const firstNames = fri.map(friend => friend.firstName);
-  const lastNames = fri.map(friend => friend.lastName);
-  const userNames = fri.map(friend => friend.userName);
-  const emails = fri.map(friend => friend.email);
+  const firstNames = fri.map(friend => friend.firstName); //only friends first names
+  const lastNames = fri.map(friend => friend.lastName); //only friends last names
+  const userNames = fri.map(friend => friend.userName); //only friends usernames
+  const emails = fri.map(friend => friend.email); //only friends email addresses
+  //creates arrays with first and last initial of each friend
   const firstLetters = firstNames.map((first) => first[0].toUpperCase());
   const lastLetters = lastNames.map((last) => last[0].toUpperCase());
 
+  //returns column of cards with avatar (with first and last initial), name, username and email address
   return (
     <Grid container spacing={2} direction="column" >
       {firstNames.map((fri, index) => (
@@ -43,13 +46,14 @@ const ShowFriends = (props) => {
   );
 }
 
+//function to search and add new friends 
 const SearchBar = (props) => {
   //when the search button is clicked enteredUserName becomes the entered value
   const onChange = (event) => {
     props.setEnteredUsername(event.target.value)
   }
   
-  //displaying the text box
+  //displaying the search text field
   return (
     <Grid>
       <TextField id="standard-required" label="Search by Username" variant = "outlined" onChange={onChange} style={{margin: "2vh", width: "60vh"}} error={props.isError}/>
@@ -62,15 +66,13 @@ const SearchFriends = () => {
   const [enteredUsername, setEnteredUsername] = React.useState ('');
   const [isEmpty, setIsEmpty] = React.useState (false);
   const [searchResult, setSearchResult] = React.useState ([]);
-  const [firstName, setFirstName] = React.useState ('');
-  const [lastName, setLastName] = React.useState ('');
   const [addedUsers, setAddedUsers] = React.useState(new Set());
 
-  const currentUser = useSelector((state) => state.user.userNameGlobal);
+  const currentUser = useSelector((state) => state.user.userNameGlobal); //assigns username of currently logged in user
   
+  //checks if textfield is empty, and loads results if not empty
   const runButton = event => {
     event.preventDefault();
-
     setIsEmpty (false);
 
     if (enteredUsername === ''){
@@ -80,6 +82,7 @@ const SearchFriends = () => {
     }
   }
 
+  //handles add friends button
   const handleSubmission = (users) => {
     loadApiAddFriend(users);
       setAddedUsers((prevState) => new Set(prevState).add(users.userName));
@@ -92,8 +95,6 @@ const SearchFriends = () => {
       })
   };
   
-  
-  
    const callApiAddFriend= async (users) => {
     const url = serverURL + '/api/addFriend';
   
@@ -101,8 +102,6 @@ const SearchFriends = () => {
       "username": store.getState().user.userNameGlobal,
       "friendUsername" : users.userName
     };
-  
-    console.log(FriendInfo);
 
     const response = await fetch(url, {
       method: "POST",
@@ -115,15 +114,15 @@ const SearchFriends = () => {
     if (response.status !== 200) throw Error(body.message);
     return body;
   }
+
+  //handles getting search results
   const loadSearchResult = () => {
     callApiLoadSearchResult()
       .then(res => {
         console.log("callApiLoadSearchResult returned: ", res)
         var parsed = JSON.parse(res.express);
         console.log("callApiLoadSearchResult parsed: ", parsed);
-        setSearchResult(parsed);
-        console.log(searchResult); //assigns the result
-        console.log('results', parsed);
+        setSearchResult(parsed); //assigns to searchResults
       })
   }
 
@@ -132,8 +131,8 @@ const SearchFriends = () => {
       console.log(url);
 
       let searchInfo = { 
-        "username": store.getState().user.userNameGlobal,
-        "userSearch" : enteredUsername,
+        "username": store.getState().user.userNameGlobal, //username of user
+        "userSearch" : enteredUsername, //searched username
       };
 
       const response = await fetch(url, {
@@ -149,11 +148,13 @@ const SearchFriends = () => {
       return body;
   }
 
+  //if the textfield is not empty (something is being searched)
   if (isEmpty===false){
+    //returns search bar and results when search is pressed
     return(
       <Grid>
         <Grid>
-          <SearchBar setEnteredUsername={setEnteredUsername} isError={isEmpty}></SearchBar>
+          <SearchBar setEnteredUsername={setEnteredUsername} isError={isEmpty}></SearchBar> 
           <Button variant="contained" onClick= {runButton} style={{ fontFamily: 'Oswald', marginLeft: '2vh', marginTop: '2vh', marginBottom: '2vh', width: "20vh", backgroundColor: '#29241C', color: 'white'}}>
             Search
           </Button>
@@ -208,6 +209,7 @@ const SearchFriends = () => {
       </Grid>
     )
   } else {
+    //returns just search bar and button (search is empty)
     return (
       <Grid>
         <Grid>
@@ -221,11 +223,12 @@ const SearchFriends = () => {
   }
 }
 
+//main function with main return statement 
 function Friends() {
   let [friends,setFriends]=React.useState([]);
   
+  //handles getting list of users friends
   React.useEffect(() => {
-    //loadUserSettings();
     loadGetFriends();
    },[]);
 
@@ -257,7 +260,7 @@ function Friends() {
     console.log(body);
     return body;
   }
-
+    //main return: cards with existing friends and search bar
     return (
         <Grid style={{backgroundColor: '#6D8654', height: '100vh', fontFamily: 'Noto Sans Lepcha'}}> 
           <NavbarTop></NavbarTop>
