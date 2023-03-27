@@ -11,7 +11,7 @@ INSTALLATION INSTRUCTIONS:
 
 	SPECIAL NOTE: In order to properly work, the map requires an API key within the /Map file. We cannot keep the key on GitHub, and it must be linked and configured to a specific google account, so we will be sending the key in a seperate corespondence. The key should be set as the value of "apiKey" on line 29 of /Map/index.js. If this is not entered the map will appear in dev mode.
 
-	To install, clone the app from github, navigate to the project directory, install the needed dependecies, and then run the app in devlopment mode using "yarn dev" to see the project in the browser. 
+	To install, clone the app from github, navigate to the project directory, install the needed dependecies, and then run the app in devlopment mode using "yarn dev" to see the project in the browser. On the home page there is a package called react twitter embed that can be installed with npm i react-twitter-embed. 
 
 TESTING INSTRUCTIONS:
 
