@@ -19,23 +19,12 @@ import Avatar from '@mui/material/Avatar';
 import '../Home/index.css'
 import { useSelector } from 'react-redux';
 import store from '../../store';
+
 const serverURL = "";
-
-
-const cardStyle={borderRadius: '5px',padding :'4vh', height:'100%', width:480,  color: '#29241C', backgroundColor: '#EDECED', display: 'flex', flex:1, flexDirection: 'column'}
-
-const textStyle={marginBottom: '8px'}
-
 const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
-
-
-const opacityValue = 0.95;
-
-
 const buttonStyle={ backgroundColor: '#29241C', color: 'white', fontFamily: 'Oswald'}
+const cardStyle={padding :'4vh', height:'100%',width:480,  color: '#29241C', backgroundColor: '#EDECED', display: 'flex', flex:1, flexDirection: 'column'}
 
-
- 
 const theme = createTheme({
  palette: {
    type: 'light',
@@ -51,36 +40,31 @@ const theme = createTheme({
  },
 });
 
-const MainGridContainer = styled(Grid)(({ theme }) => ({
-
-}))
-
 const Alerts = (props) => {
  
+  //gets the username from the redux store
   const userNameGlobal = useSelector((state) => state.user.userNameGlobal);
 
   React.useEffect(() => {
     console.log('userNameGlobal in MapComponent:', store.getState().user.userNameGlobal);
   }, [userNameGlobal]);
 
-
  const [alertLocation, setAlertLocation] = React.useState('');
  const [alertMessage, setAlertMessage] = React.useState('');
  const [submissionCheck,setSubmissionCheck] = React.useState(false);
  const [submissionValidation,setSubmissionValidation] = React.useState(false);
  const [submissionData,setSubmissionData] = React.useState([]);
- const [userID,setUserID]=React.useState(1);
  let [AlertData,setAlertData] = React.useState({});
  const [autocomplete, setAutocomplete] = React.useState(null);
  const [destination, setDestination] = React.useState('');
  const [lat,setLat]=React.useState('');
  const [lng,setLng]=React.useState('');
- const [alertsList, setAlertsList] = React.useState([]);
 
  const handleAutocompleteLoad = (autocomplete) => {
   setAutocomplete(autocomplete);
 };
- 
+
+//assigns the destination variables from autocomplete address bar
 const handlePlaceSelect = (place) => {
   setDestination(place.formatted_address);
   setLat(place.geometry.location.lat());
@@ -89,8 +73,6 @@ const handlePlaceSelect = (place) => {
   console.log(lng);
   console.log(destination);
 };
-
-
 
 const handleAlertMessage = (message) => {
   setAlertMessage(message);
@@ -103,6 +85,8 @@ const handleAlertInput = (event) => {
 const handleSubmissionCheck = (event) =>{
   setSubmissionCheck(true);
 }
+
+//checks for empty fields and calls API to add alert information to table and resets form
 const handleSubmissionValidation = (event) => {
   console.log("submission was called");
   event.preventDefault();
@@ -130,40 +114,8 @@ const loadApiAddAlert = () => {
     })
 };
 
-let [unsafetext,setUnsafeText]=React.useState([]);
-
-React.useEffect(() => {
-  //loadUserSettings();
-  loadGetAlerts();
- },[AlertData]);
-
- const loadGetAlerts =() => {
-  callGetAlerts()
-    .then(res => {
-      setUnsafeText(res.alertData);
-      console.log(unsafetext);
-    });
-}
-
-const callGetAlerts = async() => {
-  
-  //console.log('t',url)
-  const url = serverURL + "/api/getTop5Alerts";
-  console.log(url)
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      //authorization: `Bearer ${this.state.token}`
-    },
-  });
-  const body =await response.json();
-  if (response.status !== 200) throw Error(body.message);
-  return body;
-}
-
-
- const callApiAddAlert= async () => {
+//calls api to add alert
+const callApiAddAlert= async () => {
   const url = serverURL + '/api/addAlert';
 
   let AlertInfo = {
@@ -174,10 +126,6 @@ const callGetAlerts = async() => {
     "address" : destination
 
   };
-
-  console.log(AlertInfo);
-
-  console.log(AlertInfo);
   const response = await fetch(url, {
     method: "POST",
     headers: {
@@ -190,6 +138,39 @@ const callGetAlerts = async() => {
   return body;
 }
 
+let [unsafetext,setUnsafeText]=React.useState([]);
+
+//gets alerts from table on render
+React.useEffect(() => {
+  loadGetAlerts();
+ },[AlertData]);
+
+ const loadGetAlerts =() => {
+  callGetAlerts()
+    .then(res => {
+      //assigns returned data to unsafetext variable
+      setUnsafeText(res.alertData);
+      console.log(unsafetext);
+    });
+}
+
+//calls api to get alerts
+const callGetAlerts = async() => {
+  const url = serverURL + "/api/getTop5Alerts";
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      //authorization: `Bearer ${this.state.token}`
+    },
+  });
+  const body =await response.json();
+  if (response.status !== 200) throw Error(body.message);
+  return body;
+}
+
+//renders form for submit warning, includes autcomplete address bar for location of warning and description of warning
+//displays the last 4 alerts on the side for users to see including location, letter avatar of user, and description of danger
 return (
   <Grid style={{backgroundColor: '#6D8654',fontFamily: 'Noto Sans Lepcha', padding: '10vh', color: 'white', height: '100vh', display: 'flex', flexDirection: 'row', flexBasis: '100%', flex: 1 , justifyContent: 'center'}}>
     <Paper elevation={10} style={cardStyle}> 
@@ -260,55 +241,58 @@ return (
         }        
        </ThemeProvider>
    </Paper>
-  
-   
    <Grid style={{marginLeft: '5vh'}} >
    <Paper elevation={10} style={cardStyle}> 
     <ThemeProvider theme={theme}> 
     <h1 style={{color: '#29241C', fontFamily: 'Oswald'}}>Alerts</h1>
     <p style={{fontSize: 10, marginTop: '-1vh'}}>Only displays latest 4 messages in your area. Please see map for more alerts.</p>
  
-    <List sx={{ width: '100%', maxWidth: 460}}>
+    <List sx={{ width: '100%', maxWidth: 460, bgcolor: 'background.paper' }}>
     {unsafetext.map(item => (
       <List>
-      <ListItem alignItems="flex-start" style={{borderRadius: '5px', fontFamily: 'Noto Sans Lepcha', backgroundColor: '#29241C', color: 'white'}}>
+      <ListItem alignItems="flex-start" style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: '#29241C', color: 'white'}}>
         <ListItemAvatar >
-          <Avatar style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: '#EBD6C1', color: '#B08968'}}>{item.username.charAt(0).toUpperCase()}</Avatar>
+          <Avatar style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: 'white', color: '#29241C'}}>{item.username.charAt(0).toUpperCase()}</Avatar>
         </ListItemAvatar>
         <ListItemText
           primary={item.address}
           secondary={
             <React.Fragment>
-              <Typography
-                sx={{ display: 'inline' }}
-                component="span"
-                variant="body2"
-                color="white"
-              >
-                
-              </Typography>
               <p style={{color: 'white', margin: '-0.1vh'}}>{item.alert}</p>
-              
             </React.Fragment>
           }
         />
-
       </ListItem>
       <Divider />
       </List>
         ))}
-      
-      </List>
-    
+      </List>  
        </ThemeProvider>
    </Paper>
-    
     </Grid>
    </Grid>
  );
 
 }
 
+const Home = () => {
+    return (
+      <div> 
+       <NavbarTop></NavbarTop>       
+       
+        <Alerts /> 
+        <Navbar></Navbar>
+      </div>     
+    )
+  };
+
+Home.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
+export default Home;
+
+}
 
 const Home = () => {
     return (
