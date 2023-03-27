@@ -10,11 +10,19 @@ import Navbar from '../NavBar';
 import {LoadScript, Autocomplete} from '@react-google-maps/api';
 import NavbarTop from '../NavBarTop';
 import Paper from "@material-ui/core/Paper";
-
-//const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Divider from '@mui/material/Divider';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
+import '../Home/index.css'
+import { useSelector } from 'react-redux';
+import store from '../../store';
 const serverURL = "";
 
-const cardStyle={padding :30,width:380,  color: '#29241C', backgroundColor: '#EDECED'}
+
+const cardStyle={padding :'4vh', height:'100%',width:480,  color: '#29241C', backgroundColor: '#EDECED', display: 'flex', flex:1, flexDirection: 'column'}
 
 const textStyle={marginBottom: '8px'}
 
@@ -24,16 +32,9 @@ const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 const opacityValue = 0.95;
 
 
-const buttonStyle={margin:'8px 0', backgroundColor: 'black', color: 'white'}
+const buttonStyle={ backgroundColor: '#29241C', color: 'white', fontFamily: 'Oswald'}
 
 
- //enable for dev mode
- //enable for dev mode
-//Deployment mode instructions
-//To find your port number:
-//ssh to ov-research-4.uwaterloo.ca and run the following command:
-//env | grep "PORT"
-//copy the number only and paste it in the serverURL in place of PORT, e.g.: const serverURL = "http://ov-research-4.uwaterloo.ca:3000";
  
 const theme = createTheme({
  palette: {
@@ -56,6 +57,12 @@ const MainGridContainer = styled(Grid)(({ theme }) => ({
 
 const Alerts = (props) => {
  
+  const userNameGlobal = useSelector((state) => state.user.userNameGlobal);
+
+  React.useEffect(() => {
+    console.log('userNameGlobal in MapComponent:', store.getState().user.userNameGlobal);
+  }, [userNameGlobal]);
+
 
  const [alertLocation, setAlertLocation] = React.useState('');
  const [alertMessage, setAlertMessage] = React.useState('');
@@ -80,6 +87,7 @@ const handlePlaceSelect = (place) => {
   setLng(place.geometry.location.lng());
   console.log(lat);
   console.log(lng);
+  console.log(destination);
 };
 
 
@@ -102,7 +110,8 @@ const handleSubmissionValidation = (event) => {
     let data = {
       alertLocation: alertLocation,
       alertMessage: alertMessage,
-      userID: 1,
+      username: userNameGlobal,
+      address: destination
     }
     setSubmissionData([destination,alertMessage])
     setAlertData(data);
@@ -121,6 +130,37 @@ const loadApiAddAlert = () => {
     })
 };
 
+let [unsafetext,setUnsafeText]=React.useState([]);
+
+React.useEffect(() => {
+  //loadUserSettings();
+  loadGetAlerts();
+ },[AlertData]);
+
+ const loadGetAlerts =() => {
+  callGetAlerts()
+    .then(res => {
+      setUnsafeText(res.alertData);
+      console.log(unsafetext);
+    });
+}
+
+const callGetAlerts = async() => {
+  
+  //console.log('t',url)
+  const url = serverURL + "/api/getTop5Alerts";
+  console.log(url)
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      //authorization: `Bearer ${this.state.token}`
+    },
+  });
+  const body =await response.json();
+  if (response.status !== 200) throw Error(body.message);
+  return body;
+}
 
 
  const callApiAddAlert= async () => {
@@ -130,7 +170,9 @@ const loadApiAddAlert = () => {
     "lat": lat,
     "lng" : lng,
     "alertMessage": alertMessage,
-    "userID": userID
+    "username": store.getState().user.userNameGlobal,
+    "address" : destination
+
   };
 
   console.log(AlertInfo);
@@ -147,58 +189,13 @@ const loadApiAddAlert = () => {
   if (response.status !== 200) throw Error(body.message);
   return body;
 }
-React.useEffect(() => {
-  loadAlerts();
-}, []);
 
-const loadAlerts = () => {
-  callApiLoadAlerts()
-    .then(res => {
-      console.log("callApiLoadRecipes returned: ", res)
-      var parsed = JSON.parse(res.express);
-      console.log("callApiLoadRecipes parsed: ", parsed);
-      setAlertsList(parsed);
-    })
-}
-
-const callApiLoadAlerts = async () => {
-  const url = serverURL + "/api/getAlerts";
-  console.log(url);
-
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    }
-  
-  });
-  const body = await response.json();
-  console.log(response.status);
-  if (response.status !== 200) throw Error(body.message);
-  console.log("User settings: ", body);
-  return body;
-}
 
 return (
-  <Grid style={{backgroundColor: '#6D8654', height: '85vh', display: 'flex', padding: '10vh'}}>
-   
-    <Grid> 
-    <h1 style={{color: '#46341C'}}>Submit a Warning</h1>
-    
-  
-    
-   <ThemeProvider theme={theme}>
-       <MainGridContainer
-         container
-         spacing={2}
-    
-         direction="column"
-        
-         alignItems="center"
-       >
-
-         <br></br>
-         <br></br>
+  <Grid style={{backgroundColor: '#6D8654',fontFamily: 'Noto Sans Lepcha', padding: '10vh', color: 'white', height: '100vh', display: 'flex', flexDirection: 'row', flexBasis: '100%', flex: 1 , justifyContent: 'center'}}>
+    <Paper elevation={10} style={cardStyle}> 
+    <ThemeProvider theme={theme}> 
+    <h1 style={{color: '#29241C', fontFamily: 'Oswald'}}>Submit a Warning</h1>
          <LoadScript
           googleMapsApiKey = {apiKey}
           libraries={['places']}
@@ -227,11 +224,12 @@ return (
              <br></br>
              <br></br>
              <TextField 
-              style={textStyle} 
+              id = "alertMessage"
               multiline 
-              label=' Alert Message' 
+              label='Alert Message' 
               helperText="Enter description of danger" 
-              variant="outlined"  
+              variant="outlined" 
+              style={{ width: '400px'}} 
               minRows={5} 
               value={alertMessage} 
               onChange = {handleAlertInput} 
@@ -244,7 +242,7 @@ return (
              <br></br>
              <Button 
               variant="contained" 
-              color="primary" 
+              style={buttonStyle}
               type ='submit' 
               onClick={handleSubmissionCheck}
               >
@@ -261,12 +259,51 @@ return (
           </div>
 
         }        
-       </MainGridContainer>
-   </ThemeProvider>
-   </Grid>
-   <Grid style={{marginLeft: '2vh', alignItems: 'flex-end'}}>
-   <h1 style={{color: '#46341C'}}>List of Alerts</h1>
-    <div>{alertsList}</div>
+       </ThemeProvider>
+   </Paper>
+  
+   
+   <Grid style={{marginLeft: '5vh'}} >
+   <Paper elevation={10} style={cardStyle}> 
+    <ThemeProvider theme={theme}> 
+    <h1 style={{color: '#29241C', fontFamily: 'Oswald'}}>Alerts</h1>
+    <p style={{fontSize: 10, marginTop: '-1vh'}}>Only displays latest 4 messages in your area. Please see map for more alerts.</p>
+ 
+    <List sx={{ width: '100%', maxWidth: 460, bgcolor: 'background.paper' }}>
+    {unsafetext.map(item => (
+      <List>
+      <ListItem alignItems="flex-start" style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: '#29241C', color: 'white'}}>
+        <ListItemAvatar >
+          <Avatar style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: 'white', color: '#29241C'}}>{item.username.charAt(0).toUpperCase()}</Avatar>
+        </ListItemAvatar>
+        <ListItemText
+          primary={item.address}
+          secondary={
+            <React.Fragment>
+              <Typography
+                sx={{ display: 'inline' }}
+                component="span"
+                variant="body2"
+                color="white"
+              >
+                
+              </Typography>
+              <p style={{color: 'white', margin: '-0.1vh'}}>{item.alert}</p>
+              
+            </React.Fragment>
+          }
+        />
+
+      </ListItem>
+      <Divider />
+      </List>
+        ))}
+      
+      </List>
+    
+       </ThemeProvider>
+   </Paper>
+    
     </Grid>
    </Grid>
  );
@@ -278,7 +315,7 @@ const Home = () => {
     return (
       <div> 
        <NavbarTop></NavbarTop>       
-        <br></br>  
+       
         <Alerts /> 
         <Navbar></Navbar>
       </div>     

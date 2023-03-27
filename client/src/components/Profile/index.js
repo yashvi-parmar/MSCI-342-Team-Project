@@ -5,55 +5,101 @@ import {Avatar, Link } from '@material-ui/core'
 import Navbar from '../NavBar';
 import NavbarTop from '../NavBarTop';
 import BarkButton from '../BarkButton';
+import '../Home/index.css'
+import Paper from "@material-ui/core/Paper";
+import { useSelector } from 'react-redux';
+import store from '../../store';
 
-//const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3060";
+const serverURL = "";
+const cardStyle={padding :'2vh', height: '100%', fontFamily: 'Noto Sans Lepcha', color: '#29241C', backgroundColor: '#6D8654', display: 'flex', flex:1, flexDirection: 'row'}
 
-function LetterAvatars() {
-  const fri = 'Vedangi Patel'
-  const firstLetters = fri[0];
+function LetterAvatars({profile}) {
     return (
       <div>
-        <Avatar style={{backgroundColor: '#EBD6C1', color: '#B08968', width: '35vh', height: '35vh', fontSize: '20vh'}}>{firstLetters} </Avatar>
+        {profile.map(data => (
+          <div key={data.userID}>
+            <Avatar style={{fontFamily: 'Oswald', backgroundColor: '#EBD6C1', color: '#B08968', width: '35vh', height: '35vh', fontSize: '20vh'}}>{data.userName.charAt(0).toUpperCase()}</Avatar>
+          </div>
+        ))}
       </div>
     );
   }
 
-  function ProfileCont() {
-    return(
+  function ProfileCont({profile}) {
+    return (
       <Grid style={{color: 'white', marginLeft: '0vh', marginTop: '15vh'}}>
-        <h3>Name: Vedangi Patel</h3> 
-        <h3>Username: _ve_</h3> 
-        <h3>Email: vedangipatel@gmail.com</h3> 
-        <h3>Phone Number: 0123456789</h3> 
-        <h3>Current Location: insert current location</h3> 
+        {profile.map(data => (
+          <div key={data.userID}>
+            <h3>Name: {data.firstName} {data.lastName}</h3>
+            <h3>Username: {data.userName}</h3>
+            <h3>Email: {data.email}</h3>
+            <br/>
+          </div>
+        ))}
       </Grid>
-    )
+    );
   }
 
 function Profile() {
+
+  let[profile,setProfile]=React.useState([]);
+
+  React.useEffect(() => {
+    loadApiGetProfiles();
+  },[]);
+  
+  
+  
+  const loadApiGetProfiles = () => {
+    callApiGetProfiles()
+      .then(res => {
+        setProfile(res.obj);
+        console.log(profile);
+      })
+  }
+  
+  const callApiGetProfiles = async() => {
+    const url = serverURL + "/api/getProfiles";
+    console.log(url);
+  
+    let info = {
+      "username": store.getState().user.userNameGlobal
+    };
+  
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(info)
+    });
+    const body = await response.json();
+    console.log("received: ", body);
+    if (response.status !== 200) throw Error(body.message);
+    console.log(response);
+    return body;
+  }
     return (
         <div> 
-          
           <BarkButton></BarkButton>
           <NavbarTop></NavbarTop>
-          <Grid
-            container
-            spacing={0}
-            direction="column"
-            justify="flex-start"
-            alignItems="flex-start"
-            style={{backgroundColor: '#6F4E37', padding: '4vh'}}
+          <Paper
+            style={cardStyle}
           >
-            <h3 style={{color:'white'}}>Your profile</h3>
+            <Grid> 
+            <h1 style={{color:'white', fontFamily: 'Oswald', marginTop: '5vh'}}>YOUR PROFILE</h1>
             
-            <LetterAvatars/>
-            <ProfileCont></ProfileCont>
+            <LetterAvatars profile={profile}/>
+            </Grid>
+            <Grid style={{marginLeft: '5vh'}}> 
+            <ProfileCont profile={profile}/>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}  >
-          <Link href="/SignIn" style={{color: 'black'}}>
-                       Logout
+          <Link href="/" style={{color: 'white'}}>
+                      LOGOUT
                 </Link>
           </Typography>
           </Grid>
+          </Paper>
           <Navbar></Navbar>
         </div>     
       )

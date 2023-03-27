@@ -22,10 +22,10 @@ const theme = createTheme({
   palette: {
     type: 'light',
     background: {
-      default: "#042913"
+      default: "#6D8654"
     },
     primary: {
-      main: "#b08968",
+      main: "#6D8654",
     },
     secondary: {
       main: "#94b395",
@@ -36,7 +36,7 @@ const theme = createTheme({
 const styles = theme => ({
   root: {
     body: {
-      backgroundColor: "#000000",
+      backgroundColor: '#6D8654',
       opacity: opacityValue,
       overflow: "hidden",
     },
@@ -46,19 +46,15 @@ const styles = theme => ({
   },
 
   mainMessageContainer: {
-    marginTop: "5vh",
-    marginLeft: theme.spacing(5),
-    [theme.breakpoints.down('xs')]: {
-      marginLeft: theme.spacing(4),
-    },
+    
+
   },
   paper: {
     overflow: "hidden",
   },
   message: {
     opacity: opacityValue,
-    maxWidth: 250,
-    paddingBottom: theme.spacing(2),
+
   },
 
 });
@@ -75,15 +71,13 @@ const Share = () => {
     }
 
 return (
-    <Grid style={{backgroundColor: '#EBD6C1', height: '100vh'}}>
-        <h3>Share BARK with a friend</h3>
-        <Grid>
-            <div>
+    <Grid style={{backgroundColor: '#6D8654'}}>
+
               <Button variant="contained" color="secondary" onClick= {runButton}>
                 SHARE
               </Button>
-            </div>
-          </Grid>
+            
+          
     </Grid>
 )
 }
@@ -142,7 +136,7 @@ class Home extends Component {
       <MuiThemeProvider theme={theme}>
         <Box
        sx={{
-         height: '100vh',
+         
          opacity: opacityValue,
          overflow: "hidden",
          backgroundColor: theme.palette.background.default,

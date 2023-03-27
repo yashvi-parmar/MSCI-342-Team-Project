@@ -49,7 +49,7 @@ function Navbar() {
   const classes = useStyles();
 
   return (
-      <div>Home</div>
+      <div>Map</div>
    
   );
 }

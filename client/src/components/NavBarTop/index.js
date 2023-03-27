@@ -30,11 +30,11 @@ export default function MenuAppBar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       
-      <AppBar style={{backgroundColor: '#29241C', color: 'white'}}position="sticky" >
+      <AppBar style={{backgroundColor: '#29241C', color: 'white'}}position="fixed" >
         <Toolbar>
         
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}  >
-          <Link to="/">
+          <Link to="/Home">
           <img src={BarkLogo} alt="Bark Logo" style={{ width: '50px', marginTop: '5px'}}/>
            </Link>
           </Typography>
@@ -59,6 +59,7 @@ export default function MenuAppBar() {
           )}
         </Toolbar>
       </AppBar>
+      <div></div>
     </Box>
   );
 }

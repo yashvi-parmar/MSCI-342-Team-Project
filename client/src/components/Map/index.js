@@ -18,10 +18,14 @@ import {GoogleMap, LoadScript, Marker, DirectionsRenderer, Autocomplete, Traffic
 import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
-import dogBark from "./assets/dogBark.wav"
+import { DeskOutlined } from '@mui/icons-material';
 import fakePhoneCall from "./assets/fakePhoneCall.wav"
+import '../Home/index.css'
+import { useSelector } from 'react-redux';
+import store from '../../store';
 
-const buttonStyle={margin:'8px 0', backgroundColor: '#29241C', color: 'white'}
+const buttonStyle={margin:'8px 0', backgroundColor: '#29241C',  marginRight: '10px', marginBottom: '15px', color: 'white', fontFamily: 'Oswald', letterSpacing: '0.05rem'} 
+
 const textStyle={marginBottom: '8px'}
 const containerStyle = {
   width: '100%',
@@ -29,19 +33,28 @@ const containerStyle = {
   display: 'flex'
 };
 
-const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3046";
+const serverURL = "";
+
+
 
 const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 
 function Map() {
 
+  const userNameGlobal = useSelector((state) => state.user.userNameGlobal);
+
+  useEffect(() => {
+    console.log('userNameGlobal in MapComponent:', store.getState().user.userNameGlobal);
+  }, [userNameGlobal]);
+
+
   return (
-    <grid style={{backgroundColor: '#6D8654'}}>
+    <grid style={{backgroundColor: '#6D8654', fontFamily: 'Noto Sans Lepcha'}}>
       <NavbarTop></NavbarTop>
     
     <div className="Map">
       <Grid>
-            <Paper style={{backgroundColor: '#6D8654',padding: '4vh'}}>
+            <Paper style={{backgroundColor: '#6D8654',padding: '4vh',  marginTop: '3vh'}}>
                 <Grid align='center'>
                 </Grid>
                      <MapFxn/> 
@@ -56,6 +69,7 @@ function Map() {
 export default Map;
 
 function MapFxn() {
+
   const [directions, setDirections] = useState(null);
   const [origin, setOrigin] = useState('');
   const [destination, setDestination] = useState('');
@@ -70,16 +84,22 @@ function MapFxn() {
   const [lng, setLng] = useState(null);
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
+    const watchId = navigator.geolocation.watchPosition(
       (position) => {
         setLat(position.coords.latitude);
         setLng(position.coords.longitude);
         setOrigin(`${position.coords.latitude}, ${position.coords.longitude}`);
       },
+      (error) => {
+        console.log(error);
+      },
+      { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
     );
+
+    return () => navigator.geolocation.clearWatch(watchId);
   }, []);
 
-  const handleLoad = (map) => {
+  const handleLoad = () => {
     const directionsServiceOptions = {
       origin: origin,
       destination: destination,
@@ -105,11 +125,11 @@ function MapFxn() {
       directionsService.route(directionsServiceOptions, directionsCallback);
       
     }
-   
 
   };
 
   const onLoad = trafficLayer => {
+    //console.log("hello, " + userNameGlobal);
     console.log('trafficLayer: ', trafficLayer)
   }
 
@@ -117,13 +137,62 @@ function MapFxn() {
     console.log('infoBox: ', infoBox)
   };
 
-  const options3 = { closeBoxURL: '', enableEventPropagation: true };
+  const onLoadInfoAuth = infoBox => {
 
-  const options = {
-    strokeColor: '#FF0000',
+  };
+
+  const optionsAuth = { closeBoxURL: '', enableEventPropagation: true };
+
+  const options = {     
+  strokeColor: '#FF0000',
+  strokeOpacity: 0.8,
+  strokeWeight: 2,
+  fillColor: '#FF0000',
+  fillOpacity: 0.35,
+  clickable: false,
+  draggable: false,
+  editable: false,
+  visible: true,
+  radius: 10,
+  zIndex: 1,
+  closeBoxURL: '', enableEventPropagation: true 
+  
+}
+
+  const options3 = {
+    strokeColor: '#000000',
     strokeOpacity: 0.8,
     strokeWeight: 2,
-    fillColor: '#FF0000',
+    fillColor: '#271f1f',
+    fillOpacity: 0.35,
+    clickable: false,
+    draggable: false,
+    editable: false,
+    visible: true,
+    radius: 10,
+    zIndex: 1, closeBoxURL: '', enableEventPropagation: true 
+  }
+
+  const options4 = {
+    strokeColor: '#000000',
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillColor: '#ADD8E6',
+    fillOpacity: 0.35,
+    clickable: false,
+    draggable: false,
+    editable: false,
+    visible: true,
+    radius: 10,
+    zIndex: 1, closeBoxURL: '', enableEventPropagation: true 
+  }
+
+  const options2 = {
+    strokeColor: '#00ff44',
+    strokeOpacity: 0.8,
+    closeBoxURL: '', enableEventPropagation: true ,
+    strokeWeight: 2,
+    fillColor: '#00ff44',
     fillOpacity: 0.35,
     clickable: false,
     draggable: false,
@@ -133,45 +202,101 @@ function MapFxn() {
     zIndex: 1
   }
 
-  const options2 = {
-    strokeColor: '#00ff44',
-    strokeOpacity: 0.8,
-    strokeWeight: 2,
-    fillColor: '#00ff44',
-    fillOpacity: 0.35,
-    clickable: false,
-    draggable: false,
-    editable: false,
-    visible: true,
-    radius: 15,
-    zIndex: 1
+
+  let [unsafetext,setUnsafeText]=React.useState([]);
+  let [safetext,setSafetext] = React.useState([]);
+  let [friends,setFriends] = React.useState([]);
+
+  React.useEffect(() => {
+    //loadUserSettings();
+    loadGetAlerts();
+   },[]);
+
+   const loadGetAlerts =() => {
+    callGetAlerts()
+      .then(res => {
+        setUnsafeText(res.alertData);
+        console.log(unsafetext);
+      });
   }
+
+  const callGetAlerts = async() => {
+    
+    //console.log('t',url)
+    const url = serverURL + "/api/getAlerts";
+    console.log(url)
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+    });
+    const body =await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
+
+  React.useEffect(() => {
+    loadGetSafeLocations();
+   },[]);
+
+  const loadGetSafeLocations =() => {
+    callGetSafeLocations()
+      .then(res => {
+        setSafetext(res.safeData);
+        console.log(safetext)
+  });
+  }
+  const callGetSafeLocations = async() => {
+    
+    const url = serverURL + "/api/getSafeLocations";
+    console.log(url)
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const body =await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
+
+ 
+React.useEffect(() => {
+  //loadUserSettings();
+  loadGetFriends();
+ },[]);
+
+const loadGetFriends =() => {
+  callGetFriends()
+    .then(res => {
+      setFriends(res.friendData);
+});
+}
+const callGetFriends = async() => {
   
-const unsafelocations = [
-      {id: 1, lat: 43.472120, lng:-80.543550},
-      {id: 2, lat: 43.472118, lng:-80.563546}
-    ];
+  const url = serverURL + "/api/GetFriends";
+  let FriendInfo = { 
+    "username": store.getState().user.userNameGlobal,
+  };
 
-const safelocations = [
-      {id: 1, lat: 43.473130, lng:-80.543550},
-      {id: 2, lat: 43.483112, lng:-80.533546}
-    ];
+  console.log(FriendInfo);
 
-const safetext = [
-    {id: 1, lat: 43.473130, lng:-80.543550, text: "Center for help"},
-    {id: 2, lat: 43.483112, lng:-80.533546, text: "Center for help"}
-];
+  console.log(FriendInfo);
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(FriendInfo)
+  });
+  const body =await response.json();
+  if (response.status !== 200) throw Error(body.message);
+  return body;
+}
 
-const unsafetext = [
-  {id: 1, lat: 43.472120, lng:-80.543550, text: "Avoid due to a broken streetlight"}, 
-
-  {id: 2, lat: 43.472118, lng:-80.563546, text: "Avoid due to flooding"}, 
-
-]
-
-const friends = [
-  {id: 1, lat: 43.472120, lng: -80.553550, friendName: "Friend 1"}
-]
 const [showed, setShowed] = useState(false);
 const [showedF, setShowedF] = useState(false);
 const [showedT, setShowedT] = useState(false);
@@ -201,12 +326,13 @@ const submitSaveDestination = () => {
   if (!destination) {
     window.alert("Please Enter a Destination to Save");
   } else {
-    window.alert(destination);
+    loadApiAddSavedDestination();
   }
 };
 
 const handleClickOpenUse = () => {
   setOpenUse(true);
+  setShouldRefresh(true);
 };
 
 
@@ -221,66 +347,6 @@ const handleCloseSubmit = () => {
 
 const [destinationForm, setDestinationForm] = useState('');
 
-  const [open, setOpen] = React.useState(false);
-  const [emergencyContactsOption,setEmergencyContactsOption]=React.useState("");
-  const [showTextField, setShowTextField] = useState(false);
-  const [showEmergencyContact,setShowEmergencyContact]= useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleChangeEmergencyOptions = (event) => {
-    setEmergencyContactsOption(event.target.value);
-    setShowTextField(event.target.value === "Add emergency contacts");
-    setShowEmergencyContact(event.target.value === "View emergency contacts");
-  };
-
-  const emergencyContacts = [
-    {name: "Joanna Hayburt", phoneNumber: "647-724-3423"}, 
-    {name: "Pam Albert", phoneNumber: "647-711-3111"}, 
-  ]
-
-  const [openFakeCall, setOpenFakeCall]=React.useState(false);
-  const [showPhonePlay, setShowPhonePlay] = React.useState(false);
-  const [showPhonePause, setShowPhonePause] = React.useState(false);
-  const [counter, setCounter]=React.useState(0);
-
-  const handleClickOpenPhoneCall = () => {
-    setOpenFakeCall(true);
-    setShowPhonePlay(true);
-  };
-
-  const handleClosePhoneCall = () => {
-    setOpenFakeCall(false);
-  };
-
-  let audio = null;
-
-  const playPhoneCall = () => {
-    audio = new Audio(fakePhoneCall);
-    audio.play();
-    setShowPhonePlay(false);
-    setShowPhonePause(true);
-  }
-  
-  const stopPhoneCall = () => {
-    if (audio !== null) {
-      audio.pause();
-      setShowPhonePlay(true);
-      setShowPhonePause(false);
-    }
-  }
-
-  const playSound =() => {
-    new Audio(dogBark).play();
-  }
-/*const [address, setAddress] = useState('');
-
 const loadApiAddSavedDestination = () => {
   callApiAddSavedDestination()
     .then((res) => {
@@ -292,8 +358,8 @@ const callApiAddSavedDestination = async () => {
   const url = serverURL + "/api/addSavedDestination";
   
   let AddressInfo = {
-    "address": address,
-    "user": 1,
+    "address": destination,
+    "userName":  store.getState().user.userNameGlobal
   };
 
   console.log(AddressInfo);
@@ -307,14 +373,124 @@ const callApiAddSavedDestination = async () => {
   const body = await response.json();
   if (response.status !== 200) throw Error(body.message);
   return body;
-}*/
+}
+
+let [savedDestinations, setSavedDestinations] = React.useState([]);
+let [shouldRefresh, setShouldRefresh] = React.useState(false);
+    
+React.useEffect(() => {
+  if (shouldRefresh) {
+    getSavedDestinations();
+    setShouldRefresh(false);
+  }
+}, [shouldRefresh]);
+
+React.useEffect(() => {
+  console.log(savedDestinations);
+}, [savedDestinations]);
+
+const getSavedDestinations = () => {
+  callApiGetSavedDestinations()
+    .then(res => {
+      setSavedDestinations(res.destinationsData);
+    })
+}
+
+const callApiGetSavedDestinations = async() => {
+  const url = serverURL + "/api/getSavedDestinations";
+  console.log(url);
+
+  let info = {
+    "userName": store.getState().user.userNameGlobal
+  };
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(info)
+  });
+  const body = await response.json();
+  if (response.status !== 200) throw Error(body.message);
+  console.log(response);
+  return body;
+}
+
+let [friendsEmails, setFriendsEmails] = React.useState([]);
+React.useEffect(() => {
+  getFriendsEmails();
+}, []);
+
+const getFriendsEmails = () => {
+  callAPIGetFriendsEmails()
+    .then(res => {
+      setFriendsEmails(res.friendEmailData);
+    })
+}
+
+const callAPIGetFriendsEmails = async() => {
+  const url = serverURL + "/api/getFriendsEmails";
+  console.log(url);
+
+  let userData = {
+    "username": store.getState().user.userNameGlobal
+  }
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userData)
+  });
+  const body = await response.json();
+  if (response.status !== 200) throw Error(body.message);
+  console.log(body);
+  return body;
+}
+
+let [authPlaces, setAuthPlaces] = React.useState([]);
+
+React.useEffect(() => {
+  getAuthLocations();
+}, []);
+
+React.useEffect(() => {
+}, [authPlaces]);
+
+const getAuthLocations = () => {
+  callAPIGetAuthLocations()
+    .then(res => {
+      setAuthPlaces(res.authData);
+    })
+}
+
+const callAPIGetAuthLocations = async() => {
+  const url = serverURL + "/api/getAuthorities";
+  console.log(url);
+  
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const body = await response.json();
+  if (response.status !== 200) throw Error(body.message);
+  console.log(body);
+  console.log(response.status);
+  setAuthPlaces(body.authData);
+  return body;
+}
 
   return (
 
     <grid>
 
-<Grid >
+<Grid style={{marginTop:'6vh'}} >
   <Grid align='center'>
+
   </Grid>      
 <LoadScript
   googleMapsApiKey = {apiKey}
@@ -333,21 +509,24 @@ const callApiAddSavedDestination = async () => {
       id="destination"
       type="text"
       placeholder="Destination"
-      style={{ width: '400px', backgroundColor: 'white'}}
+      style={{ width: '400px', backgroundColor: 'white', padding: '10px', borderRadius: '5px' }}
       value={destination}
       onChange={(e) => setDestination(e.target.value)}
+      InputProps={{
+        style: { borderBottom: '2px solid #29241C' }
+      }}
     />
     </Autocomplete>
     <p></p>
-    <Button type='submit' variant="contained" style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px', marginBottom: '15px'}}>Go</Button>
-    <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px',  marginBottom: '15px'}} variant="contained" onClick={reloadPage} >Reset Map</Button>
+    <Button type='submit' id = "Go" variant="contained" style={buttonStyle}>Go</Button>
+    <Button type='submit' style={buttonStyle} variant="contained" onClick={reloadPage} >Reset Map</Button>
   </form>
   </FormControl>
 <Grid container >
     <div>
-    <Button onClick={submitSaveDestination} type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px', marginBottom: '15px'}} variant="contained">Save This Destination</Button>
+    <Button onClick={submitSaveDestination} type='submit' style={buttonStyle} variant="contained">Save This Destination</Button>
     </div>
-    <Button onClick={handleClickOpenUse} type='submit' variant="contained" style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px', marginBottom: '15px'}}>Use Saved Destination</Button>
+    <Button onClick={handleClickOpenUse} type='submit' variant="contained" style={buttonStyle}>Use Saved Destination</Button>
       <Dialog disableEscapeKeyDown open={openUse} onClose={handleCloseCancelUse}>
         <DialogTitle>Use Saved Destination</DialogTitle>
         <DialogContent>
@@ -361,23 +540,32 @@ const callApiAddSavedDestination = async () => {
                 input={<OutlinedInput label="Destination" id="demo-dialog-native" />}
               >
                 <option aria-label="None" value="" />
-                <option value={"32 King St N, Waterloo, ON N2J 2W8, Canada"}>32 King St N, Waterloo, ON N2J 2W8, Canada</option>
-                <option value={"42 Green Valley Dr, Kitchener, ON N2P 2J7, Canada"}>42 Green Valley Dr, Kitchener, ON N2P 2J7, Canada</option>
-                <option value={"200 University Ave W, Waterloo, ON N2L 3G1, Canada"}>200 University Ave W, Waterloo, ON N2L 3G1, Canada</option>
-              </Select>
+                {savedDestinations.map(savedDestinations => (
+                  <option key={savedDestinations.id} value={savedDestinations.address}>
+                  {savedDestinations.address}
+               </option>
+                ))}
+                {savedDestinations.address}
+            </Select>
             </FormControl>
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseCancelUse} type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px', marginBottom: '15px'}} variant="contained">Cancel</Button>
-          <Button onClick={handleCloseSubmit} type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px', marginBottom: '15px'}} variant="contained">Set Destination</Button>
+          <Button onClick={handleCloseCancelUse} type='submit' style={buttonStyle} variant="contained">Cancel</Button>
+          <Button onClick={handleCloseSubmit} type='submit' style={buttonStyle} variant="contained">Set Destination</Button>
         </DialogActions>
       </Dialog>  
       </Grid> 
   <GoogleMap
     mapContainerStyle={containerStyle}
     center={{lat: lat, lng: lng}}
-    zoom={16}
+    bounds={
+      {
+        nw: { lat: lat + 0.001, lng: lng - 0.001 },
+        se: { lat: lat - 0.001, lng: lng + 0.001 },
+      }
+    }
+    zoom={17}
   >
 
 
@@ -387,9 +575,9 @@ const callApiAddSavedDestination = async () => {
       options={options3}
       position={{lat: item.lat, lng: item.lng}}
     >
-      <div style={{ display: showed ? "none": "", backgroundColor: '#E6CCB2', opacity: 1, padding: 2 }}>
-        <div style={{ fontSize: 10, fontColor: `#08233B` }}>
-         {item.text}
+      <div style={{ display: showed ? "none": "", backgroundColor: '#EFCA43', opacity: 1, padding: 4 }}>
+        <div style={{ fontSize: 10, fontColor: '#29241C', fontFamily: 'Noto Sans Lepcha'}}>
+         {item.alert}
         </div>
       </div>
     </InfoBox>
@@ -401,48 +589,62 @@ const callApiAddSavedDestination = async () => {
       options={options3}
       position={{lat: item.lat, lng: item.lng}}
     >
-      <div style={{ display: showed ? "none": "", backgroundColor: '#2E5129', opacity: 1}}>
-        <p style={{ fontSize: 10, color: 'white', padding: 2  }}>
-         {item.text}
+      <div style={{ display: showed ? "none": "", backgroundColor: '#6D8654', opacity: 1}}>
+        <p style={{ fontSize: 10, color: 'white', padding: 4  }}>
+         {item.description}
         </p>
       </div>
     </InfoBox>
     ))}
 
+  {authPlaces.map(item => (
+      <InfoBox
+      onLoad={onLoadInfo}
+      options={options4}
+      position={{lat: item.lat, lng: item.lng}}
+    >
+      <div style={{ display: showed ? "none": "", backgroundColor: '#87CEFA', opacity: 1}}>
+        <p style={{ fontSize: 10, color: 'black', padding: 4  }}>
+         {item.location}
+        </p>
+      </div>
+    </InfoBox>
+    ))}
 
 {friends.map(item => (
       <InfoBox
       onLoad={onLoadInfo}
       options={options3}
-      position={{lat: item.lat, lng: item.lng}}
+      position={{lat: item.latitude, lng: item.longitude}}
     >
-      <div style={{ display: showedF ? "none": "", fontColor: '#FFFFFF', backgroundColor: '#6F4E37', opacity: 1 }}>
-        <p style={{ fontSize: 10, color: '#FFFFFF', padding: 2 }}>
-         {item.friendName}
+      <div style={{ display: showedF ? "none": "", fontColor: '#FFFFFF', backgroundColor: '#29241C', opacity: 0.85 }}>
+        <p style={{ fontSize: 10, color: '#FFFFFF', padding: 4 }}>
+         {item.FullName}
         </p>
       </div>
     </InfoBox>
     ))}
         {!showedT ? <TrafficLayer onLoad={onLoad} /> : null}
     
-   {unsafelocations.map(item => (
+   {unsafetext.map(item => (
       <Circle options={options} center={{lat: item.lat, lng: item.lng}}></Circle>
     ))}
 
-  {safelocations.map(item2 => (
+  {safetext.map(item2 => (
       <Circle options={options2} center={{lat: item2.lat, lng: item2.lng}}></Circle>
     ))}
+
+{friends.map(item3 => (
+      <Circle options={options3} center={{lat: item3.lat, lng: item3.lng}}></Circle>
+    ))}
+
+
         <Marker  position={{lat: lat, lng: lng}}></Marker>
         {directions !== null && <DirectionsRenderer directions={directions} provideRouteAlternatives ={true} />}
       </GoogleMap>
-      
-                
-            
-      
-   
-    </LoadScript> 
+
+ </LoadScript> 
     <Grid style={{paddingTop: '1vh', display: 'flex'}}> 
-    
         <h5 style={{marginLeft: '0px', marginTop: '10px', color: 'white'}} onClick={()=> setShowed(!showed)}>{showed ? 'Show' : 'Hide' } Marked Locations</h5> 
         <Switch {...label} color="success" style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowed(!showed)}>{showed ? 'Show' : 'Hide' }</Switch>
         <p></p>
@@ -451,142 +653,9 @@ const callApiAddSavedDestination = async () => {
         <p></p>
         <h5 style={{marginLeft: '0px', marginTop: '10px', color: 'white'}} onClick={()=> setShowedT(!showedT)}>{showedT ? 'Show' : 'Hide' } Traffic</h5>
         <Switch {...label} color="success" style ={{marginTop: '0px' }} variant="outlined" onClick={()=> setShowedT(!showedT)}>{showedT ? 'Show' : 'Hide' } Traffic</Switch>
-      </Grid>
-     
+      </Grid>   
       <p></p>
-      <Grid container={2} display='flex'> 
-      <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px', marginBottom: '15px'}} variant="contained" onClick={handleClickOpen}>Emergency Contacts</Button>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Emergency Contacts</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            What would you like to do?
-          </DialogContentText>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={emergencyContactsOption}
-            label="Emergency Contact"
-            autoWidth
-            onChange={handleChangeEmergencyOptions}
-          >
-            <MenuItem value={"View emergency contacts"}> View emergency contacts </MenuItem>
-            <br></br>
-            <MenuItem value={"Add emergency contacts"}> Add emergency contacts </MenuItem>
-          </Select>
-          {showTextField && (
-            <AddEmergencyContactForm/>
-          )}
-          {showEmergencyContact && 
-            emergencyContacts.map(data => {
-              return (
-                <div key={data.id}>
-                  <li>Name: {data.name}</li>
-                  <li>Phone Number: {data.phoneNumber}</li>
-                  <br/>
-                </div>
-              );
-            })
-          }
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-        </DialogActions>
-      </Dialog>
-      <p></p>
-      <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px',  marginBottom: '15px'}} variant="contained" onClick = {handleClickOpenPhoneCall} >Fake Phone Call</Button>
-      <Dialog open={openFakeCall} onClose={handleClosePhoneCall}>
-        <DialogTitle>Fake Phone Call</DialogTitle>
-        <DialogContent>
-        {showPhonePlay && (
-            <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px',  marginBottom: '15px'}} variant="contained" onClick = {playPhoneCall} >Play Audio</Button>
-          )}
-           {showPhonePause && (
-            <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px',  marginBottom: '15px'}} variant="contained" onClick = {stopPhoneCall} >Stop Audio</Button>
-          )}
-        
-          <DialogContentText>
-            Transcript of Phone Call:
-          </DialogContentText>
-
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClosePhoneCall}>Cancel</Button>
-        </DialogActions>
-      </Dialog>
-      </Grid> 
-      <Grid container={2} display='flex'> 
-      <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px', marginBottom: '15px'}} variant="contained"  onClick={playSound}>Play Bark</Button>
-      <p></p>
-      <Button type='submit' style={{color: 'white', backgroundColor: '#29241C', marginRight: '10px',  marginBottom: '15px'}} variant="contained" >Dial 911</Button>
-       </Grid>
     </Grid>
     </grid>
-
-  );
-
-}
-
-const AddEmergencyContactForm = () => {
-  const [name, setName] = React.useState('');
-  const [phoneNumber, setPhoneNumber] = React.useState('');
-  const [submissionCheck, setSubmissionCheck]=React.useState(false)
-  const [submissionValidation,setSubmissionValidation] = React.useState(false);
-
-  const handlePhoneNumber = (phoneNumber) => {
-    setPhoneNumber(phoneNumber);
-  };
-
-  const handlePhoneNumberInput = (event) => {
-    handlePhoneNumber(event.target.value)
- }
- 
-  const handleName = (name) => {
-   setName(name);
- };
-
- const handleNameInput = (event) => {
-    handleName(event.target.value)
- }
-  
-  
-  
- const handleSubmissionCheck = (event) =>{
-    setSubmissionCheck(true);
-  }
-  const handleSubmissionValidation = (event) => {
-    event.preventDefault();
-    if(phoneNumber !== '' && name !==''){
-      setName('');
-      setPhoneNumber('');
-      setSubmissionValidation(true);
-      setSubmissionCheck(false);
-    }
-  };
-
-
-  return (
-      <Grid>
-                <FormControl>
-           <form autoComplete='off' onSubmit={handleSubmissionValidation}>
-              <br></br>
-                <TextField style={textStyle} label='Name' placeholder='Enter name' variant="outlined" value={name} onChange = {handleNameInput} />
-                  {
-                    name === '' && submissionCheck ===true ? (
-                    <div><em style={{color:'red'}}>*Please enter your emergency contact's name!</em></div>) : (<div></div>)
-                  }
-  
-                <TextField style={textStyle} label='Phonenumber' placeholder='Enter phone number' variant="outlined" value = {phoneNumber} onChange={handlePhoneNumberInput} fullWidth />
-                {
-                    phoneNumber === '' && submissionCheck ===true ? (
-                    <div><em style={{color:'red'}}>*Please enter your emergency contact's phone number!</em></div>) : (<div></div>)
-                  }
-                
-                <Button type='submit' variant="contained" style={buttonStyle} fullWidth  onClick={handleSubmissionCheck} >ADD EMERGENCY CONTACT</Button>
-                </form>
-             </FormControl> 
-        </Grid>
   );
 }
-
-
