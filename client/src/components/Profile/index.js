@@ -4,33 +4,36 @@ import Typography from "@material-ui/core/Typography";
 import {Avatar, Link } from '@material-ui/core'
 import Navbar from '../NavBar';
 import NavbarTop from '../NavBarTop';
-import BarkButton from '../BarkButton';
 import '../Home/index.css'
 import Paper from "@material-ui/core/Paper";
 import { useSelector } from 'react-redux';
 import store from '../../store';
+
 const serverURL = "";
-const cardStyle={padding :'2vh', height: '100%', fontFamily: 'Noto Sans Lepcha', color: '#29241C', backgroundColor: '#6D8654', display: 'flex', flex:1, flexDirection: 'row'}
+const cardStyle={borderRadius: '5px', padding :'5vh', fontFamily: 'Noto Sans Lepcha', color: '#29241C', backgroundColor: 'white', display: 'flex', flex:1, flexDirection: 'row', width: '90vh', height: '35vh', margin: '0 auto'}
+
+//renders avatars with first and last initials 
 function LetterAvatars({profile}) {
     return (
       <div>
         {profile.map(data => (
           <div key={data.userID}>
-            <Avatar style={{fontFamily: 'Oswald', backgroundColor: '#EBD6C1', color: '#B08968', width: '35vh', height: '35vh', fontSize: '20vh'}}>{data.userName.charAt(0).toUpperCase()}</Avatar>
+            <Avatar style={{fontFamily: 'Oswald', backgroundColor: '#EBD6C1', color: '#B08968', width: '25vh', height: '25vh', fontSize: '15vh'}}>{data.firstName.charAt(0).toUpperCase()}{data.lastName.charAt(0).toUpperCase()}</Avatar>
           </div>
         ))}
       </div>
     );
   }
 
+  //returns users name, username and email
   function ProfileCont({profile}) {
     return (
-      <Grid style={{color: 'white', marginLeft: '0vh', marginTop: '15vh'}}>
+      <Grid style={{color: '#29241C', marginLeft: '0vh'}}>
         {profile.map(data => (
           <div key={data.userID}>
-            <h3>Name: {data.firstName} {data.lastName}</h3>
-            <h3>Username: {data.userName}</h3>
-            <h3>Email: {data.email}</h3>
+            <h2 style={{fontWeight: 'bold'}}>{data.firstName} {data.lastName}</h2>
+            <h3 style={{marginBottom: '0vh', marginTop: '0vh'}}>username: {data.userName}</h3>
+            <h3 style={{marginBottom: '0vh', marginTop: '0vh'}}>email: {data.email}</h3>
             <br/>
           </div>
         ))}
@@ -46,8 +49,7 @@ function Profile() {
     loadApiGetProfiles();
   },[]);
   
-  
-  
+  //Api call to get profile information for user
   const loadApiGetProfiles = () => {
     callApiGetProfiles()
       .then(res => {
@@ -77,26 +79,30 @@ function Profile() {
     console.log(response);
     return body;
   }
+
+  //returns card with avatar and user information 
     return (
-        <div> 
-          <BarkButton></BarkButton>
+        <div style={{backgroundColor: '#6D8654', height: '100vh', fontFamily: 'Noto Sans Lepcha'}}> 
           <NavbarTop></NavbarTop>
+          <Grid>
+            <h1 style={{color: 'white', textAlign: 'center', fontFamily: 'Oswald', paddingTop: '10vh'}}>YOUR PROFILE</h1>
+          </Grid>
           <Paper
             style={cardStyle}
           >
             <Grid> 
-            <h1 style={{color:'white', fontFamily: 'Oswald', marginTop: '5vh'}}>YOUR PROFILE</h1>
-            
-            <LetterAvatars profile={profile}/>
+              <LetterAvatars profile={profile}/>
             </Grid>
-            <Grid style={{marginLeft: '5vh'}}> 
-            <ProfileCont profile={profile}/>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}  >
-          <Link href="/" style={{color: 'white'}}>
-                      LOGOUT
+
+            <Grid style={{paddingLeft: '4vh', paddingTop: '2vh', paddingRight: '4vh'}}> 
+              <ProfileCont profile={profile}/>
+              <Typography variant="h7" component="div" sx={{ flexGrow: 1 }} >
+                <Link href="/" style={{letterSpacing: '0.05rem', color: '#B08968', marginTop: '0vh', fontWeight: 'bold' }}>
+                  LOGOUT
                 </Link>
-          </Typography>
-          </Grid>
+              </Typography>
+            </Grid>
+
           </Paper>
           <Navbar></Navbar>
         </div>     

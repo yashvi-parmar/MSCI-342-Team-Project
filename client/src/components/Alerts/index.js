@@ -291,3 +291,22 @@ Home.propTypes = {
 };
 
 export default Home;
+
+}
+
+const Home = () => {
+    return (
+      <div> 
+       <NavbarTop></NavbarTop>       
+       
+        <Alerts /> 
+        <Navbar></Navbar>
+      </div>     
+    )
+  };
+
+Home.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
+export default Home;

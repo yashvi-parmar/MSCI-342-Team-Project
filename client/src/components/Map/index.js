@@ -7,8 +7,6 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import Navbar from '../NavBar';
 import NavbarTop from '../NavBarTop';
-import MenuItem from '@mui/material/MenuItem';
-import DialogContentText from '@mui/material/DialogContentText';
 import Switch from '@mui/material/Switch';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -18,40 +16,33 @@ import {GoogleMap, LoadScript, Marker, DirectionsRenderer, Autocomplete, Traffic
 import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
-import { DeskOutlined } from '@mui/icons-material';
-import fakePhoneCall from "./assets/fakePhoneCall.wav"
 import '../Home/index.css'
 import { useSelector } from 'react-redux';
 import store from '../../store';
 
 const buttonStyle={margin:'8px 0', backgroundColor: '#29241C',  marginRight: '10px', marginBottom: '15px', color: 'white', fontFamily: 'Oswald', letterSpacing: '0.05rem'} 
-
 const textStyle={marginBottom: '8px'}
 const containerStyle = {
   width: '100%',
-  height: '500px',
+  height: '60vh',
   display: 'flex'
 };
-
 const serverURL = "";
-
-
-
 const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 
 function Map() {
 
+  //sets the global user name from the redux state variables
   const userNameGlobal = useSelector((state) => state.user.userNameGlobal);
 
+  //updates the username if it changes
   useEffect(() => {
     console.log('userNameGlobal in MapComponent:', store.getState().user.userNameGlobal);
   }, [userNameGlobal]);
 
-
   return (
     <grid style={{backgroundColor: '#6D8654', fontFamily: 'Noto Sans Lepcha'}}>
       <NavbarTop></NavbarTop>
-    
     <div className="Map">
       <Grid>
             <Paper style={{backgroundColor: '#6D8654',padding: '4vh',  marginTop: '3vh'}}>
@@ -61,8 +52,7 @@ function Map() {
             </Paper>
         </Grid>
     </div>
-    <Navbar></Navbar>
-    
+    <Navbar></Navbar> 
     </grid>
   )
 }
@@ -83,6 +73,7 @@ function MapFxn() {
   const [lat, setLat] = useState(null);
   const [lng, setLng] = useState(null);
 
+  //sets the computers lat/lng based on it's geolocations
   useEffect(() => {
     const watchId = navigator.geolocation.watchPosition(
       (position) => {
@@ -95,50 +86,40 @@ function MapFxn() {
       },
       { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
     );
-
     return () => navigator.geolocation.clearWatch(watchId);
   }, []);
 
+  //handles the load of the "Go" button to get the directions
   const handleLoad = () => {
     const directionsServiceOptions = {
       origin: origin,
       destination: destination,
       travelMode: 'WALKING'
     };
-
     const directionsService = new window.google.maps.DirectionsService();
     directionsService.route(directionsServiceOptions, directionsCallback);
-
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
     if (origin !== '' && destination !== '') {
       const directionsServiceOptions = {
         origin: origin,
         destination: destination,
         travelMode: 'WALKING'
       };
-
       const directionsService = new window.google.maps.DirectionsService();
       directionsService.route(directionsServiceOptions, directionsCallback);
-      
     }
-
   };
 
+  //loads the traffic layer for the map
   const onLoad = trafficLayer => {
-    //console.log("hello, " + userNameGlobal);
     console.log('trafficLayer: ', trafficLayer)
   }
 
   const onLoadInfo = infoBox => {
     console.log('infoBox: ', infoBox)
-  };
-
-  const onLoadInfoAuth = infoBox => {
-
   };
 
   const optionsAuth = { closeBoxURL: '', enableEventPropagation: true };
@@ -156,7 +137,6 @@ function MapFxn() {
   radius: 10,
   zIndex: 1,
   closeBoxURL: '', enableEventPropagation: true 
-  
 }
 
   const options3 = {
@@ -202,13 +182,12 @@ function MapFxn() {
     zIndex: 1
   }
 
-
   let [unsafetext,setUnsafeText]=React.useState([]);
   let [safetext,setSafetext] = React.useState([]);
   let [friends,setFriends] = React.useState([]);
 
+  //loads the Alerts on the map
   React.useEffect(() => {
-    //loadUserSettings();
     loadGetAlerts();
    },[]);
 
@@ -221,15 +200,12 @@ function MapFxn() {
   }
 
   const callGetAlerts = async() => {
-    
-    //console.log('t',url)
     const url = serverURL + "/api/getAlerts";
     console.log(url)
     const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        //authorization: `Bearer ${this.state.token}`
       },
     });
     const body =await response.json();
@@ -237,6 +213,7 @@ function MapFxn() {
     return body;
   }
 
+  //loads the safe locations on the map
   React.useEffect(() => {
     loadGetSafeLocations();
    },[]);
@@ -249,7 +226,6 @@ function MapFxn() {
   });
   }
   const callGetSafeLocations = async() => {
-    
     const url = serverURL + "/api/getSafeLocations";
     console.log(url)
     const response = await fetch(url, {
@@ -263,9 +239,8 @@ function MapFxn() {
     return body;
   }
 
- 
+//loads the friends on the map
 React.useEffect(() => {
-  //loadUserSettings();
   loadGetFriends();
  },[]);
 
@@ -276,15 +251,10 @@ const loadGetFriends =() => {
 });
 }
 const callGetFriends = async() => {
-  
   const url = serverURL + "/api/GetFriends";
   let FriendInfo = { 
     "username": store.getState().user.userNameGlobal,
   };
-
-  console.log(FriendInfo);
-
-  console.log(FriendInfo);
   const response = await fetch(url, {
     method: "POST",
     headers: {
@@ -335,7 +305,6 @@ const handleClickOpenUse = () => {
   setShouldRefresh(true);
 };
 
-
 const handleCloseCancelUse = () => {
   setOpenUse(false);
 };
@@ -347,6 +316,7 @@ const handleCloseSubmit = () => {
 
 const [destinationForm, setDestinationForm] = useState('');
 
+//saves the destination for the user 
 const loadApiAddSavedDestination = () => {
   callApiAddSavedDestination()
     .then((res) => {
@@ -356,13 +326,10 @@ const loadApiAddSavedDestination = () => {
 
 const callApiAddSavedDestination = async () => {
   const url = serverURL + "/api/addSavedDestination";
-  
   let AddressInfo = {
     "address": destination,
     "userName":  store.getState().user.userNameGlobal
   };
-
-  console.log(AddressInfo);
   const response = await fetch(url, {
     method: "POST", 
     headers: {
@@ -377,7 +344,8 @@ const callApiAddSavedDestination = async () => {
 
 let [savedDestinations, setSavedDestinations] = React.useState([]);
 let [shouldRefresh, setShouldRefresh] = React.useState(false);
-    
+
+//gets the saved destinations for the drop down if the page should refresh 
 React.useEffect(() => {
   if (shouldRefresh) {
     getSavedDestinations();
@@ -399,11 +367,9 @@ const getSavedDestinations = () => {
 const callApiGetSavedDestinations = async() => {
   const url = serverURL + "/api/getSavedDestinations";
   console.log(url);
-
   let info = {
     "userName": store.getState().user.userNameGlobal
   };
-
   const response = await fetch(url, {
     method: "POST",
     headers: {
@@ -413,45 +379,12 @@ const callApiGetSavedDestinations = async() => {
   });
   const body = await response.json();
   if (response.status !== 200) throw Error(body.message);
-  console.log(response);
-  return body;
-}
-
-let [friendsEmails, setFriendsEmails] = React.useState([]);
-React.useEffect(() => {
-  getFriendsEmails();
-}, []);
-
-const getFriendsEmails = () => {
-  callAPIGetFriendsEmails()
-    .then(res => {
-      setFriendsEmails(res.friendEmailData);
-    })
-}
-
-const callAPIGetFriendsEmails = async() => {
-  const url = serverURL + "/api/getFriendsEmails";
-  console.log(url);
-
-  let userData = {
-    "username": store.getState().user.userNameGlobal
-  }
-
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(userData)
-  });
-  const body = await response.json();
-  if (response.status !== 200) throw Error(body.message);
-  console.log(body);
   return body;
 }
 
 let [authPlaces, setAuthPlaces] = React.useState([]);
 
+//gets the authority locations for the map
 React.useEffect(() => {
   getAuthLocations();
 }, []);
@@ -478,20 +411,15 @@ const callAPIGetAuthLocations = async() => {
   });
   const body = await response.json();
   if (response.status !== 200) throw Error(body.message);
-  console.log(body);
-  console.log(response.status);
   setAuthPlaces(body.authData);
   return body;
 }
 
   return (
-
-    <grid>
-
-<Grid style={{marginTop:'6vh'}} >
-  <Grid align='center'>
-
-  </Grid>      
+    <grid style={{height: '100%', backgroundColor: '#6D8654'}}>
+      <Grid style={{marginTop:'6vh'}} >
+        <Grid align='center'>
+        </Grid>      
 <LoadScript
   googleMapsApiKey = {apiKey}
   onLoad={handleLoad}
@@ -567,8 +495,6 @@ const callAPIGetAuthLocations = async() => {
     }
     zoom={17}
   >
-
-
 {unsafetext.map(item => (
       <InfoBox
       onLoad={onLoadInfo}
@@ -582,7 +508,6 @@ const callAPIGetAuthLocations = async() => {
       </div>
     </InfoBox>
     ))}
-
 {safetext.map(item => (
       <InfoBox
       onLoad={onLoadInfo}
@@ -596,7 +521,6 @@ const callAPIGetAuthLocations = async() => {
       </div>
     </InfoBox>
     ))}
-
   {authPlaces.map(item => (
       <InfoBox
       onLoad={onLoadInfo}
@@ -610,7 +534,6 @@ const callAPIGetAuthLocations = async() => {
       </div>
     </InfoBox>
     ))}
-
 {friends.map(item => (
       <InfoBox
       onLoad={onLoadInfo}
@@ -625,24 +548,18 @@ const callAPIGetAuthLocations = async() => {
     </InfoBox>
     ))}
         {!showedT ? <TrafficLayer onLoad={onLoad} /> : null}
-    
    {unsafetext.map(item => (
       <Circle options={options} center={{lat: item.lat, lng: item.lng}}></Circle>
     ))}
-
   {safetext.map(item2 => (
       <Circle options={options2} center={{lat: item2.lat, lng: item2.lng}}></Circle>
     ))}
-
 {friends.map(item3 => (
       <Circle options={options3} center={{lat: item3.lat, lng: item3.lng}}></Circle>
     ))}
-
-
         <Marker  position={{lat: lat, lng: lng}}></Marker>
         {directions !== null && <DirectionsRenderer directions={directions} provideRouteAlternatives ={true} />}
       </GoogleMap>
-
  </LoadScript> 
     <Grid style={{paddingTop: '1vh', display: 'flex'}}> 
         <h5 style={{marginLeft: '0px', marginTop: '10px', color: 'white'}} onClick={()=> setShowed(!showed)}>{showed ? 'Show' : 'Hide' } Marked Locations</h5> 
