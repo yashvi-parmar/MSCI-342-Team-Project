@@ -357,7 +357,7 @@ const callGetEmergencyContacts = async() => {
 }
 
 const handlePhoneCall = () => {
-  window.location.href = 'tel:+16475515213';
+  window.location.href = 'tel:+16477461048';
 }
 
 

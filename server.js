@@ -261,7 +261,7 @@ app.post('/api/SearchUser', (req, res) => {
 
 	username = req.body.username;
 	  
-	let sql = "SELECT CONCAT(Profiles.firstName,' ',Profiles.lastName) AS FullName, Profiles.longitude, Profiles.latitude, Profiles.userName, Profiles.email FROM Profiles INNER JOIN Friends ON Friends.FriendUsername=Profiles.userName WHERE Friends.username=?";
+	let sql = "SELECT Profiles.firstName, Profiles.lastName, Profiles.longitude, Profiles.latitude, Profiles.userName, Profiles.email FROM Profiles INNER JOIN Friends ON Friends.FriendUsername=Profiles.userName WHERE Friends.username=?";
 	let data=[username];
 	console.log(sql);
 	console.log(data);       
