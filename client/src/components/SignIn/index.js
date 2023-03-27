@@ -106,7 +106,7 @@ const dispatch = useDispatch();
             loadApiAddLastSeenLocation();
             dispatch(setUsernameGlobal(username));
             console.log("userNameGlobal in store:", store.getState().user.userNameGlobal);
-            handleChange("/");
+            handleChange("/Home");
             setUsername('');
             setPassword('');
           }else{

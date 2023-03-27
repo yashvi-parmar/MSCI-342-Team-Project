@@ -92,7 +92,7 @@ function Profile() {
             <Grid style={{marginLeft: '5vh'}}> 
             <ProfileCont profile={profile}/>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}  >
-          <Link href="/SignIn" style={{color: 'white'}}>
+          <Link href="/" style={{color: 'white'}}>
                       LOGOUT
                 </Link>
           </Typography>
