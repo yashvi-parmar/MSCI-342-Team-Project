@@ -6,12 +6,16 @@ import Navbar from '../NavBar';
 import NavbarTop from '../NavBarTop';
 import '../Home/index.css'
 import Paper from "@material-ui/core/Paper";
-import { useSelector } from 'react-redux';
 import store from '../../store';
 
 const serverURL = "";
 const cardStyle={borderRadius: '5px', padding :'5vh', fontFamily: 'Noto Sans Lepcha', color: '#29241C', backgroundColor: 'white', display: 'flex', flex:1, flexDirection: 'row', width: '90vh', height: '35vh', margin: '0 auto'}
 
+function dogImage () {
+  return (
+    <img style={{height: '30vh', marginTop: '50vh'}} src={Dog2} alt="Dog" />
+  )
+}
 //renders avatars with first and last initials 
 function LetterAvatars({profile}) {
     return (
@@ -82,7 +86,7 @@ function Profile() {
 
   //returns card with avatar and user information 
     return (
-        <div style={{backgroundColor: '#6D8654', height: '100vh', fontFamily: 'Noto Sans Lepcha'}}> 
+        <div style={{backgroundColor: '#6D8654', height: '100%', fontFamily: 'Noto Sans Lepcha'}}> 
           <NavbarTop></NavbarTop>
           <Grid>
             <h1 style={{color: 'white', textAlign: 'center', fontFamily: 'Oswald', paddingTop: '10vh'}}>YOUR PROFILE</h1>
@@ -102,8 +106,7 @@ function Profile() {
                 </Link>
               </Typography>
             </Grid>
-
-          </Paper>
+          </Paper>          
           <Navbar></Navbar>
         </div>     
       )
