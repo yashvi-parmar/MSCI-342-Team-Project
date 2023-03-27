@@ -7,9 +7,20 @@ import NavbarTop from '../NavBarTop';
 import '../Home/index.css'
 import Paper from "@material-ui/core/Paper";
 import store from '../../store';
+import { ThemeProvider, createTheme } from '@mui/material';
+import Dog from './dog.png';
+import Dog2 from './dog2.png';
 
 const serverURL = "";
 const cardStyle={borderRadius: '5px', padding :'5vh', fontFamily: 'Noto Sans Lepcha', color: '#29241C', backgroundColor: 'white', display: 'flex', flex:1, flexDirection: 'row', width: '90vh', height: '35vh', margin: '0 auto'}
+
+const theme = createTheme({
+  palette: {
+    background: {
+      default: '#6D8654'
+    }
+  }
+});
 
 //renders avatars with first and last initials 
 function LetterAvatars({profile}) {
@@ -81,7 +92,8 @@ function Profile() {
 
   //returns card with avatar and user information 
     return (
-        <div style={{backgroundColor: '#6D8654', height: '100vh', fontFamily: 'Noto Sans Lepcha'}}> 
+      <ThemeProvider theme={theme}>
+        <Grid style={{backgroundColor: '#6D8654', fontFamily: 'Noto Sans Lepcha',  justifyContent: 'space-between'}}> 
           <NavbarTop></NavbarTop>
           <Grid>
             <h1 style={{color: 'white', textAlign: 'center', fontFamily: 'Oswald', paddingTop: '10vh'}}>YOUR PROFILE</h1>
@@ -102,8 +114,10 @@ function Profile() {
               </Typography>
             </Grid>
           </Paper>          
+          <img style={{ height: '60vh', marginTop: '-23vh'}} src={Dog2} alt="Dog" />
           <Navbar></Navbar>
-        </div>     
+        </Grid>     
+        </ThemeProvider>
       )
 }
 

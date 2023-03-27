@@ -4,28 +4,27 @@ import Paper from "@material-ui/core/Paper";
 import {TextField, Button, Link } from '@material-ui/core'
 import { FormControl } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
-import {createTheme, ThemeProvider} from "@material-ui/core/styles";
+import { ThemeProvider, createTheme } from '@mui/material';
 import { setUsernameGlobal } from '../../actions/user';
 import { useDispatch } from 'react-redux';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
 const cardStyle={padding :90, height:'95%',width:280,  color: '#29241C', backgroundColor: '#EDECED'}
 const buttonStyle={margin:'8px 0', backgroundColor: '#6D8654', color: '#29241C', marginTop: '5vh', borderRadius: 35, height: '50px'}
 const textStyle={marginBottom: '2vh',  color: 'black', width: '280px'}
 const serverURL = "";
 const theme = createTheme({
   palette: {
-    type: 'light',
     background: {
-      default: "#6D8654"
-    },
-    primary: {
-      main: '#29241C',
-    },
-    secondary: {
-      main: "#29241C",
-    },
-  },
- });
- 
+      default: '#6D8654'
+    }
+  }
+});
+
  function CreateAccount() {
 
     const [firstName, setFirstName] = React.useState('');
@@ -193,8 +192,8 @@ const theme = createTheme({
   }
 
   return (
-    <Grid style={{backgroundColor: '#6D8654', height: '100vh', color: '#29241C'}}>
-     <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+    <Grid style={{backgroundColor: '#6D8654', color: '#29241C'}}>
       <Grid style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', padding: '5vh'}} >
       <Grid style={{display: 'flex', flexDirection: 'column', flexBasis: '100%', flex: 1}}>
         <h3 style={{letterSpacing: '0.05rem', color: '#EDECED'}}>Welcome to Bark!</h3>
@@ -256,8 +255,8 @@ const theme = createTheme({
             </Paper>
             </Grid>
         </Grid>  
-   </ThemeProvider> 
     </Grid>
+    </ThemeProvider> 
   );
 }
 export default CreateAccount;

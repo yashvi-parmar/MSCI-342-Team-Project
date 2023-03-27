@@ -1,5 +1,5 @@
 import React from 'react';
-import {createTheme, ThemeProvider, styled} from "@material-ui/core/styles";
+import { ThemeProvider, createTheme } from '@mui/material';
 import Typography from "@material-ui/core/Typography";
 import { TextField } from '@material-ui/core';
 import Grid from "@material-ui/core/Grid";
@@ -23,21 +23,14 @@ import store from '../../store';
 const serverURL = "";
 const apiKey = "AIzaSyAMqGMEh0eee_qYPGQ1la32w1Y-aKT7LTI";
 const buttonStyle={ backgroundColor: '#29241C', color: 'white', fontFamily: 'Oswald'}
-const cardStyle={padding :'4vh', height:'100%',width:480,  color: '#29241C', backgroundColor: '#EDECED', display: 'flex', flex:1, flexDirection: 'column'}
+const cardStyle={padding :'4vh', width:480, height: '80vh', color: '#29241C', display: 'flex', flex:1, flexDirection: 'column'}
 
 const theme = createTheme({
- palette: {
-   type: 'light',
-   background: {
-     default: "#042913"
-   },
-   primary: {
-     main: '#46341C',
-   },
-   secondary: {
-     main: '#46341C',
-   },
- },
+  palette: {
+    background: {
+      default: '#6D8654'
+    }
+  }
 });
 
 const Alerts = (props) => {
@@ -172,9 +165,9 @@ const callGetAlerts = async() => {
 //renders form for submit warning, includes autcomplete address bar for location of warning and description of warning
 //displays the last 4 alerts on the side for users to see including location, letter avatar of user, and description of danger
 return (
-  <Grid style={{backgroundColor: '#6D8654',fontFamily: 'Noto Sans Lepcha', padding: '10vh', color: 'white', height: '100vh', display: 'flex', flexDirection: 'row', flexBasis: '100%', flex: 1 , justifyContent: 'center'}}>
+  
+  <Grid style={{ fontFamily: 'Noto Sans Lepcha', padding: '10vh', display: 'flex', flexDirection: 'row', flexBasis: '100%', flex: 1 , justifyContent: 'center'}}>
     <Paper elevation={10} style={cardStyle}> 
-    <ThemeProvider theme={theme}> 
     <h1 style={{color: '#29241C', fontFamily: 'Oswald'}}>Submit a Warning</h1>
          <LoadScript
           googleMapsApiKey = {apiKey}
@@ -239,20 +232,18 @@ return (
           </div>
 
         }        
-       </ThemeProvider>
    </Paper>
    <Grid style={{marginLeft: '5vh'}} >
    <Paper elevation={10} style={cardStyle}> 
-    <ThemeProvider theme={theme}> 
     <h1 style={{color: '#29241C', fontFamily: 'Oswald'}}>Alerts</h1>
     <p style={{fontSize: 10, marginTop: '-1vh'}}>Only displays latest 4 messages in your area. Please see map for more alerts.</p>
  
-    <List sx={{ width: '100%', maxWidth: 460, bgcolor: 'background.paper' }}>
+    <List sx={{ width: '100%', maxWidth: 460}}>
     {unsafetext.map(item => (
       <List>
-      <ListItem alignItems="flex-start" style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: '#29241C', color: 'white'}}>
+      <ListItem alignItems="flex-start" style={{borderRadius: '5px', fontFamily: 'Noto Sans Lepcha', backgroundColor: '#29241C', color: 'white'}}>
         <ListItemAvatar >
-          <Avatar style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: 'white', color: '#29241C'}}>{item.username.charAt(0).toUpperCase()}</Avatar>
+          <Avatar style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: '#EBD6C1', color: '#B08968'}}>{item.username.charAt(0).toUpperCase()}</Avatar>
         </ListItemAvatar>
         <ListItemText
           primary={item.address}
@@ -267,7 +258,6 @@ return (
       </List>
         ))}
       </List>  
-       </ThemeProvider>
    </Paper>
     </Grid>
    </Grid>
@@ -279,12 +269,13 @@ return (
 
 const Home = () => {
     return (
-      <div> 
+      <ThemeProvider theme={theme}>
+      <Grid > 
        <NavbarTop></NavbarTop>       
-       
         <Alerts /> 
         <Navbar></Navbar>
-      </div>     
+      </Grid>     
+      </ThemeProvider>
     )
   };
 

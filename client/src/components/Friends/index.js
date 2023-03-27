@@ -9,9 +9,18 @@ import Button from '@material-ui/core/Button';
 import '../Home/index.css'
 import { useSelector } from 'react-redux';
 import store from '../../store';
+import { ThemeProvider, createTheme } from '@mui/material';
 
 const serverURL = ""; //enable for dev mode
 // const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:PORT";
+
+const theme = createTheme({
+  palette: {
+    background: {
+      default: '#6D8654'
+    }
+  }
+});
 
 //function that displays the column of friends
 const ShowFriends = (props) => {
@@ -262,7 +271,8 @@ function Friends() {
   }
     //main return: cards with existing friends and search bar
     return (
-        <Grid style={{backgroundColor: '#6D8654', height: '100vh', fontFamily: 'Noto Sans Lepcha'}}> 
+      <ThemeProvider theme={theme}>
+        <Grid style={{marginBottom: '6vh', fontFamily: 'Noto Sans Lepcha'}}> 
           <NavbarTop></NavbarTop>
           <Grid
             container
@@ -283,6 +293,7 @@ function Friends() {
           </Grid>
           <Navbar></Navbar>
         </Grid>  
+        </ThemeProvider>
       )
 }
 
