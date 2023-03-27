@@ -221,7 +221,6 @@ const SearchFriends = () => {
   }
 }
 
-
 function Friends() {
   let [friends,setFriends]=React.useState([]);
   

@@ -142,7 +142,6 @@ const AddEmergencyContactForm = () => {
         </Grid>
   );
 }
-  
 
 const Home = () => {
   const REACT_APP_API_URL = 'https://api.openweathermap.org/data/2.5'
@@ -416,11 +415,9 @@ function LetterAvatars({profile}) {
 }
 
   return (
-
     <Grid> 
         
         <NavbarTop></NavbarTop>
-
       <Grid  style={{backgroundColor: '#6D8654', height: '100%', padding: '10vh', color: 'white', display: 'flex', 
       flexDirection: 'column', flexBasis: '100%', flex: 1}}> 
       <Grid >

@@ -72,9 +72,7 @@ const Share = () => {
 
 return (
     <Grid style={{backgroundColor: '#6D8654'}}>
-        
-        
-          
+
               <Button variant="contained" color="secondary" onClick= {runButton}>
                 SHARE
               </Button>
