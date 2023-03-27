@@ -542,7 +542,7 @@ const callAPIGetAuthLocations = async() => {
     >
       <div style={{ display: showedF ? "none": "", fontColor: '#FFFFFF', backgroundColor: '#29241C', opacity: 0.85 }}>
         <p style={{ fontSize: 10, color: '#FFFFFF', padding: 4 }}>
-         {item.FullName}
+         {item.firstName}  {item.lastName}
         </p>
       </div>
     </InfoBox>

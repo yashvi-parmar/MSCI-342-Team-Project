@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect,useState} from 'react';
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import {TextField, Button, Link } from '@material-ui/core'
@@ -250,7 +250,7 @@ const theme = createTheme({
                 </form>
                 </FormControl> 
              <div style={{marginTop: "1vh" }} ></div>
-                     <Link href="/SignIn" style={{color: '#131411'}}>
+                     <Link href="/" style={{color: '#131411'}}>
                         OR LOGIN
                 </Link>
             </Paper>
