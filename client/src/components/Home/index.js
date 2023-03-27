@@ -38,15 +38,13 @@ import store from '../../store';
 
 
 const serverURL = ""; //enable for deployed mode; Change PORT to the port number given to you;
+const buttonStyle={margin:'8px 0', marginTop: '-2vh', width: '30vh', height: '6vh', backgroundColor: '#29241C',  marginRight: '10px', marginBottom: '2vh', color: 'white', fontFamily: 'Oswald', letterSpacing: '0.05rem'} 
 
-
-
-  const buttonStyle={margin:'8px 0', marginTop: '-2vh', width: '30vh', height: '6vh', backgroundColor: '#29241C',  marginRight: '10px', marginBottom: '2vh', color: 'white', fontFamily: 'Oswald', letterSpacing: '0.05rem'} 
-
-  const textStyle={marginBottom: '8px'}
-  const fetch = require("node-fetch");
+const textStyle={marginBottom: '8px'}
+const fetch = require("node-fetch");
   
 
+//Emergency Contact Form 
 const AddEmergencyContactForm = () => {
   const [name, setName] = React.useState('');
   const [phoneNumber, setPhoneNumber] = React.useState('');
@@ -141,11 +139,8 @@ const AddEmergencyContactForm = () => {
         </Grid>
   );
 }
-
+//Home page
 const Home = () => {
-  const REACT_APP_API_URL = 'https://api.openweathermap.org/data/2.5'
-  const REACT_APP_API_KEY = '767a9a6ec8856b1d5f4e998eb195f561'
-  const REACT_APP_ICON_URL = 'https://openweathermap.org/img/w'
   const [lat, setLat] = useState([]);
   const [long, setLong] = useState([]);
   const [name, setName] = React.useState('');
@@ -225,20 +220,12 @@ const Home = () => {
   const runButton = event => {
  
     event.preventDefault();
-    var copyText = "this is the link";
+    var copyText = "Share Bark with Your Friends!";
     navigator.clipboard.writeText(copyText).then(() => {
     alert("Link copied to clipboard!");
 });
 }
-const [directions, setDirections] = useState(null);
-const [origin, setOrigin] = useState('');
-const [destination, setDestination] = useState('');
 
-const directionsCallback = (response) => {
-  if (response !== null) {
-    setDirections(response);
-  }
-};
 
 const names = userNameGlobal
 const [emergencyContactsOption,setEmergencyContactsOption]=React.useState("");
@@ -413,6 +400,7 @@ function LetterAvatars({profile}) {
   );
 }
 
+//Home Page Return 
   return (
     <Grid> 
         
@@ -496,7 +484,7 @@ function LetterAvatars({profile}) {
         <Grid style={{borderRadius: '5px', backgroundColor: 'white', padding: '2vh', color: '#29241C',  marginRight:'2vh', height: '100%'}}> 
         <h1 style={{justifyContent: 'center', alignContent: 'center', fontFamily: 'Oswald', fontSize:  '3vh', marginTop: '-1vh', color: '#29241C'}}>Your Alerts</h1>
         <List >
-    {alertData.map((item) => (
+       {alertData.map((item) => (
       <List>
       <ListItem alignItems="center" style={{borderRadius: '5px', fontFamily: 'Noto Sans Lepcha', backgroundColor: '#29241C', color: 'white', width: '45vh'}}>
           <LetterAvatars profile={profile}></LetterAvatars>
@@ -504,14 +492,6 @@ function LetterAvatars({profile}) {
           primary={item.address}
           secondary={
             <React.Fragment>
-              <Typography
-                sx={{ display: 'inline' }}
-                component="span"
-                variant="body2"
-                color="white"
-              >
-                
-              </Typography>
               <p style={{color: 'white', margin: '-0.1vh'}}>{item.alert}</p>
               
             </React.Fragment>

@@ -8,11 +8,15 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useHistory } from 'react-router-dom';
 import {  Link } from "react-router-dom";
 import BarkLogo from './circle.png';
+
+//Top navigation bar 
 export default function MenuAppBar() {
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const history = useHistory();
   const [value, setValue] = React.useState(0);
+
+  //Code to change to another site
   const handleChange = (event, newValue) => {
     history.push(`${newValue}`);
     setValue(newValue);
