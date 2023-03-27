@@ -29,7 +29,7 @@ const buttonStyle={margin:'8px 0', backgroundColor: '#29241C',  marginRight: '10
 const textStyle={marginBottom: '8px'}
 const containerStyle = {
   width: '100%',
-  height: '500px',
+  height: '60vh',
   display: 'flex'
 };
 
@@ -486,8 +486,7 @@ const callAPIGetAuthLocations = async() => {
 
   return (
 
-    <grid>
-
+    <grid style={{height: '100%', backgroundColor: '#6D8654'}}>
 <Grid style={{marginTop:'6vh'}} >
   <Grid align='center'>
 

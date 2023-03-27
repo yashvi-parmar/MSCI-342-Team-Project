@@ -221,7 +221,7 @@ export default function FixedBottomNavigation() {
           <BottomNavigationAction  color="white" label="Map"  value="Map" icon={<MapIcon />} />
           <BottomNavigationAction label="Alerts" value="Alerts" icon={<AnnouncementIcon />} />
           <BottomNavigationAction label="Friends" value="Friends" icon={<Diversity1Icon />} />
-          <BottomNavigationAction label="Bark Button" value="" onClick={playSound}  icon={<VolumeUpIcon />} /> 
+          <BottomNavigationAction label="Bark Button" value="Home" onClick={playSound}  icon={<VolumeUpIcon />} /> 
          
         </BottomNavigation>
       </Paper>

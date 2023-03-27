@@ -130,7 +130,7 @@ const theme = createTheme({
             setPasswordReenter('');
             setSubmissionValidation(true);
             setSubmissionCheck(false);
-            handleChange("/")
+            handleChange("/Home")
           }else if (parsed != ""){
               setSubmissionCheck(false);
               setUsername('');
