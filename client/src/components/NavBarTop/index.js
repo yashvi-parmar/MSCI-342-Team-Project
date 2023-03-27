@@ -34,7 +34,7 @@ export default function MenuAppBar() {
         <Toolbar>
         
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}  >
-          <Link to="/">
+          <Link to="/Home">
           <img src={BarkLogo} alt="Bark Logo" style={{ width: '50px', marginTop: '5px'}}/>
            </Link>
           </Typography>
