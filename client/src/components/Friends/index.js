@@ -14,13 +14,14 @@ const serverURL = ""; //enable for dev mode
 // const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:PORT";
 
 const ShowFriends = (props) => {
-  console.log(props.friends);
-  //replace with actual api calls
-  const firstNames = ['Vedangi', 'Yashvi', 'Anna', 'Bhairavi']; 
-  const lastNames = ['Patel', 'Parmar', 'Thalayasingam', 'Fyfe']
-  const locations = ['vedangis location', 'yashvis location', 'annas location', 'bhairavis location'];
-  const firstLetters = firstNames.map((first) => first[0]);
-  const lastLetters = lastNames.map((last) => last[0]);
+  console.log("THIS IS FRIENDS:" + props.friends);
+  const fri = props.friends;
+  const firstNames = fri.map(friend => friend.firstName);
+  const lastNames = fri.map(friend => friend.lastName);
+  const userNames = fri.map(friend => friend.userName);
+  const emails = fri.map(friend => friend.email);
+  const firstLetters = firstNames.map((first) => first[0].toUpperCase());
+  const lastLetters = lastNames.map((last) => last[0].toUpperCase());
 
   return (
     <Grid container spacing={2} direction="column" >
@@ -31,7 +32,8 @@ const ShowFriends = (props) => {
             <Avatar style={{backgroundColor: '#EBD6C1', color: '#B08968', width: '10vh', height: '10vh', fontSize: '4vh', marginRight: '5vh', marginLeft: '3vh'}}>{firstLetters[index]}{lastLetters[index]}</Avatar> 
             <div>
               <h3>{fri} {lastNames[index]} </h3>
-              <h4>{locations[index]}</h4>
+              <h5 style={{marginTop: '0px', marginBottom: '0px'}}>username: {userNames[index]}</h5>
+              <h5 style={{marginTop: '0px', marginBottom: '0px'}}>email: {emails[index]}</h5>
             </div>
             </CardContent>
           </Card>
@@ -72,10 +74,6 @@ const SearchFriends = () => {
     if (enteredUsername === ''){
         setIsEmpty (true);
     } else {
-      // console.log('hello')
-      // setFirstName ('Vedangi');
-      // setLastName ('Last');
-      // setSearchResult (['Vedangi', 'Yashvi']);
       loadSearchResult (); //gets * FROM Profiles 
     }
   }
@@ -102,8 +100,7 @@ const SearchFriends = () => {
     };
   
     console.log(FriendInfo);
-  
-    console.log(FriendInfo);
+
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -241,11 +238,11 @@ function Friends() {
             alignItems="stretch"
             style={{padding: '4vh', flexDirection: 'row', flexBasis: '100%', flex: 1}}
           >
-            <Grid item xs={6}>
+            <Grid item xs={6} style={{marginTop: '5vh'}}>
               <h1 style={{color: 'white', fontFamily: 'Oswald'}}>FRIENDS</h1>
               <ShowFriends friends={friends}/>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={6} style={{textAlign: 'right', marginTop: '5vh'}}>
               <h1 style={{color: 'white', fontFamily: 'Oswald'}}>FIND MY FRIENDS</h1>
               <SearchFriends></SearchFriends>
             </Grid>
