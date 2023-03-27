@@ -482,7 +482,7 @@ function LetterAvatars({profile}) {
         </Grid>
         <Grid style={{ color: '#29241C',  fontFamily: 'Oswald', fontSize:  '3vh', display: 'flex', flexDirection: 'column', columnGap: '3vh', justifyContent:'center', alignItems: 'center' }}> 
         <Grid style={{borderRadius: '5px', backgroundColor: 'white', padding: '2vh', color: '#29241C',  marginRight:'2vh', height: '100%'}}> 
-        <h1 style={{justifyContent: 'center', alignContent: 'center', fontFamily: 'Oswald', fontSize:  '3vh', marginTop: '-1vh', color: '#29241C'}}>Your Alerts</h1>
+        <h1 style={{justifyContent: 'center', alignContent: 'center', fontFamily: 'Oswald', fontSize:  '3vh', marginTop: '-1vh', color: '#29241C', width: '45vh'}}>Your Alerts</h1>
         <List >
        {alertData.map((item) => (
       <List>
