@@ -64,7 +64,9 @@ const SearchFriends = () => {
   const [searchResult, setSearchResult] = React.useState ([]);
   const [firstName, setFirstName] = React.useState ('');
   const [lastName, setLastName] = React.useState ('');
-  const [samePersonCheck,setSamePersonCheck] = React.useState (false);
+  const [addedUsers, setAddedUsers] = React.useState(new Set());
+
+  const currentUser = useSelector((state) => state.user.userNameGlobal);
   
   const runButton = event => {
     event.preventDefault();
@@ -79,7 +81,8 @@ const SearchFriends = () => {
   }
 
   const handleSubmission = (users) => {
-      loadApiAddFriend(users);
+    loadApiAddFriend(users);
+      setAddedUsers((prevState) => new Set(prevState).add(users.userName));
   }
 
   const loadApiAddFriend = (users) => {
@@ -128,14 +131,17 @@ const SearchFriends = () => {
       const url = serverURL + "/api/getSearchResult";
       console.log(url);
 
+      let searchInfo = { 
+        "username": store.getState().user.userNameGlobal,
+        "userSearch" : enteredUsername,
+      };
+
       const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-              userSearch : enteredUsername, //passes the enteredUsername through the api
-        })
+        body: JSON.stringify(searchInfo)
       });
       const body = await response.json();
       if (response.status !== 200) throw Error(body.message);
@@ -153,25 +159,49 @@ const SearchFriends = () => {
           </Button>
         </Grid>
         <Grid container spacing={2} direction ='column'>
-          {searchResult.map((users) => {
-            return(
-              <Grid xs={12} sm={10} item key={users}>
-                <Card>
-                  <CardContent style={{ display: 'flex', alignItems: 'center' }}>
-                    <Avatar style={{backgroundColor: '#EBD6C1', color: '#B08968', width: '5vh', height: '5vh', fontSize: '2vh', marginRight: '5vh', marginLeft: '3vh'}}>{users.firstName[0]}{users.lastName[0]}</Avatar> 
-                    <div>
-                      <h3> {users.firstName} {users.lastName} </h3>
-                    </div>
-                    <div>
-                      <Button onClick={handleSubmission(users)} variant='contained' style={{margin: '45px', width: '100px', color: 'white', backgroundColor: '#29241C' }}>
-                        Add
-                      </Button>                     
-                    </div>
+        {searchResult.map((users) => (
+          <Grid item xs={12} sm={10} key={users.userName}>
+            <Card>
+              <CardContent style={{ display: 'flex', alignItems: 'center' }}>
+                <Avatar
+                  style={{
+                    backgroundColor: '#EBD6C1',
+                    color: '#B08968',
+                    width: '5vh',
+                    height: '5vh',
+                    fontSize: '2vh',
+                    marginRight: '5vh',
+                    marginLeft: '3vh',
+                  }}
+                >
+                  {users.firstName[0]}
+                  {users.lastName[0]}
+                </Avatar>
+                <div>
+                  <h3>
+                    {users.firstName} {users.lastName}
+                  </h3>
+                </div>
+                {!addedUsers.has(users.userName) && (
+                  <div>
+                    <Button
+                      variant="contained"
+                      onClick={() => handleSubmission(users)}
+                      style={{
+                        margin: '45px',
+                        width: '100px',
+                        color: 'white',
+                        backgroundColor: '#29241C',
+                      }}
+                    >
+                      Add
+                    </Button>
+                  </div>
+                )}
                   </CardContent>
                 </Card>
               </Grid>
-            )
-          })}
+            ))}
         </Grid>
       </Grid>
     )
