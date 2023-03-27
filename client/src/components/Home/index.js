@@ -357,7 +357,7 @@ const callGetEmergencyContacts = async() => {
 
 //calls number (911 functionality)
 const handlePhoneCall = () => {
-  window.location.href = "tel:+16477461048";
+  window.location.href = "tel:+16472712512";
 }
 
 const weather1 =((data.currentConditions));
@@ -500,10 +500,7 @@ function LetterAvatars({profile}) {
     {alertData.map((item) => (
       <List>
       <ListItem alignItems="center" style={{borderRadius: '5px', fontFamily: 'Noto Sans Lepcha', backgroundColor: '#29241C', color: 'white', width: '45vh'}}>
-        {/* <ListItemAvatar > */}
           <LetterAvatars profile={profile}></LetterAvatars>
-          {/* <Avatar style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: '#EBD6C1', color: '#B08968'}}>{firstLetter}{lastLetter}</Avatar> */}
-        {/* </ListItemAvatar> */}
         <ListItemText
           primary={item.address}
           secondary={
@@ -513,7 +510,6 @@ function LetterAvatars({profile}) {
                 component="span"
                 variant="body2"
                 color="white"
-                
               >
                 
               </Typography>

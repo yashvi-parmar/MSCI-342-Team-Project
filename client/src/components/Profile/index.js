@@ -4,7 +4,6 @@ import Typography from "@material-ui/core/Typography";
 import {Avatar, Link } from '@material-ui/core'
 import Navbar from '../NavBar';
 import NavbarTop from '../NavBarTop';
-import BarkButton from '../BarkButton';
 import '../Home/index.css'
 import Paper from "@material-ui/core/Paper";
 import { useSelector } from 'react-redux';
@@ -13,6 +12,7 @@ import store from '../../store';
 const serverURL = "";
 const cardStyle={borderRadius: '5px', padding :'5vh', fontFamily: 'Noto Sans Lepcha', color: '#29241C', backgroundColor: 'white', display: 'flex', flex:1, flexDirection: 'row', width: '90vh', height: '35vh', margin: '0 auto'}
 
+//renders avatars with first and last initials 
 function LetterAvatars({profile}) {
     return (
       <div>
@@ -25,6 +25,7 @@ function LetterAvatars({profile}) {
     );
   }
 
+  //returns users name, username and email
   function ProfileCont({profile}) {
     return (
       <Grid style={{color: '#29241C', marginLeft: '0vh'}}>
@@ -48,8 +49,7 @@ function Profile() {
     loadApiGetProfiles();
   },[]);
   
-  
-  
+  //Api call to get profile information for user
   const loadApiGetProfiles = () => {
     callApiGetProfiles()
       .then(res => {
@@ -79,6 +79,8 @@ function Profile() {
     console.log(response);
     return body;
   }
+
+  //returns card with avatar and user information 
     return (
         <div style={{backgroundColor: '#6D8654', height: '100vh', fontFamily: 'Noto Sans Lepcha'}}> 
           <NavbarTop></NavbarTop>
