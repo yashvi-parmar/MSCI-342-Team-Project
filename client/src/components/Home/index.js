@@ -35,7 +35,6 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
 import { useSelector } from 'react-redux';
 import store from '../../store';
-import call from 'react-native-phone-call';
 
 
 const serverURL = ""; //enable for deployed mode; Change PORT to the port number given to you;

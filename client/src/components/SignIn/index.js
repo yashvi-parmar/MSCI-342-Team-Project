@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import {Avatar, TextField, Button, Link } from '@material-ui/core'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import { FormControl, FormLabel, RadioGroup, FormControlLabel } from '@material-ui/core';
-import Checkbox from '@material-ui/core/Checkbox';
-import CreateAccount from '../CreateAccount'
-import { BrowserRouter,Switch,Route} from 'react-router-dom';
-import Navbar from '../NavBar';
+import {TextField, Button, Link } from '@material-ui/core'
+import { FormControl} from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
-import {createTheme, ThemeProvider, styled} from "@material-ui/core/styles";
+import {createTheme, ThemeProvider} from "@material-ui/core/styles";
 import { Provider } from 'react-redux';
 import store from '../../store/index';
 import { setUsernameGlobal } from '../../actions/user';
@@ -34,8 +29,6 @@ const theme = createTheme({
   },
  });
  
- 
-
 function SignIn() {
 
   const [username, setUsername] = React.useState('');
@@ -75,27 +68,28 @@ function SignIn() {
 
 const userNameGlobal = useSelector((state) => state.user.userNameGlobal);
 const dispatch = useDispatch();
-  
-  
- const history = useHistory();
- const [value, setValue] = React.useState(0);
- const handleChange = (newValue) => {
+const history = useHistory();
+const [value, setValue] = React.useState(0);
+
+const handleChange = (newValue) => {
   history.push(`${newValue}`);
   console.log(newValue)
   setValue(newValue);
 };
+
  const handleSubmissionCheck = (event) =>{
   setSubmissionCheck(true) 
 }
 
-  const handleSubmissionValidation = (event) => {
+const handleSubmissionValidation = (event) => {
     event.preventDefault();
     if(password !== '' && username !==''){
       loadApiSearchUser();
     }
   };
 
-  const loadApiSearchUser = () => {
+//searchs if the user is already in the database
+const loadApiSearchUser = () => {
     callApiSearchUser()
       .then((res) => {
         console.log(res)
@@ -105,7 +99,6 @@ const dispatch = useDispatch();
             setSubmissionValidation(true);
             loadApiAddLastSeenLocation();
             dispatch(setUsernameGlobal(username));
-            console.log("userNameGlobal in store:", store.getState().user.userNameGlobal);
             handleChange("/Home");
             setUsername('');
             setPassword('');
@@ -118,23 +111,21 @@ const dispatch = useDispatch();
             }
           }
       })
-  };
+};
 
-  const [localUserName, setLocalUserName] = useState('');
+const [localUserName, setLocalUserName] = useState('');
 
-  useEffect(() => {
-    setLocalUserName(userNameGlobal);
-  }, [userNameGlobal]);
-  
-  useEffect(() => {
-    console.log("hello there! " + localUserName);
-  }, [localUserName]);
+//updates the global username when it changes
+useEffect(() => {
+  setLocalUserName(userNameGlobal);
+}, [userNameGlobal]);
 
-  useEffect(() => {
-    dispatch(setUsernameGlobal(''));
-  },[]);
+//sets the new global username
+useEffect(() => {
+  dispatch(setUsernameGlobal(''));
+},[]);
 
-  const callApiSearchUser = async () => {
+const callApiSearchUser = async () => {
     const url = serverURL + "/api/SearchUser";
     console.log(url)
   
@@ -156,6 +147,7 @@ const dispatch = useDispatch();
     return body;
   }
 
+  //adds the last seen location of the user
   const loadApiAddLastSeenLocation = () => {
     callApiAddLastSeenLocation()
       .then((res) => {
@@ -168,13 +160,11 @@ const dispatch = useDispatch();
   const callApiAddLastSeenLocation = async () => {
     const url = serverURL + "/api/UpdateLastSeenLocated";
     console.log(url)
-  
     let searchInfo = {
       "username" : username,
       "latitude": lat,
       "longitude": lng
     };
-  
     console.log(searchInfo);
     const response = await fetch(url, {
       method: "POST",
@@ -208,13 +198,11 @@ const dispatch = useDispatch();
                     username === '' && submissionCheck ===true ? (
                     <div><em style={{color:'red'}}>*Please enter your username!</em></div>) : (<div></div>)
                   }
-  
                 <TextField id = "password" style={textStyle} label='Password' placeholder='Enter password' type='password' variant="outlined" value = {password} onChange={handlePasswordInput} fullWidth />
                 {
                     password === '' && submissionCheck ===true ? (
                     <div><em style={{color:'red'}}>*Please enter your password!</em></div>) : (<div></div>)
                   }
-                
                 <Button id = "LOGIN" type='submit' variant="contained" style={buttonStyle} fullWidth  onClick={handleSubmissionCheck} ><h3 style={{letterSpacing: '0.05rem', color: '#EDECED'}}>LOGIN</h3></Button>
                 {
                     matchRecord == false ? (
@@ -222,45 +210,16 @@ const dispatch = useDispatch();
                   }
                 </form>
              </FormControl> 
-             
              <div style={{marginTop: "1vh" }} ></div>
                      <Link href="/CreateAccount" style={{color: '#131411'}}>
                         OR CREATE AN ACCOUNT 
                 </Link>
-               
             </Paper>
-            </Grid>
-            
+            </Grid>   
         </Grid>
-       
-    
-  
    </ThemeProvider>
-  
     </Grid>
     </Provider>
   );
 }
-
 export default SignIn;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
