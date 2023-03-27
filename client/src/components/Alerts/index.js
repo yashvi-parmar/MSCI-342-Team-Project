@@ -22,7 +22,7 @@ import store from '../../store';
 const serverURL = "";
 
 
-const cardStyle={padding :'4vh', height:'100%',width:480,  color: '#29241C', backgroundColor: '#EDECED', display: 'flex', flex:1, flexDirection: 'column'}
+const cardStyle={borderRadius: '5px',padding :'4vh', height:'100%', width:480,  color: '#29241C', backgroundColor: '#EDECED', display: 'flex', flex:1, flexDirection: 'column'}
 
 const textStyle={marginBottom: '8px'}
 
@@ -271,7 +271,7 @@ return (
     <List sx={{ width: '100%', maxWidth: 460}}>
     {unsafetext.map(item => (
       <List>
-      <ListItem alignItems="flex-start" style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: '#29241C', color: 'white'}}>
+      <ListItem alignItems="flex-start" style={{borderRadius: '5px', fontFamily: 'Noto Sans Lepcha', backgroundColor: '#29241C', color: 'white'}}>
         <ListItemAvatar >
           <Avatar style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: '#EBD6C1', color: '#B08968'}}>{item.username.charAt(0).toUpperCase()}</Avatar>
         </ListItemAvatar>

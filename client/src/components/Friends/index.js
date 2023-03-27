@@ -27,7 +27,7 @@ const ShowFriends = (props) => {
     <Grid container spacing={2} direction="column" >
       {firstNames.map((fri, index) => (
         <Grid xs={12} sm={12} item key={fri} style={{marginRight: '5vh'}}>
-          <Card>
+          <Card style={{ borderRadius: '5px' }}>
             <CardContent style={{ display: 'flex', alignItems: 'center' }}>
             <Avatar style={{backgroundColor: '#EBD6C1', color: '#B08968', width: '10vh', height: '10vh', fontSize: '4vh', marginRight: '5vh', marginLeft: '3vh'}}>{firstLetters[index]}{lastLetters[index]}</Avatar> 
             <div>
@@ -160,38 +160,40 @@ const SearchFriends = () => {
         </Grid>
         <Grid container spacing={2} direction ='column'>
         {searchResult.map((users) => (
-          <Grid item xs={12} sm={10} key={users.userName}>
-            <Card>
-              <CardContent style={{ display: 'flex', alignItems: 'center' }}>
+          <Grid item xs={12} sm={11} key={users.userName} style={{marginRight: '5vh'}}>
+            <Card style={{ borderRadius: '5px' }}>
+              <CardContent style={{ display: 'flex', alignItems: 'center', backgroundColor: '#29241C', height: '15vh'}}>
                 <Avatar
                   style={{
                     backgroundColor: '#EBD6C1',
                     color: '#B08968',
-                    width: '5vh',
-                    height: '5vh',
-                    fontSize: '2vh',
+                    width: '10vh',
+                    height: '10vh',
+                    fontSize: '4vh',
                     marginRight: '5vh',
                     marginLeft: '3vh',
                   }}
                 >
-                  {users.firstName[0]}
-                  {users.lastName[0]}
+                  {users.firstName[0].toUpperCase()}
+                  {users.lastName[0].toUpperCase()}
                 </Avatar>
                 <div>
-                  <h3>
+                  <h3 style={{color: 'white', marginBottom: '1vh'}}>
                     {users.firstName} {users.lastName}
                   </h3>
+                  <h5 style={{color: 'white', marginTop: '0vh'}}>username: {users.userName}</h5>
                 </div>
                 {!addedUsers.has(users.userName) && (
-                  <div>
+                  <div style={{ display: 'flex', justifyContent: 'flex-end', flex: 1 }}>
                     <Button
                       variant="contained"
                       onClick={() => handleSubmission(users)}
                       style={{
-                        margin: '45px',
-                        width: '100px',
+                        marginRight: '5vh',
+                        width: '10vh',
                         color: 'white',
-                        backgroundColor: '#29241C',
+                        backgroundColor: '#EBD6C1',
+                        color: 'black'
                       }}
                     >
                       Add
@@ -210,7 +212,7 @@ const SearchFriends = () => {
       <Grid>
         <Grid>
           <SearchBar setEnteredUsername={setEnteredUsername} isError={isEmpty}></SearchBar>
-          <Button variant="contained" onClick= {runButton} style={{marginLeft: '2vh',fontFamily: 'Oswald', marginTop: '2vh', width: "20vh", color: 'white', backgroundColor: '#29241C'}}>
+          <Button variant="contained" onClick= {runButton} style={{marginLeft: '2vh', fontFamily: 'Oswald', marginTop: '2vh', width: "20vh", color: 'white', backgroundColor: '#29241C'}}>
             Search
           </Button>
         </Grid>
@@ -258,7 +260,7 @@ function Friends() {
   }
 
     return (
-        <Grid style={{backgroundColor: '#6D8654', height: '100%', fontFamily: 'Noto Sans Lepcha'}}> 
+        <Grid style={{backgroundColor: '#6D8654', height: '100vh', fontFamily: 'Noto Sans Lepcha'}}> 
           <NavbarTop></NavbarTop>
           <Grid
             container
@@ -268,17 +270,17 @@ function Friends() {
             alignItems="stretch"
             style={{padding: '4vh', flexDirection: 'row', flexBasis: '100%', flex: 1}}
           >
-            <Grid item xs={6} style={{marginTop: '5vh'}}>
+            <Grid item xs={6} style={{marginTop: '8vh'}}>
               <h1 style={{color: 'white', fontFamily: 'Oswald'}}>FRIENDS</h1>
               <ShowFriends friends={friends}/>
             </Grid>
-            <Grid item xs={6} style={{textAlign: 'right', marginTop: '5vh'}}>
-              <h1 style={{color: 'white', fontFamily: 'Oswald'}}>FIND MY FRIENDS</h1>
+            <Grid item xs={6} style={{marginTop: '8vh', backgroundColor: 'white', borderRadius: '5px', paddingLeft: '5vh', paddingBottom: '5vh'}}>
+              <h1 style={{color: '#29241C', fontFamily: 'Oswald'}}>FIND MY FRIENDS</h1>
               <SearchFriends></SearchFriends>
             </Grid>
           </Grid>
           <Navbar></Navbar>
-        </Grid>     
+        </Grid>  
       )
 }
 

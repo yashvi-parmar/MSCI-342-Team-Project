@@ -432,7 +432,7 @@ function LetterAvatars({profile}) {
       
       <Grid style={{display: 'flex', flexDirection: 'row', flexBasis: '100%', flex: 1, rowGap: '1vh', justifyContent:'center'}}> 
     
-      <Grid style={{backgroundColor: 'white', padding: '2vh', color: '#29241C', marginRight:'2vh'}}> 
+      <Grid style={{borderRadius: '5px', backgroundColor: 'white', padding: '2vh', color: '#29241C', marginRight:'2vh'}}> 
         <h1 style={{justifyContent: 'center', alignContent: 'center', fontFamily: 'Oswald', fontSize:  '3vh', marginBottom: '5vh', marginTop: '-1vh', color: '#29241C'}}>Quick Links</h1>
           <Button variant="contained" style={buttonStyle} onClick= {runButton}>
                 SHARE BARK
@@ -497,12 +497,12 @@ function LetterAvatars({profile}) {
       <img style={{height: '30vh', marginTop: '-15vh'}} src={Dog2} alt="Dog" />
         </Grid>
         <Grid style={{ color: '#29241C',  fontFamily: 'Oswald', fontSize:  '3vh', display: 'flex', flexDirection: 'column', columnGap: '3vh', justifyContent:'center', alignItems: 'center' }}> 
-        <Grid style={{backgroundColor: 'white', padding: '2vh', color: '#29241C',  marginRight:'2vh', height: '100%'}}> 
+        <Grid style={{borderRadius: '5px', backgroundColor: 'white', padding: '2vh', color: '#29241C',  marginRight:'2vh', height: '100%'}}> 
         <h1 style={{justifyContent: 'center', alignContent: 'center', fontFamily: 'Oswald', fontSize:  '3vh', marginTop: '-1vh', color: '#29241C'}}>Your Alerts</h1>
         <List >
     {alertData.map((item) => (
       <List>
-      <ListItem alignItems="center" style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: '#29241C', color: 'white', width: '45vh'}}>
+      <ListItem alignItems="center" style={{borderRadius: '5px', fontFamily: 'Noto Sans Lepcha', backgroundColor: '#29241C', color: 'white', width: '45vh'}}>
         {/* <ListItemAvatar > */}
           <LetterAvatars profile={profile}></LetterAvatars>
           {/* <Avatar style={{fontFamily: 'Noto Sans Lepcha', backgroundColor: '#EBD6C1', color: '#B08968'}}>{firstLetter}{lastLetter}</Avatar> */}
@@ -541,21 +541,21 @@ function LetterAvatars({profile}) {
       </Grid>
 
       <Grid style={{ color: '#29241C',  fontFamily: 'Oswald', fontSize:  '3vh', display: 'flex', flexDirection: 'column', columnGap: '3vh', justifyContent:'center' }}> 
-        <Grid align="center" style={{backgroundColor: 'white', padding: '2vh', alignItems: 'center', justifyContent: 'center', marginBottom: '3vh'}}>
+        <Grid align="center" style={{borderRadius: '5px', backgroundColor: 'white', padding: '2vh', alignItems: 'center', justifyContent: 'center', marginBottom: '3vh'}}>
           {weather1 != undefined ? JSON.stringify(weather1.temp)+'°C': 'Loading..'} 
           <p style={{fontFamily:'Noto Sans Lepcha', fontSize: '1vh'}}>Temperature</p>
         </Grid>
-        <Grid align="center" style={{backgroundColor: 'white', padding: '1vh', alignItems: 'center', justifyContent: 'center', marginBottom: '3vh',}}> 
+        <Grid align="center" style={{borderRadius: '5px', backgroundColor: 'white', padding: '1vh', alignItems: 'center', justifyContent: 'center', marginBottom: '3vh',}}> 
           {weather1 != undefined ? JSON.stringify(weather1.feelslike)+'°C': 'Loading..'} <p style={{fontFamily:'Noto Sans Lepcha', fontSize: '1vh'}}>Feels Like Temperature</p>
         </Grid>
-        <Grid align="center" style={{backgroundColor: 'white', padding: '2vh', alignItems: 'center', justifyContent: 'center',  marginBottom: '3vh'}}>
+        <Grid align="center" style={{borderRadius: '5px', backgroundColor: 'white', padding: '2vh', alignItems: 'center', justifyContent: 'center',  marginBottom: '3vh'}}>
           {weather1 != undefined ? (JSON.stringify(weather1.conditions)).replace(/['"]+/g, ''): 'Loading..'} 
           <p style={{fontFamily:'Noto Sans Lepcha', fontSize: '1vh'}}>Weather Conditions</p>
         </Grid>
-        <Grid align="center" style={{backgroundColor: 'white', padding: '2vh', alignItems: 'center', justifyContent: 'center',  marginBottom: '3vh'}}>
+        <Grid align="center" style={{borderRadius: '5px', backgroundColor: 'white', padding: '2vh', alignItems: 'center', justifyContent: 'center',  marginBottom: '3vh'}}>
           {weather1 != undefined ? (JSON.stringify(weather1.sunrise)).replace(/['"]+/g, ''): 'Loading..'} <p style={{fontFamily:'Noto Sans Lepcha', fontSize: '1vh'}}>Sunrise</p>
         </Grid>
-        <Grid align="center" style={{backgroundColor: 'white', padding: '2vh', alignItems: 'center', justifyContent: 'center',  marginBottom: '0vh'}}>
+        <Grid align="center" style={{borderRadius: '5px', backgroundColor: 'white', padding: '2vh', alignItems: 'center', justifyContent: 'center',  marginBottom: '0vh'}}>
           {weather1 != undefined ? (JSON.stringify(weather1.sunset)).replace(/['"]+/g, ''): 'Loading..'}<p style={{fontFamily:'Noto Sans Lepcha', fontSize: '1vh'}}>Sunset</p>
         </Grid>
         
