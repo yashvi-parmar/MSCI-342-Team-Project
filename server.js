@@ -286,12 +286,14 @@ app.post('/api/getSearchResult', (req, res) => {
 
 	let connection = mysql.createConnection(config);
 
-	let username = `SELECT * FROM Profiles WHERE userName LIKE CONCAT (?, "%")`;
+	username = req.body.username,
+	search = req.body.userSearch
 
-	let data = [req.body.userSearch];
+	let query = "SELECT * FROM Profiles WHERE userName LIKE CONCAT(?, '%') AND userName != ? AND userName NOT IN (SELECT friendUsername FROM Friends WHERE username = ?)";
+	let data = [search,username,username];
 	console.log(data);
 
-	connection.query(username, data, (error, results, fields) => {
+	connection.query(query, data, (error, results, fields) => {
 		if (error) {
 			return console.error(error.message);
 		}

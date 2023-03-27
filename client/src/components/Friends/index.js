@@ -131,14 +131,17 @@ const SearchFriends = () => {
       const url = serverURL + "/api/getSearchResult";
       console.log(url);
 
+      let searchInfo = { 
+        "username": store.getState().user.userNameGlobal,
+        "userSearch" : enteredUsername,
+      };
+
       const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-              userSearch : enteredUsername, //passes the enteredUsername through the api
-        })
+        body: JSON.stringify(searchInfo)
       });
       const body = await response.json();
       if (response.status !== 200) throw Error(body.message);
