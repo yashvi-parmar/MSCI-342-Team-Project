@@ -14,6 +14,7 @@ const cardStyle={padding :90, height:'95%',width:280,  color: '#29241C', backgro
 const buttonStyle={margin:'8px 0', backgroundColor: '#6D8654', color: '#29241C', marginTop: '5vh', borderRadius: 35, height: '50px'}
 const textStyle={marginBottom: '2vh',  color: 'black', width: '280px'}
 const serverURL = "";
+
 const theme = createTheme({
   palette: {
     type: 'light',
